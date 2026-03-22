@@ -51,6 +51,7 @@ app/
   AppModule.php                    # Root module importing all feature modules
   Models/                          # Eloquent models with framework traits
   Modules/
+    Admin/                         # Unified admin portal (links to all dashboards)
     Auth/AuthModule.php            # Imports framework AuthModule
     Contacts/                      # Full CRUD + search + filter
     Companies/                     # Full CRUD + search + filter
@@ -126,6 +127,54 @@ All list endpoints support:
 - `?search=john` - Full-text search across searchable columns
 - `?include=company,deals` - Eager load relationships
 - `?per_page=25&page=2` - Pagination
+
+## Dashboards
+
+The CRM integrates three LatticePHP dashboard packages, accessible from the unified admin portal at `/admin`.
+
+### Accessing Dashboards
+
+| Dashboard | URL | API Prefix | Description |
+|-----------|-----|-----------|-------------|
+| **Admin Portal** | `/admin` | - | Unified entry point linking to all dashboards |
+| **Chronos** | `/chronos` | `/api/chronos/*` | Workflow execution dashboard |
+| **Loom** | `/loom` | `/api/loom/*` | Queue monitoring dashboard |
+| **Nightwatch** | `/nightwatch` | `/api/nightwatch/*` | Unified monitoring (dev debug + prod metrics) |
+| **Health Check** | `/admin/health` | - | JSON health endpoint |
+
+### Configuration via .env
+
+Each dashboard can be configured through environment variables:
+
+```env
+# Chronos — Workflow Dashboard
+CHRONOS_ENABLED=true
+CHRONOS_PATH=chronos
+
+# Loom — Queue Dashboard
+LOOM_ENABLED=true
+LOOM_PATH=loom
+LOOM_REDIS_CONNECTION=default
+
+# Nightwatch — Monitoring
+NIGHTWATCH_ENABLED=true
+NIGHTWATCH_PATH=nightwatch
+NIGHTWATCH_STORAGE=storage/nightwatch
+NIGHTWATCH_MODE=auto          # auto, dev, prod
+NIGHTWATCH_RETENTION=7        # days
+```
+
+### How They Work Together
+
+The three dashboards provide complementary views of the CRM application:
+
+- **Nightwatch** monitors all HTTP requests hitting the CRM API. In development mode, it records full request/response traces, query logs, exceptions, and cache operations. In production mode, it samples requests and aggregates metrics. Every API call (contacts, deals, activities) generates observable data in Nightwatch.
+
+- **Chronos** shows workflow executions triggered by CRM operations. When a deal is won, a "Deal Won" workflow fires to send notifications, update the deal status, and create activity logs. Chronos lets you inspect these workflow runs, view their event histories, send signals, and retry failures.
+
+- **Loom** monitors queue jobs dispatched by the CRM. Notification emails, webhook deliveries, report generation, and asynchronous workflow activities all flow through the queue. Loom tracks throughput, shows failed jobs, manages retries, and monitors worker health.
+
+Together, they provide full observability: Nightwatch catches the incoming request, Chronos tracks the workflow it triggers, and Loom monitors the queued jobs that workflow dispatches.
 
 ## Seed Data
 

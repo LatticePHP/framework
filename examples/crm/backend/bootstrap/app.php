@@ -30,4 +30,5 @@ return Application::configure(basePath: $basePath)
         AppModule::class,
     ])
     ->withHttp()
+    ->withObservability()
     ->create();
