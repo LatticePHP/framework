@@ -79,6 +79,12 @@
         <testsuite name="DevTools">
             <directory>packages/devtools/tests</directory>
         </testsuite>
+        <testsuite name="Catalyst">
+            <directory>packages/catalyst/tests</directory>
+        </testsuite>
+        <testsuite name="Ripple">
+            <directory>packages/ripple/tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>

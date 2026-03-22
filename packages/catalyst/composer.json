@@ -1,0 +1,38 @@
+{
+    "name": "lattice/catalyst",
+    "description": "AI development accelerator for LatticePHP — guidelines, skills, and MCP dev tools",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "ai",
+        "mcp",
+        "catalyst",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/catalyst"
+    },
+    "require": {
+        "php": "^8.4",
+        "lattice/contracts": "^1.0",
+        "lattice/core": "^1.0",
+        "symfony/console": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lattice\\Catalyst\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lattice\\Catalyst\\Tests\\": "tests/"
+        }
+    }
+}

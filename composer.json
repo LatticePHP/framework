@@ -65,7 +65,9 @@
             "Lattice\\Mail\\": "packages/mail/src/",
             "Lattice\\Notifications\\": "packages/notifications/src/",
             "Lattice\\HttpClient\\": "packages/http-client/src/",
-            "Lattice\\Serializer\\": "packages/serializer/src/"
+            "Lattice\\Serializer\\": "packages/serializer/src/",
+            "Lattice\\Catalyst\\": "packages/catalyst/src/",
+            "Lattice\\Ripple\\": "packages/ripple/src/"
         }
     },
     "autoload-dev": {
@@ -112,6 +114,8 @@
             "Lattice\\Notifications\\Tests\\": "packages/notifications/tests/",
             "Lattice\\HttpClient\\Tests\\": "packages/http-client/tests/",
             "Lattice\\Serializer\\Tests\\": "packages/serializer/tests/",
+            "Lattice\\Catalyst\\Tests\\": "packages/catalyst/tests/",
+            "Lattice\\Ripple\\Tests\\": "packages/ripple/tests/",
             "Tests\\": "tests/"
         }
     },

@@ -21,8 +21,8 @@ Wave 5 (next-gen):    13-graphql, 14-ai-module, 15-mcp-module
 | 02 | [Queue Workers](02-TASK-queue-workers/TASK.md) | `review` | 7 | 7/7 | Pending |
 | 03 | [Integration Tests](03-TASK-integration-tests/TASK.md) | `in-progress` | 8 | 5/8 | No |
 | 04 | [CLI Tools](04-TASK-cli-tools/TASK.md) | `review` | 10 | 8/10 | Pending |
-| 05 | [Catalyst](05-TASK-catalyst/TASK.md) | `pending` | 8 | 0/8 | No |
-| 06 | [Ripple](06-TASK-ripple/TASK.md) | `pending` | 8 | 0/8 | No |
+| 05 | [Catalyst](05-TASK-catalyst/TASK.md) | `review` | 8 | 6/8 | Pending |
+| 06 | [Ripple](06-TASK-ripple/TASK.md) | `review` | 8 | 6/8 | Pending |
 | 07 | [Chronos](07-TASK-chronos/TASK.md) | `pending` | 9 | 0/9 | No |
 | 08 | [Loom](08-TASK-loom/TASK.md) | `pending` | 8 | 0/8 | No |
 | 09 | [Nightwatch](09-TASK-nightwatch/TASK.md) | `pending` | 9 | 0/9 | No |
