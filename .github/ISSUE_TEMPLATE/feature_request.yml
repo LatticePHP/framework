@@ -1,0 +1,54 @@
+name: Feature Request
+description: Suggest a new feature or enhancement
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for LatticePHP? We'd love to hear it.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which area does this relate to?
+      options:
+        - "Module System"
+        - "HTTP / Routing"
+        - "Pipeline (Guards / Interceptors / Pipes / Filters)"
+        - "Database / Eloquent"
+        - "Authentication / Authorization"
+        - "Workflow Engine"
+        - "Queue / Events / Scheduler"
+        - "Microservices / Transports"
+        - "Observability / DevTools"
+        - "CLI"
+        - "Testing"
+        - "Documentation"
+        - "Other"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem does this feature solve? What pain point are you hitting?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How do you think this should work? Code examples are welcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Other approaches you've thought about and why they don't work as well.
+    validations:
+      required: false

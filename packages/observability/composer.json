@@ -3,11 +3,23 @@
     "description": "Structured logging, metrics, tracing, and health checks for LatticePHP",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "keywords": [
+        "php",
+        "framework",
+        "observability",
+        "logging",
+        "metrics",
+        "tracing",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/observability"
+    },
     "require": {
         "php": "^8.4",
-        "lattice/contracts": "dev-main",
+        "lattice/contracts": "^1.0",
         "psr/log": "^3.0"
     },
     "require-dev": {
@@ -22,11 +34,5 @@
         "psr-4": {
             "Lattice\\Observability\\Tests\\": "tests/"
         }
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../contracts"
-        }
-    ]
+    }
 }

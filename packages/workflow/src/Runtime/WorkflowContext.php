@@ -37,6 +37,12 @@ final class WorkflowContext
     /** @var int Current simulated time offset in seconds (for testing) */
     private int $timeOffset = 0;
 
+    /** @var ActivityExecutor|null Queue-based executor (set when driver is 'queue') */
+    private ?ActivityExecutor $queueActivityExecutor = null;
+
+    /**
+     * @param string $activityDriver The activity execution driver: 'sync' or 'queue'
+     */
     public function __construct(
         private readonly string $executionId,
         private readonly string $workflowId,
@@ -44,7 +50,37 @@ final class WorkflowContext
         private readonly WorkflowEventStoreInterface $eventStore,
         private readonly ActivityExecutor $activityExecutor,
         private readonly ?WorkflowRuntime $runtime = null,
+        private readonly string $activityDriver = 'sync',
     ) {}
+
+    /**
+     * Set a queue-based activity executor.
+     * Required when activity_driver is 'queue'.
+     */
+    public function setQueueActivityExecutor(ActivityExecutor $executor): void
+    {
+        $this->queueActivityExecutor = $executor;
+    }
+
+    /**
+     * Get the configured activity driver.
+     */
+    public function getActivityDriver(): string
+    {
+        return $this->activityDriver;
+    }
+
+    /**
+     * Resolve the activity executor based on the configured driver.
+     */
+    private function resolveActivityExecutor(): ActivityExecutor
+    {
+        if ($this->activityDriver === 'queue' && $this->queueActivityExecutor !== null) {
+            return $this->queueActivityExecutor;
+        }
+
+        return $this->activityExecutor;
+    }
 
     /**
      * Execute an activity. During replay, returns the recorded result.
@@ -330,6 +366,8 @@ final class WorkflowContext
 
     private function executeActivityLive(string $activityId, string $activityClass, string $method, array $args): mixed
     {
+        $executor = $this->resolveActivityExecutor();
+
         // Record ActivityScheduled
         $this->appendEvent(WorkflowEvent::activityScheduled(
             $this->nextSequenceNumber(),
@@ -339,14 +377,24 @@ final class WorkflowContext
             $args,
         ));
 
-        // Record ActivityStarted
+        // When using the queue executor, the job writes ActivityStarted/Completed/Failed.
+        // The QueueActivityExecutor dispatches the job and polls for the result.
+        if ($executor instanceof QueueActivityExecutor) {
+            try {
+                return $executor->execute($activityClass, $method, $args);
+            } catch (\Throwable $e) {
+                throw $e;
+            }
+        }
+
+        // Sync path: context records all events directly
         $this->appendEvent(WorkflowEvent::activityStarted(
             $this->nextSequenceNumber(),
             $activityId,
         ));
 
         try {
-            $result = $this->activityExecutor->execute($activityClass, $method, $args);
+            $result = $executor->execute($activityClass, $method, $args);
 
             // Record ActivityCompleted
             $this->appendEvent(WorkflowEvent::activityCompleted(

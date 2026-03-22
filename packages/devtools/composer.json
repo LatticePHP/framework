@@ -3,6 +3,19 @@
     "description": "Code generators for scaffolding LatticePHP framework components",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "devtools",
+        "code-generation",
+        "scaffolding",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/devtools"
+    },
     "require": {
         "php": "^8.4",
         "illuminate/console": "^12.0",

@@ -1,0 +1,23 @@
+# =============================================================================
+# LatticePHP — CODEOWNERS
+# =============================================================================
+# These owners are automatically requested for review on pull requests.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default — all PRs
+* @latticephp/core
+
+# Workflow engine
+packages/workflow/ @latticephp/core
+packages/workflow-store/ @latticephp/core
+
+# Auth stack
+packages/auth/ @latticephp/core
+packages/jwt/ @latticephp/core
+packages/authorization/ @latticephp/core
+packages/oauth/ @latticephp/core
+
+# CI / Docker / DevOps
+.github/ @latticephp/core
+Dockerfile @latticephp/core
+docker-compose.yml @latticephp/core

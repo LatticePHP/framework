@@ -3,6 +3,19 @@
     "description": "Attribute-based routing for the LatticePHP framework",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "routing",
+        "attributes",
+        "controllers",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/routing"
+    },
     "require": {
         "php": "^8.4"
     },

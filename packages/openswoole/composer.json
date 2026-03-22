@@ -3,6 +3,19 @@
     "description": "Experimental OpenSwoole integration for LatticePHP",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "openswoole",
+        "async",
+        "coroutine",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/openswoole"
+    },
     "require": {
         "php": "^8.4"
     },

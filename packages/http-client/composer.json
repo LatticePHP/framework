@@ -3,6 +3,18 @@
     "description": "HTTP client for outbound requests in LatticePHP",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "http-client",
+        "guzzle",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/http-client"
+    },
     "require": {
         "php": "^8.4"
     },

@@ -29,6 +29,7 @@ Desktop.ini
 .phpunit.result.cache
 .phpunit.cache/
 .phpunit.coverage/
+.phpstan-cache/
 phpstan-baseline.neon
 coverage/
 
@@ -38,6 +39,9 @@ coverage/
 
 # Logs
 *.log
+
+# Database
+database.sqlite
 
 # Runtime
 .php_cs.cache

@@ -3,6 +3,19 @@
     "description": "Filesystem abstraction layer for the LatticePHP framework",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "filesystem",
+        "storage",
+        "flysystem",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/filesystem"
+    },
     "require": {
         "php": "^8.4",
         "illuminate/filesystem": "^12.0",

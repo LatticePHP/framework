@@ -3,17 +3,21 @@
     "description": "Cache drivers and manager for the LatticePHP framework",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../contracts"
-        }
+    "keywords": [
+        "php",
+        "framework",
+        "cache",
+        "caching",
+        "lattice"
     ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/cache"
+    },
     "require": {
         "php": "^8.4",
-        "lattice/contracts": "*",
+        "lattice/contracts": "^1.0",
         "illuminate/cache": "^12.0",
         "illuminate/contracts": "^12.0"
     },

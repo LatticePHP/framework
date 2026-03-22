@@ -3,10 +3,23 @@
     "description": "JWT token issuer and authentication guard for LatticePHP",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "jwt",
+        "json-web-token",
+        "authentication",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/jwt"
+    },
     "require": {
         "php": "^8.4",
-        "lattice/contracts": "^0.1",
-        "lattice/auth": "^0.1",
+        "lattice/contracts": "^1.0",
+        "lattice/auth": "^1.0",
         "lcobucci/jwt": "^5.0",
         "lcobucci/clock": "^3.0"
     },

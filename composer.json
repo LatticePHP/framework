@@ -111,7 +111,8 @@
             "Lattice\\Mail\\Tests\\": "packages/mail/tests/",
             "Lattice\\Notifications\\Tests\\": "packages/notifications/tests/",
             "Lattice\\HttpClient\\Tests\\": "packages/http-client/tests/",
-            "Lattice\\Serializer\\Tests\\": "packages/serializer/tests/"
+            "Lattice\\Serializer\\Tests\\": "packages/serializer/tests/",
+            "Tests\\": "tests/"
         }
     },
     "repositories": [

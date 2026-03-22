@@ -3,6 +3,19 @@
     "description": "JSON:API specification support for LatticePHP",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "jsonapi",
+        "json-api",
+        "rest",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/jsonapi"
+    },
     "require": {
         "php": "^8.4"
     },

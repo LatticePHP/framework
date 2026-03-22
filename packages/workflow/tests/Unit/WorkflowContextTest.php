@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace Lattice\Workflow\Tests\Unit;
 
 use Lattice\Contracts\Workflow\WorkflowEventType;
+use Lattice\Queue\Dispatcher;
+use Lattice\Queue\Driver\InMemoryDriver;
 use Lattice\Workflow\Event\WorkflowEvent;
+use Lattice\Workflow\Runtime\ActivityJob;
+use Lattice\Workflow\Runtime\QueueActivityExecutor;
 use Lattice\Workflow\Runtime\ReplayCaughtUpException;
 use Lattice\Workflow\Runtime\SyncActivityExecutor;
 use Lattice\Workflow\Runtime\WorkflowContext;
@@ -218,5 +222,118 @@ final class WorkflowContextTest extends TestCase
 
         $result = $ctx->awaitCondition(fn () => false);
         $this->assertFalse($result);
+    }
+
+    // --- Activity driver tests ---
+
+    #[Test]
+    public function it_defaults_to_sync_activity_driver(): void
+    {
+        $ctx = $this->createContext();
+
+        $this->assertSame('sync', $ctx->getActivityDriver());
+    }
+
+    #[Test]
+    public function it_accepts_queue_activity_driver(): void
+    {
+        $ctx = new WorkflowContext(
+            $this->executionId,
+            'wf_test',
+            'run_test',
+            $this->eventStore,
+            $this->executor,
+            null,
+            'queue',
+        );
+
+        $this->assertSame('queue', $ctx->getActivityDriver());
+    }
+
+    #[Test]
+    public function it_uses_sync_executor_when_driver_is_sync(): void
+    {
+        $ctx = $this->createContext();
+
+        $result = $ctx->executeActivity(
+            \Lattice\Workflow\Tests\Fixtures\PaymentActivity::class,
+            'charge',
+            100.0,
+        );
+
+        $this->assertStringStartsWith('payment_', $result);
+
+        // Sync path records Scheduled, Started, Completed
+        $events = $this->eventStore->getEvents($this->executionId);
+        $this->assertCount(3, $events);
+        $this->assertSame(WorkflowEventType::ActivityScheduled, $events[0]->getEventType());
+        $this->assertSame(WorkflowEventType::ActivityStarted, $events[1]->getEventType());
+        $this->assertSame(WorkflowEventType::ActivityCompleted, $events[2]->getEventType());
+    }
+
+    #[Test]
+    public function it_uses_queue_executor_when_driver_is_queue(): void
+    {
+        $driver = new InMemoryDriver();
+        $dispatcher = new Dispatcher($driver);
+
+        $queueExecutor = new QueueActivityExecutor(
+            dispatcher: $dispatcher,
+            eventStore: $this->eventStore,
+            executionId: $this->executionId,
+            pollIntervalMs: 1,
+            timeoutSeconds: 5,
+            jobProcessor: fn (ActivityJob $job) => $job->handle(),
+        );
+
+        $ctx = new WorkflowContext(
+            $this->executionId,
+            'wf_test',
+            'run_test',
+            $this->eventStore,
+            $this->executor,
+            null,
+            'queue',
+        );
+        $ctx->setQueueActivityExecutor($queueExecutor);
+
+        $result = $ctx->executeActivity(
+            \Lattice\Workflow\Tests\Fixtures\PaymentActivity::class,
+            'charge',
+            100.0,
+        );
+
+        $this->assertStringStartsWith('payment_', $result);
+
+        // Queue path: context writes Scheduled, job writes Started + Completed
+        $events = $this->eventStore->getEvents($this->executionId);
+        $eventTypes = array_map(fn ($e) => $e->getEventType(), $events);
+
+        $this->assertContains(WorkflowEventType::ActivityScheduled, $eventTypes);
+        $this->assertContains(WorkflowEventType::ActivityStarted, $eventTypes);
+        $this->assertContains(WorkflowEventType::ActivityCompleted, $eventTypes);
+    }
+
+    #[Test]
+    public function it_falls_back_to_sync_executor_when_queue_executor_not_set(): void
+    {
+        // When driver is 'queue' but no queue executor is set, falls back to sync executor
+        $ctx = new WorkflowContext(
+            $this->executionId,
+            'wf_test',
+            'run_test',
+            $this->eventStore,
+            $this->executor,
+            null,
+            'queue',
+        );
+
+        $result = $ctx->executeActivity(
+            \Lattice\Workflow\Tests\Fixtures\PaymentActivity::class,
+            'charge',
+            100.0,
+        );
+
+        $this->assertStringStartsWith('payment_', $result);
     }
 }

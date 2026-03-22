@@ -3,9 +3,21 @@
     "description": "Serialization layer for LatticePHP with JSON and PHP native support",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "serializer",
+        "json",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/serializer"
+    },
     "require": {
         "php": "^8.4",
-        "lattice/contracts": "dev-main"
+        "lattice/contracts": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0"

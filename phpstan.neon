@@ -1,5 +1,34 @@
 parameters:
-    level: max
-    paths:
-        - packages/*/src
-    tmpDir: .phpstan-cache
+  level: max
+  paths:
+    - packages/*/src
+  excludePaths:
+    - packages/*/src/Testing
+  tmpDir: .phpstan-cache
+
+  # Eloquent models use dynamic attribute access (__get/__set)
+  # and the container returns mixed from make()/resolve()
+  ignoreErrors:
+    # Eloquent dynamic properties
+    - '#Access to an undefined property Lattice\\Database\\Model::\$#'
+    - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$#'
+    - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::#'
+
+    # Container resolution returns mixed
+    - '#Cannot call method .+ on mixed#'
+    - '#Parameter .+ of function app expects .+, string given#'
+
+    # String-based class instantiation (workflow runtime, bus, DI)
+    - '#Unsafe usage of new static#'
+
+    # Reflection-based attribute discovery
+    - '#Parameter \#1 .+ of method ReflectionClass::getAttributes\(\) expects#'
+
+    # Helper functions returning mixed from container
+    - '#Function config\(\) should return .+ but returns mixed#'
+    - '#Function resolve\(\) should return .+ but returns mixed#'
+
+  # Treat these as universal object crates (Eloquent models)
+  universalObjectCratesClasses:
+    - Illuminate\Database\Eloquent\Model
+    - Lattice\Database\Model

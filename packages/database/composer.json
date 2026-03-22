@@ -1,13 +1,24 @@
 {
     "name": "lattice/database",
-    "description": "Database integration for LatticePHP — wraps illuminate/database with Lattice module conventions",
+    "description": "Database integration for LatticePHP \u2014 wraps illuminate/database with Lattice module conventions",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "keywords": [
+        "php",
+        "framework",
+        "database",
+        "eloquent",
+        "orm",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/database"
+    },
     "require": {
         "php": "^8.4",
-        "lattice/contracts": "dev-main",
+        "lattice/contracts": "^1.0",
         "illuminate/database": "^12.0",
         "illuminate/events": "^12.0",
         "ext-pdo": "*"
@@ -16,16 +27,14 @@
         "phpunit/phpunit": "^11.0",
         "ext-pdo_sqlite": "*"
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../contracts"
-        }
-    ],
     "autoload": {
-        "psr-4": { "Lattice\\Database\\": "src/" }
+        "psr-4": {
+            "Lattice\\Database\\": "src/"
+        }
     },
     "autoload-dev": {
-        "psr-4": { "Lattice\\Database\\Tests\\": "tests/" }
+        "psr-4": {
+            "Lattice\\Database\\Tests\\": "tests/"
+        }
     }
 }

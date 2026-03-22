@@ -8,11 +8,16 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: read
+
 jobs:
   split:
     runs-on: ubuntu-latest
+    if: github.repository == 'LatticePHP/framework'
     strategy:
       fail-fast: false
+      max-parallel: 10
       matrix:
         package:
           - { local: 'packages/contracts',          remote: 'contracts' }
@@ -60,6 +65,15 @@ jobs:
 
     name: Split ${{ matrix.package.remote }}
     steps:
+      - name: Verify SPLIT_TOKEN is configured
+        env:
+          SPLIT_TOKEN: ${{ secrets.SPLIT_TOKEN }}
+        run: |
+          if [ -z "$SPLIT_TOKEN" ]; then
+            echo "::error::SPLIT_TOKEN secret is not set. Go to Settings > Secrets > Actions and add a PAT with repo contents:write permission for the LatticePHP org."
+            exit 1
+          fi
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0

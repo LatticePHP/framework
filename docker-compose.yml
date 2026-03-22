@@ -1,20 +1,173 @@
-version: '3.8'
+# =============================================================================
+# LatticePHP — Docker Compose
+# =============================================================================
+# Usage:
+#   docker compose up                  — Dev server (SQLite, zero services)
+#   docker compose --profile full up   — Full stack (Postgres + Redis + workers)
+#   docker compose run --rm test       — Run test suite
+#   docker compose run --rm lint       — Run CS Fixer + PHPStan
+# =============================================================================
 
 services:
-  lattice:
-    build: .
-    container_name: lattice-framework
+  # ---------------------------------------------------------------------------
+  # Dev server — always available, SQLite by default
+  # ---------------------------------------------------------------------------
+  app:
+    build:
+      context: .
+      target: dev
+    container_name: lattice-app
+    ports:
+      - "${APP_PORT:-8000}:8000"
     volumes:
       - .:/app
-    working_dir: /app
-    command: ["php", "-v"]
+      - composer-cache:/root/.composer/cache
+    environment:
+      - APP_ENV=${APP_ENV:-local}
+      - DB_CONNECTION=${DB_CONNECTION:-sqlite}
+      - DB_DATABASE=${DB_DATABASE:-/app/database.sqlite}
+    depends_on: []
 
+  # ---------------------------------------------------------------------------
+  # Test runner
+  # ---------------------------------------------------------------------------
   test:
-    build: .
+    build:
+      context: .
+      target: dev
     container_name: lattice-tests
     volumes:
       - .:/app
-    working_dir: /app
-    command: ["vendor/bin/phpunit", "--testdox"]
+      - composer-cache:/root/.composer/cache
+    environment:
+      - APP_ENV=testing
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=:memory:
+    entrypoint: ["vendor/bin/phpunit"]
+    command: ["--testdox"]
+    profiles:
+      - tools
+
+  # ---------------------------------------------------------------------------
+  # Lint runner (CS Fixer + PHPStan)
+  # ---------------------------------------------------------------------------
+  lint:
+    build:
+      context: .
+      target: dev
+    container_name: lattice-lint
+    volumes:
+      - .:/app
+      - composer-cache:/root/.composer/cache
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "==> PHP CS Fixer" && vendor/bin/php-cs-fixer fix --dry-run --diff && \
+        echo "==> PHPStan" && vendor/bin/phpstan analyse --memory-limit=2G
+    profiles:
+      - tools
+
+  # ---------------------------------------------------------------------------
+  # Full profile: PostgreSQL
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:17-alpine
+    container_name: lattice-postgres
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-lattice}
+      POSTGRES_USER: ${DB_USERNAME:-lattice}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-lattice}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    profiles:
+      - full
+
+  # ---------------------------------------------------------------------------
+  # Full profile: Redis
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: lattice-redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    profiles:
+      - full
+
+  # ---------------------------------------------------------------------------
+  # Full profile: Queue worker
+  # ---------------------------------------------------------------------------
+  worker:
+    build:
+      context: .
+      target: dev
+    container_name: lattice-worker
+    volumes:
+      - .:/app
+    environment:
+      - APP_ENV=${APP_ENV:-local}
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=${DB_DATABASE:-lattice}
+      - DB_USERNAME=${DB_USERNAME:-lattice}
+      - DB_PASSWORD=${DB_PASSWORD:-secret}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    command: ["php", "bin/lattice", "queue:work", "--sleep=3", "--tries=3"]
     depends_on:
-      - lattice
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    profiles:
+      - full
+
+  # ---------------------------------------------------------------------------
+  # Full profile: Scheduler
+  # ---------------------------------------------------------------------------
+  scheduler:
+    build:
+      context: .
+      target: dev
+    container_name: lattice-scheduler
+    volumes:
+      - .:/app
+    environment:
+      - APP_ENV=${APP_ENV:-local}
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=${DB_DATABASE:-lattice}
+      - DB_USERNAME=${DB_USERNAME:-lattice}
+      - DB_PASSWORD=${DB_PASSWORD:-secret}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    command: ["php", "bin/lattice", "schedule:run", "--loop"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    profiles:
+      - full
+
+volumes:
+  postgres-data:
+  redis-data:
+  composer-cache:

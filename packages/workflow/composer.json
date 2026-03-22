@@ -3,9 +3,22 @@
     "description": "Native durable execution engine (Temporal-like) for LatticePHP",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "workflow",
+        "durable-execution",
+        "orchestration",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/workflow"
+    },
     "require": {
         "php": "^8.4",
-        "lattice/contracts": "dev-main"
+        "lattice/contracts": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0"

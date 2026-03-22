@@ -3,22 +3,22 @@
     "description": "Notification system with multi-channel support for the LatticePHP framework",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../contracts"
-        },
-        {
-            "type": "path",
-            "url": "../mail"
-        }
+    "keywords": [
+        "php",
+        "framework",
+        "notifications",
+        "channels",
+        "lattice"
     ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/notifications"
+    },
     "require": {
         "php": "^8.4",
-        "lattice/contracts": "*",
-        "lattice/mail": "*"
+        "lattice/contracts": "^1.0",
+        "lattice/mail": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0"

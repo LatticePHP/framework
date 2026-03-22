@@ -1,0 +1,43 @@
+{
+    "name": "LatticePHP",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/app",
+    "shutdownAction": "stopCompose",
+
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "xdebug.php-debug",
+                "junstyle.php-cs-fixer",
+                "SanderRonde.phpstan-vscode",
+                "EditorConfig.EditorConfig",
+                "eamodio.gitlens",
+                "ms-azuretools.vscode-docker"
+            ],
+            "settings": {
+                "php.validate.executablePath": "/usr/local/bin/php",
+                "php.suggest.basic": false,
+                "intelephense.environment.phpVersion": "8.4.0",
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "junstyle.php-cs-fixer",
+                "[php]": {
+                    "editor.defaultFormatter": "junstyle.php-cs-fixer"
+                },
+                "php-cs-fixer.executablePath": "${workspaceFolder}/vendor/bin/php-cs-fixer",
+                "php-cs-fixer.config": "${workspaceFolder}/.php-cs-fixer.dist.php",
+                "phpstan.binPath": "${workspaceFolder}/vendor/bin/phpstan",
+                "phpstan.configFile": "phpstan.neon"
+            }
+        }
+    },
+
+    "postCreateCommand": "composer install --prefer-dist --no-interaction",
+    "remoteUser": "root"
+}

@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main, '*.x']
 
+permissions:
+  contents: read
+
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -22,14 +25,21 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, pdo, pdo_sqlite, json, openssl, sodium
+          extensions: mbstring, pdo, pdo_sqlite, openssl, sodium, redis, pcntl, bcmath, intl, zip, sockets
           coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
+          restore-keys: composer-${{ matrix.php }}-
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --testdox
 
   static-analysis:
     runs-on: ubuntu-latest
@@ -41,14 +51,28 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: mbstring, pdo, pdo_sqlite, json, openssl, sodium
+          extensions: mbstring, pdo, pdo_sqlite, openssl, sodium, redis, pcntl, bcmath, intl
           coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-8.4-${{ hashFiles('composer.json') }}
+          restore-keys: composer-8.4-
+
+      - name: Cache PHPStan
+        uses: actions/cache@v4
+        with:
+          path: .phpstan-cache
+          key: phpstan-${{ hashFiles('phpstan.neon', 'composer.json') }}
+          restore-keys: phpstan-
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyse --memory-limit=2G || true
+        run: vendor/bin/phpstan analyse --memory-limit=2G
 
   code-style:
     runs-on: ubuntu-latest
@@ -63,8 +87,15 @@ jobs:
           extensions: mbstring
           coverage: none
 
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-8.4-${{ hashFiles('composer.json') }}
+          restore-keys: composer-8.4-
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
       - name: Run PHP CS Fixer
-        run: vendor/bin/php-cs-fixer fix --dry-run --diff || true
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff

@@ -3,6 +3,18 @@
     "description": "Shared interfaces and value objects for the LatticePHP framework",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "contracts",
+        "interfaces",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/contracts"
+    },
     "require": {
         "php": "^8.4",
         "psr/container": "^2.0"

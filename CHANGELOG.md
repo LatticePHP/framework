@@ -2,12 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-03-22
+
 ### Added
-- Initial framework release with 40+ packages
+- Initial framework release with 42 packages
 - Module system with `#[Module]` attribute and dependency graph
 - Compiler with attribute discovery and manifest generation
 - HTTP kernel with attribute-based routing (`#[Controller]`, `#[Get]`, `#[Post]`, etc.)
@@ -50,4 +53,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Devtools with 8 code generators
 - 4 starter applications (API, Workflow, Service, gRPC)
 - 14 Architecture Decision Records
-- 16 documentation guides
+- 17 documentation guides
+
+[Unreleased]: https://github.com/LatticePHP/framework/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/LatticePHP/framework/releases/tag/v1.0.0

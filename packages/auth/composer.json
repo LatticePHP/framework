@@ -3,9 +3,21 @@
     "description": "Authentication and authorization kernel for LatticePHP",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "authentication",
+        "auth",
+        "lattice"
+    ],
+    "homepage": "https://github.com/LatticePHP/framework",
+    "support": {
+        "issues": "https://github.com/LatticePHP/framework/issues",
+        "source": "https://github.com/LatticePHP/auth"
+    },
     "require": {
         "php": "^8.4",
-        "lattice/contracts": "^0.1"
+        "lattice/contracts": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0"
