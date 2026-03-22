@@ -1,0 +1,23 @@
+{
+    "name": "lattice/problem-details",
+    "description": "RFC 9457 Problem Details for HTTP APIs",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "lattice/contracts": "^0.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lattice\\ProblemDetails\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lattice\\ProblemDetails\\Tests\\": "tests/"
+        }
+    }
+}

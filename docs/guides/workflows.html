@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflows — LatticePHP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <style>
+        :root { --bg: #0a0a0f; --bg-card: #12121a; --border: #1e1e2e; --text: #e4e4ef; --text-dim: #9494a8; --accent: #4ade80; --sidebar-w: 260px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.8; }
+        code,pre { font-family:'JetBrains Mono',monospace; }
+
+        /* Sidebar */
+        .sidebar { position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); background:#08080c; border-right:1px solid var(--border); padding:20px 0; overflow-y:auto; z-index:10; }
+        .sidebar-brand { padding:0 20px 16px; font-weight:700; color:var(--accent); font-size:1rem; }
+        .sidebar-brand a { color:var(--accent); text-decoration:none; }
+        .sidebar-section { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:#64748b; padding:12px 20px 4px; font-weight:600; }
+        .sidebar a { display:block; padding:5px 20px; font-size:0.8rem; color:var(--text-dim); text-decoration:none; }
+        .sidebar a:hover { color:var(--text); background:#111118; }
+        .sidebar a.active { color:var(--accent); background:rgba(74,222,128,0.05); border-right:2px solid var(--accent); }
+
+        /* Content */
+        .content { margin-left:var(--sidebar-w); padding:40px 60px; max-width:900px; }
+        .content h1 { font-size:2rem; margin:0 0 8px; color:var(--accent); }
+        .content h2 { font-size:1.5rem; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+        .content h3 { font-size:1.2rem; margin:24px 0 8px; }
+        .content h4 { font-size:1rem; margin:20px 0 6px; }
+        .content p { margin:8px 0; }
+        .content ul,.content ol { margin:8px 0 8px 24px; }
+        .content li { margin:4px 0; }
+        .content a { color:var(--accent); }
+        .content code { background:#1a1a2e; padding:2px 6px; border-radius:4px; font-size:0.85em; }
+        .content pre { background:#0d1117; border:1px solid var(--border); border-radius:8px; padding:16px; margin:12px 0; overflow-x:auto; }
+        .content pre code { background:none; padding:0; font-size:0.85rem; }
+        .content table { width:100%; border-collapse:collapse; margin:16px 0; }
+        .content th,.content td { padding:8px 12px; border:1px solid var(--border); text-align:left; font-size:0.9rem; }
+        .content th { background:var(--bg-card); font-weight:600; }
+        .content blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0; color:var(--text-dim); background:var(--bg-card); border-radius:0 6px 6px 0; }
+        .content hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+        .content img { max-width:100%; }
+        .content input[type="checkbox"] { margin-right:6px; }
+
+        .back-link { display:inline-block; margin-bottom:20px; color:var(--accent); font-size:0.85rem; text-decoration:none; }
+        .back-link:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .sidebar { display:none; }
+            .content { margin-left:0; padding:20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><a href="../index.html">&#x2B21; LatticePHP</a></div>
+        <div class="sidebar-section">Getting Started</div>
+        <a href="getting-started.html">Getting Started</a>
+        <a href="why-latticephp.html">Why LatticePHP</a>
+        <div class="sidebar-section">Core</div>
+        <a href="architecture.html">Architecture</a>
+        <a href="modules.html">Modules</a>
+        <a href="pipeline.html">Pipeline</a>
+        <div class="sidebar-section">HTTP & Data</div>
+        <a href="http-api.html">HTTP &amp; API</a>
+        <a href="database.html">Database</a>
+        <div class="sidebar-section">Auth & Security</div>
+        <a href="auth.html">Authentication</a>
+        <a href="security.html">Security</a>
+        <div class="sidebar-section">Advanced</div>
+        <a href="workflows.html" class="active">Workflows</a>
+        <a href="microservices.html">Microservices</a>
+        <a href="observability.html">Observability</a>
+        <div class="sidebar-section">Testing & DX</div>
+        <a href="testing.html">Testing</a>
+        <a href="runtime.html">Runtime</a>
+        <a href="package-authoring.html">Package Authoring</a>
+        <div class="sidebar-section">Migration</div>
+        <a href="migration-from-laravel.html">Migration from Laravel</a>
+    </nav>
+    <main class="content">
+        <a href="../index.html" class="back-link">&larr; Back to Home</a>
+        <h1 id="durable-workflows">Durable Workflows</h1>
+        <p>LatticePHP includes a native durable execution engine inspired by Temporal. It provides deterministic replay, event sourcing, compensation/saga, signals, queries, and timers -- all without requiring an external Temporal service. The engine runs on your existing database and queue infrastructure.</p>
+        <hr>
+        <h2 id="core-concepts">Core Concepts</h2>
+        <p>A <strong>workflow</strong> is a class annotated with <code>#[Workflow]</code> that orchestrates a sequence of <strong>activities</strong> through a <code>WorkflowContext</code>. Every side effect (activity execution, timer, child workflow) is recorded as an event. If the process crashes mid-execution, the workflow replays its event history to reconstruct state and resume from where it left off.</p>
+        <hr>
+        <h2 id="defining-a-workflow">Defining a Workflow</h2>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Workflows;
+
+use Lattice\Workflow\Attributes\Workflow;
+use Lattice\Workflow\Attributes\QueryMethod;
+use Lattice\Workflow\Attributes\SignalMethod;
+use Lattice\Workflow\Runtime\WorkflowContext;
+
+#[Workflow(name: &#x27;OrderFulfillment&#x27;, taskQueue: &#x27;default&#x27;)]
+final class OrderFulfillmentWorkflow
+{
+    private string $status = &#x27;pending&#x27;;
+
+    public function execute(WorkflowContext $ctx, array $input): array
+    {
+        $paymentResult = $ctx-&gt;executeActivity(
+            PaymentActivity::class,
+            &#x27;charge&#x27;,
+            $input[&#x27;amount&#x27;],
+        );
+        $this-&gt;status = &#x27;charged&#x27;;
+
+        $shipResult = $ctx-&gt;executeActivity(
+            ShippingActivity::class,
+            &#x27;ship&#x27;,
+            $input[&#x27;address&#x27;],
+        );
+        $this-&gt;status = &#x27;shipped&#x27;;
+
+        return [&#x27;payment&#x27; =&gt; $paymentResult, &#x27;shipping&#x27; =&gt; $shipResult];
+    }
+
+    #[SignalMethod]
+    public function markDelivered(): void
+    {
+        $this-&gt;status = &#x27;delivered&#x27;;
+    }
+
+    #[QueryMethod]
+    public function getStatus(): string
+    {
+        return $this-&gt;status;
+    }
+}</code></pre>
+        <p>The <code>#[Workflow]</code> attribute accepts an optional <code>name</code> (defaults to the class name) and <code>taskQueue</code> (defaults to <code>&#x27;default&#x27;</code>).</p>
+        <hr>
+        <h2 id="defining-activities">Defining Activities</h2>
+        <p>Activities perform side effects. They are normal classes annotated with <code>#[Activity]</code>.</p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Workflows;
+
+use Lattice\Workflow\Attributes\Activity;
+
+#[Activity(name: &#x27;PaymentActivity&#x27;)]
+final class PaymentActivity
+{
+    public function charge(float $amount): string
+    {
+        // Call payment gateway, return charge ID
+        return &#x27;charge_&#x27; . md5((string) $amount);
+    }
+
+    public function refund(string $chargeId): string
+    {
+        return &#x27;refunded_&#x27; . $chargeId;
+    }
+}</code></pre>
+        <p>Activities are called via <code>$ctx-&gt;executeActivity(ActivityClass::class, &#x27;methodName&#x27;, ...$args)</code>. Each invocation is recorded in the event store, so on replay the result is returned from history rather than re-executing.</p>
+        <hr>
+        <h2 id="signals-and-queries">Signals and Queries</h2>
+        <p><strong>Signals</strong> send data into a running workflow. <strong>Queries</strong> read state without mutating it.</p>
+        <pre><code class="language-php">// Send a signal
+$handle-&gt;signal(&#x27;markDelivered&#x27;);
+
+// Query current state
+$status = $handle-&gt;query(&#x27;getStatus&#x27;);</code></pre>
+        <p>Signal methods are annotated with <code>#[SignalMethod(name: &#x27;increment&#x27;)]</code> and query methods with <code>#[QueryMethod(name: &#x27;getStatus&#x27;)]</code>. If <code>name</code> is omitted, the method name is used.</p>
+        <hr>
+        <h2 id="workflowcontext-api">WorkflowContext API</h2>
+        <p><code>Lattice\Workflow\Runtime\WorkflowContext</code> is the primary interface inside workflow code.</p>
+        <table>
+        <thead><tr>
+        <th>Method</th>
+        <th>Purpose</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>executeActivity(string $class, string $method, mixed ...$args): mixed</code></td>
+        <td>Execute an activity. Returns recorded result during replay.</td>
+        </tr>
+        <tr>
+        <td><code>sleep(int $seconds): void</code></td>
+        <td>Pause the workflow. Recorded as timer events.</td>
+        </tr>
+        <tr>
+        <td><code>awaitCondition(callable $condition, int $timeoutSeconds): bool</code></td>
+        <td>Wait until a condition is true.</td>
+        </tr>
+        <tr>
+        <td><code>executeChildWorkflow(string $workflowClass, mixed $input): mixed</code></td>
+        <td>Start and await a child workflow.</td>
+        </tr>
+        <tr>
+        <td><code>getWorkflowId(): string</code></td>
+        <td>Get the workflow ID.</td>
+        </tr>
+        <tr>
+        <td><code>getRunId(): string</code></td>
+        <td>Get the current run ID.</td>
+        </tr>
+        <tr>
+        <td><code>isReplaying(): bool</code></td>
+        <td>Check if replaying history.</td>
+        </tr>
+        </tbody></table>
+        <hr>
+        <h2 id="deterministic-replay">Deterministic Replay</h2>
+        <p>The engine replays event history to rebuild workflow state. Workflow code must be <strong>deterministic</strong>: no <code>rand()</code>, no <code>time()</code>, no direct I/O. All non-deterministic operations must go through activities.</p>
+        <p>During replay, <code>executeActivity()</code> returns the previously recorded result. When replay catches up to the end of history, the engine switches to live execution and records new events. If history diverges from the code (a non-deterministic change), a <code>ReplayCaughtUpException</code> is thrown.</p>
+        <hr>
+        <h2 id="compensation-saga-pattern">Compensation / Saga Pattern</h2>
+        <p>Use <code>CompensationScope</code> to register undo actions that run in reverse order on failure.</p>
+        <pre><code class="language-php">use Lattice\Workflow\Attributes\Workflow;
+use Lattice\Workflow\Compensation\CompensationScope;
+use Lattice\Workflow\Runtime\WorkflowContext;
+
+#[Workflow]
+final class BookingWorkflow
+{
+    public function execute(WorkflowContext $ctx, array $input): array
+    {
+        $scope = new CompensationScope();
+        $results = [];
+
+        $results[&#x27;payment&#x27;] = $scope-&gt;run(
+            fn () =&gt; $ctx-&gt;executeActivity(PaymentActivity::class, &#x27;charge&#x27;, $input[&#x27;amount&#x27;]),
+            fn () =&gt; $ctx-&gt;executeActivity(PaymentActivity::class, &#x27;refund&#x27;, $results[&#x27;payment&#x27;] ?? &#x27;&#x27;),
+        );
+
+        try {
+            $results[&#x27;shipping&#x27;] = $scope-&gt;run(
+                fn () =&gt; $ctx-&gt;executeActivity(ShippingActivity::class, &#x27;ship&#x27;, $input[&#x27;address&#x27;]),
+                fn () =&gt; $ctx-&gt;executeActivity(ShippingActivity::class, &#x27;cancel&#x27;, $results[&#x27;shipping&#x27;] ?? &#x27;&#x27;),
+            );
+        } catch (\Throwable $e) {
+            $scope-&gt;compensate(); // Runs refund (reverse order)
+            throw $e;
+        }
+
+        return $results;
+    }
+}</code></pre>
+        <p><code>CompensationScope::run()</code> executes the action; if it succeeds, the compensation is registered. Calling <code>$scope-&gt;compensate()</code> runs all registered compensations in <strong>reverse order</strong>. If compensations fail, a <code>CompensationException</code> is thrown with all collected errors.</p>
+        <hr>
+        <h2 id="starting-and-managing-workflows">Starting and Managing Workflows</h2>
+        <p>Use <code>WorkflowClient</code> to start workflows and get handles.</p>
+        <pre><code class="language-php">use Lattice\Workflow\Client\WorkflowClient;
+use Lattice\Workflow\WorkflowOptions;
+
+// Start a workflow
+$handle = $client-&gt;start(
+    OrderFulfillmentWorkflow::class,
+    [&#x27;amount&#x27; =&gt; 99.99, &#x27;address&#x27; =&gt; &#x27;123 Main St&#x27;],
+    new WorkflowOptions(workflowId: &#x27;order-123&#x27;),
+);
+
+// Get the result
+$result = $handle-&gt;getResult();
+
+// Get status
+$status = $handle-&gt;getStatus(); // WorkflowStatus::Completed
+
+// Get a handle for an existing workflow
+$existing = $client-&gt;getHandle(&#x27;order-123&#x27;);
+
+// Cancel or terminate
+$handle-&gt;cancel();
+$handle-&gt;terminate(&#x27;no longer needed&#x27;);</code></pre>
+        <hr>
+        <h2 id="event-stores">Event Stores</h2>
+        <p>All events are persisted in an event store implementing <code>WorkflowEventStoreInterface</code>.</p>
+        <p><strong>InMemoryEventStore</strong> -- for testing:</p>
+        <pre><code class="language-php">use Lattice\Workflow\Store\InMemoryEventStore;
+
+$store = new InMemoryEventStore();
+$executionId = $store-&gt;createExecution(&#x27;OrderWorkflow&#x27;, &#x27;order-1&#x27;, &#x27;run-abc&#x27;, $input);
+$store-&gt;appendEvent($executionId, $event);
+$events = $store-&gt;getEvents($executionId);
+$execution = $store-&gt;findExecutionByWorkflowId(&#x27;order-1&#x27;);</code></pre>
+        <p>For production, use <code>DatabaseEventStore</code> from the <code>workflow-store</code> package, which persists events to your database.</p>
+        <hr>
+        <h2 id="testing-workflows">Testing Workflows</h2>
+        <p><code>WorkflowTestEnvironment</code> provides a self-contained harness with <code>InMemoryEventStore</code> and synchronous execution.</p>
+        <pre><code class="language-php">use Lattice\Workflow\Testing\WorkflowTestEnvironment;
+use Lattice\Workflow\WorkflowOptions;
+
+final class OrderWorkflowTest extends \PHPUnit\Framework\TestCase
+{
+    public function test_order_completes(): void
+    {
+        $env = new WorkflowTestEnvironment();
+        $env-&gt;registerWorkflow(OrderFulfillmentWorkflow::class);
+        $env-&gt;registerActivity(PaymentActivity::class);
+        $env-&gt;registerActivity(ShippingActivity::class);
+
+        $handle = $env-&gt;startWorkflow(
+            OrderFulfillmentWorkflow::class,
+            [&#x27;amount&#x27; =&gt; 50.0, &#x27;address&#x27; =&gt; &#x27;456 Oak Ave&#x27;],
+        );
+
+        $env-&gt;assertWorkflowStarted(OrderFulfillmentWorkflow::class);
+        $this-&gt;assertArrayHasKey(&#x27;payment&#x27;, $handle-&gt;getResult());
+    }
+
+    public function test_with_stubbed_activity(): void
+    {
+        $env = new WorkflowTestEnvironment();
+        $env-&gt;registerWorkflow(OrderFulfillmentWorkflow::class);
+
+        $stub = new class {
+            public function charge(float $amount): string { return &#x27;stub_charge&#x27;; }
+        };
+        $env-&gt;registerActivityInstance(PaymentActivity::class, $stub);
+        $env-&gt;registerActivity(ShippingActivity::class);
+
+        $handle = $env-&gt;startWorkflow(OrderFulfillmentWorkflow::class, [&#x27;amount&#x27; =&gt; 10.0, &#x27;address&#x27; =&gt; &#x27;Test&#x27;]);
+        $this-&gt;assertSame(&#x27;stub_charge&#x27;, $handle-&gt;getResult()[&#x27;payment&#x27;]);
+    }
+
+    public function test_signal_and_query(): void
+    {
+        $env = new WorkflowTestEnvironment();
+        $env-&gt;registerWorkflow(OrderFulfillmentWorkflow::class);
+        $env-&gt;registerActivity(PaymentActivity::class);
+        $env-&gt;registerActivity(ShippingActivity::class);
+
+        $options = new WorkflowOptions(workflowId: &#x27;sig-test&#x27;);
+        $handle = $env-&gt;startWorkflow(
+            OrderFulfillmentWorkflow::class,
+            [&#x27;amount&#x27; =&gt; 25.0, &#x27;address&#x27; =&gt; &#x27;Test St&#x27;],
+            $options,
+        );
+
+        $env-&gt;signalWorkflow(&#x27;sig-test&#x27;, &#x27;markDelivered&#x27;);
+        $env-&gt;assertSignalSent(&#x27;sig-test&#x27;, &#x27;markDelivered&#x27;);
+        $this-&gt;assertSame(&#x27;delivered&#x27;, $handle-&gt;query(&#x27;getStatus&#x27;));
+    }
+}</code></pre>
+        <table>
+        <thead><tr>
+        <th>Method</th>
+        <th>Purpose</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>registerWorkflow(string $class)</code></td>
+        <td>Register a workflow class</td>
+        </tr>
+        <tr>
+        <td><code>registerActivity(string $class)</code></td>
+        <td>Register an activity class</td>
+        </tr>
+        <tr>
+        <td><code>registerActivityInstance(string $class, object $instance)</code></td>
+        <td>Register a mock/stub</td>
+        </tr>
+        <tr>
+        <td><code>startWorkflow(string $type, mixed $input, ?options)</code></td>
+        <td>Start a workflow</td>
+        </tr>
+        <tr>
+        <td><code>signalWorkflow(string $workflowId, string $signal, mixed $payload)</code></td>
+        <td>Send a signal</td>
+        </tr>
+        <tr>
+        <td><code>assertWorkflowStarted(string $type)</code></td>
+        <td>Assert a workflow was started</td>
+        </tr>
+        <tr>
+        <td><code>assertSignalSent(string $workflowId, string $signal)</code></td>
+        <td>Assert a signal was sent</td>
+        </tr>
+        </tbody></table>
+        <hr>
+        <h2 id="architecture">Architecture</h2>
+        <p>The workflow engine is built on three layers the application already has:</p>
+        <ol>
+        <li><strong>Database</strong> -- event history persistence (<code>InMemoryEventStore</code> or <code>DatabaseEventStore</code>)</li>
+        <li><strong>Queue</strong> -- asynchronous activity execution</li>
+        <li><strong>Scheduler</strong> -- timer management</li>
+        </ol>
+        <p>No external Temporal server, no gRPC sidecar, no additional infrastructure.</p>
+    </main>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

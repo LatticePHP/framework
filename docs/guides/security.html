@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security — LatticePHP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <style>
+        :root { --bg: #0a0a0f; --bg-card: #12121a; --border: #1e1e2e; --text: #e4e4ef; --text-dim: #9494a8; --accent: #4ade80; --sidebar-w: 260px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.8; }
+        code,pre { font-family:'JetBrains Mono',monospace; }
+
+        /* Sidebar */
+        .sidebar { position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); background:#08080c; border-right:1px solid var(--border); padding:20px 0; overflow-y:auto; z-index:10; }
+        .sidebar-brand { padding:0 20px 16px; font-weight:700; color:var(--accent); font-size:1rem; }
+        .sidebar-brand a { color:var(--accent); text-decoration:none; }
+        .sidebar-section { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:#64748b; padding:12px 20px 4px; font-weight:600; }
+        .sidebar a { display:block; padding:5px 20px; font-size:0.8rem; color:var(--text-dim); text-decoration:none; }
+        .sidebar a:hover { color:var(--text); background:#111118; }
+        .sidebar a.active { color:var(--accent); background:rgba(74,222,128,0.05); border-right:2px solid var(--accent); }
+
+        /* Content */
+        .content { margin-left:var(--sidebar-w); padding:40px 60px; max-width:900px; }
+        .content h1 { font-size:2rem; margin:0 0 8px; color:var(--accent); }
+        .content h2 { font-size:1.5rem; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+        .content h3 { font-size:1.2rem; margin:24px 0 8px; }
+        .content h4 { font-size:1rem; margin:20px 0 6px; }
+        .content p { margin:8px 0; }
+        .content ul,.content ol { margin:8px 0 8px 24px; }
+        .content li { margin:4px 0; }
+        .content a { color:var(--accent); }
+        .content code { background:#1a1a2e; padding:2px 6px; border-radius:4px; font-size:0.85em; }
+        .content pre { background:#0d1117; border:1px solid var(--border); border-radius:8px; padding:16px; margin:12px 0; overflow-x:auto; }
+        .content pre code { background:none; padding:0; font-size:0.85rem; }
+        .content table { width:100%; border-collapse:collapse; margin:16px 0; }
+        .content th,.content td { padding:8px 12px; border:1px solid var(--border); text-align:left; font-size:0.9rem; }
+        .content th { background:var(--bg-card); font-weight:600; }
+        .content blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0; color:var(--text-dim); background:var(--bg-card); border-radius:0 6px 6px 0; }
+        .content hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+        .content img { max-width:100%; }
+        .content input[type="checkbox"] { margin-right:6px; }
+
+        .back-link { display:inline-block; margin-bottom:20px; color:var(--accent); font-size:0.85rem; text-decoration:none; }
+        .back-link:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .sidebar { display:none; }
+            .content { margin-left:0; padding:20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><a href="../index.html">&#x2B21; LatticePHP</a></div>
+        <div class="sidebar-section">Getting Started</div>
+        <a href="getting-started.html">Getting Started</a>
+        <a href="why-latticephp.html">Why LatticePHP</a>
+        <div class="sidebar-section">Core</div>
+        <a href="architecture.html">Architecture</a>
+        <a href="modules.html">Modules</a>
+        <a href="pipeline.html">Pipeline</a>
+        <div class="sidebar-section">HTTP & Data</div>
+        <a href="http-api.html">HTTP &amp; API</a>
+        <a href="database.html">Database</a>
+        <div class="sidebar-section">Auth & Security</div>
+        <a href="auth.html">Authentication</a>
+        <a href="security.html" class="active">Security</a>
+        <div class="sidebar-section">Advanced</div>
+        <a href="workflows.html">Workflows</a>
+        <a href="microservices.html">Microservices</a>
+        <a href="observability.html">Observability</a>
+        <div class="sidebar-section">Testing & DX</div>
+        <a href="testing.html">Testing</a>
+        <a href="runtime.html">Runtime</a>
+        <a href="package-authoring.html">Package Authoring</a>
+        <div class="sidebar-section">Migration</div>
+        <a href="migration-from-laravel.html">Migration from Laravel</a>
+    </nav>
+    <main class="content">
+        <a href="../index.html" class="back-link">&larr; Back to Home</a>
+        <h1 id="security">Security</h1>
+        <p>This guide covers authentication, authorization, encryption, input validation, CORS, rate limiting, and tenant isolation in LatticePHP.</p>
+        <hr>
+        <h2 id="jwt-authentication">JWT Authentication</h2>
+        <p>LatticePHP supports both symmetric (HS256) and asymmetric (RS256, ES256) JWT signing.</p>
+        <h3 id="configuration">Configuration</h3>
+        <p>In <code>config/auth.php</code>:</p>
+        <pre><code class="language-php">&#x27;jwt&#x27; =&gt; [
+    &#x27;secret&#x27; =&gt; env(&#x27;JWT_SECRET&#x27;),                        // Symmetric key (HS256)
+    &#x27;algorithm&#x27; =&gt; env(&#x27;JWT_ALGORITHM&#x27;, &#x27;HS256&#x27;),
+
+    // Asymmetric keys (RS256, ES256)
+    &#x27;private_key&#x27; =&gt; env(&#x27;JWT_PRIVATE_KEY&#x27;),
+    &#x27;public_key&#x27; =&gt; env(&#x27;JWT_PUBLIC_KEY&#x27;),
+
+    &#x27;access_ttl&#x27; =&gt; (int) env(&#x27;JWT_ACCESS_TTL&#x27;, 60),     // 1 hour in minutes
+    &#x27;refresh_ttl&#x27; =&gt; (int) env(&#x27;JWT_REFRESH_TTL&#x27;, 10080), // 7 days in minutes
+
+    &#x27;issuer&#x27; =&gt; env(&#x27;JWT_ISSUER&#x27;, env(&#x27;APP_URL&#x27;)),
+    &#x27;audience&#x27; =&gt; env(&#x27;JWT_AUDIENCE&#x27;),
+],</code></pre>
+        <h3 id="generating-keys">Generating Keys</h3>
+        <p>For asymmetric signing (recommended for production):</p>
+        <pre><code class="language-bash"># RS256
+openssl genrsa -out jwt-private.pem 4096
+openssl rsa -in jwt-private.pem -pubout -out jwt-public.pem
+
+# ES256
+openssl ecparam -name prime256v1 -genkey -noout -out jwt-private-ec.pem
+openssl ec -in jwt-private-ec.pem -pubout -out jwt-public-ec.pem</code></pre>
+        <p>Set <code>JWT_PRIVATE_KEY</code> and <code>JWT_PUBLIC_KEY</code> to the file paths or base64-encoded contents. Asymmetric keys allow verification services to validate tokens using only the public key.</p>
+        <h3 id="auth-guards">Auth Guards</h3>
+        <p>Apply JWT authentication to controllers using <code>#[UseGuards]</code>:</p>
+        <pre><code class="language-php">use Lattice\Auth\JwtAuthenticationGuard;
+use Lattice\Pipeline\Attributes\UseGuards;
+
+#[Controller(&#x27;/api/orders&#x27;)]
+#[UseGuards(guards: [JwtAuthenticationGuard::class])]
+final class OrderController { ... }</code></pre>
+        <h3 id="multiple-guard-types">Multiple Guard Types</h3>
+        <p>LatticePHP supports three guard drivers out of the box:</p>
+        <pre><code class="language-php">&#x27;guards&#x27; =&gt; [
+    &#x27;jwt&#x27; =&gt; [&#x27;driver&#x27; =&gt; &#x27;jwt&#x27;, &#x27;provider&#x27; =&gt; &#x27;users&#x27;],
+    &#x27;pat&#x27; =&gt; [&#x27;driver&#x27; =&gt; &#x27;pat&#x27;, &#x27;provider&#x27; =&gt; &#x27;users&#x27;],    // Personal Access Tokens
+    &#x27;api-key&#x27; =&gt; [&#x27;driver&#x27; =&gt; &#x27;api-key&#x27;],                     // API Key auth
+],</code></pre>
+        <hr>
+        <h2 id="authorization">Authorization</h2>
+        <h3 id="attribute-based-access-control">Attribute-Based Access Control</h3>
+        <p>Use <code>#[Authorize]</code>, <code>#[Roles]</code>, and <code>#[Scopes]</code> on controllers or individual methods:</p>
+        <pre><code class="language-php">use Lattice\Auth\Attributes\Authorize;
+use Lattice\Auth\Attributes\Roles;
+use Lattice\Auth\Attributes\Scopes;
+
+#[Controller(&#x27;/api/admin&#x27;)]
+#[Authorize]
+#[Roles(roles: [&#x27;admin&#x27;, &#x27;super-admin&#x27;])]
+final class AdminController
+{
+    #[Get(&#x27;/reports&#x27;)]
+    #[Scopes(scopes: [&#x27;reports:read&#x27;])]
+    public function reports(): Response { ... }
+
+    #[Delete(&#x27;/users/:id&#x27;)]
+    #[Roles(roles: [&#x27;super-admin&#x27;])]
+    public function deleteUser(#[Param] int $id): Response { ... }
+}</code></pre>
+        <ul>
+        <li><code>#[Authorize]</code> -- requires any authenticated user</li>
+        <li><code>#[Roles(roles: [&#x27;admin&#x27;])]</code> -- requires the user to have one of the listed roles</li>
+        <li><code>#[Scopes(scopes: [&#x27;read:orders&#x27;])]</code> -- requires the token to have the listed scopes</li>
+        </ul>
+        <p>All three can be applied at the class level (applies to all methods) or method level (overrides class-level).</p>
+        <h3 id="policies">Policies</h3>
+        <p>For resource-level authorization, use <code>#[Policy]</code> and <code>#[Can]</code>:</p>
+        <pre><code class="language-php">use Lattice\Auth\Attributes\Policy;
+use Lattice\Auth\Attributes\Can;
+use Lattice\Auth\Principal;
+
+#[Policy(model: Order::class)]
+final class OrderPolicy
+{
+    public function view(Principal $user, Order $order): bool
+    {
+        return (int) $user-&gt;getId() === $order-&gt;user_id;
+    }
+
+    public function delete(Principal $user, Order $order): bool
+    {
+        return $user-&gt;hasRole(&#x27;admin&#x27;);
+    }
+}
+
+// On controller method:
+#[Get(&#x27;/:id&#x27;)]
+#[Can(&#x27;view&#x27;, Order::class)]
+public function show(#[Param] int $id): Response { ... }</code></pre>
+        <hr>
+        <h2 id="password-hashing">Password Hashing</h2>
+        <p>LatticePHP supports bcrypt and argon2id via <code>HashManager</code>:</p>
+        <pre><code class="language-php">use Lattice\Auth\Facades\Hash;
+
+// Hash a password
+$hash = Hash::make(&#x27;user-password&#x27;);
+
+// Verify
+$valid = Hash::check(&#x27;user-password&#x27;, $hash);</code></pre>
+        <p>Configuration in <code>config/auth.php</code>:</p>
+        <pre><code class="language-php">&#x27;hashing&#x27; =&gt; [
+    &#x27;driver&#x27; =&gt; env(&#x27;HASH_DRIVER&#x27;, &#x27;bcrypt&#x27;),
+    &#x27;bcrypt&#x27; =&gt; [
+        &#x27;rounds&#x27; =&gt; (int) env(&#x27;BCRYPT_ROUNDS&#x27;, 12),
+    ],
+    &#x27;argon2id&#x27; =&gt; [
+        &#x27;memory&#x27; =&gt; 65536,
+        &#x27;time&#x27; =&gt; 4,
+        &#x27;threads&#x27; =&gt; 1,
+    ],
+],</code></pre>
+        <p>The underlying implementations are <code>BcryptHasher</code> and <code>ArgonHasher</code> from <code>Lattice\Auth\Hashing</code>.</p>
+        <hr>
+        <h2 id="encryption">Encryption</h2>
+        <p>The <code>Encrypter</code> class (<code>Lattice\Auth\Encryption\Encrypter</code>) provides AES-256-GCM authenticated encryption.</p>
+        <pre><code class="language-php">use Lattice\Auth\Encryption\Encrypter;
+
+// Generate a key
+$key = Encrypter::generateKey(&#x27;aes-256-gcm&#x27;); // Returns hex string
+
+$encrypter = new Encrypter($key, &#x27;aes-256-gcm&#x27;);
+
+// Encrypt (serializes by default)
+$encrypted = $encrypter-&gt;encrypt([&#x27;sensitive&#x27; =&gt; &#x27;data&#x27;]);
+
+// Decrypt
+$data = $encrypter-&gt;decrypt($encrypted); // [&#x27;sensitive&#x27; =&gt; &#x27;data&#x27;]
+
+// Encrypt without serialization (raw string)
+$token = $encrypter-&gt;encrypt(&#x27;raw-value&#x27;, serialize: false);
+$raw = $encrypter-&gt;decrypt($token, unserialize: false);</code></pre>
+        <p>GCM mode provides both confidentiality and integrity -- tampered payloads are detected and rejected with an <code>EncryptionException</code>.</p>
+        <hr>
+        <h2 id="cors-configuration">CORS Configuration</h2>
+        <p>In <code>config/cors.php</code>:</p>
+        <pre><code class="language-php">return [
+    &#x27;allowed_origins&#x27; =&gt; explode(&#x27;,&#x27;, env(&#x27;CORS_ALLOWED_ORIGINS&#x27;, &#x27;*&#x27;)),
+    &#x27;allowed_methods&#x27; =&gt; [&#x27;GET&#x27;, &#x27;POST&#x27;, &#x27;PUT&#x27;, &#x27;PATCH&#x27;, &#x27;DELETE&#x27;, &#x27;OPTIONS&#x27;],
+    &#x27;allowed_headers&#x27; =&gt; [
+        &#x27;Content-Type&#x27;, &#x27;Authorization&#x27;, &#x27;X-Requested-With&#x27;,
+        &#x27;X-Workspace-Id&#x27;, &#x27;X-Tenant-Id&#x27;, &#x27;Accept&#x27;, &#x27;Origin&#x27;,
+    ],
+    &#x27;exposed_headers&#x27; =&gt; [
+        &#x27;X-RateLimit-Limit&#x27;, &#x27;X-RateLimit-Remaining&#x27;,
+        &#x27;X-RateLimit-Reset&#x27;, &#x27;X-Request-Id&#x27;,
+    ],
+    &#x27;max_age&#x27; =&gt; (int) env(&#x27;CORS_MAX_AGE&#x27;, 86400),
+    &#x27;supports_credentials&#x27; =&gt; (bool) env(&#x27;CORS_CREDENTIALS&#x27;, false),
+];</code></pre>
+        <p>For production, replace <code>&#x27;*&#x27;</code> with specific origins: <code>CORS_ALLOWED_ORIGINS=https://app.example.com,https://admin.example.com</code>.</p>
+        <hr>
+        <h2 id="rate-limiting">Rate Limiting</h2>
+        <p>Apply rate limits at the controller or method level using <code>#[RateLimit]</code>:</p>
+        <pre><code class="language-php">use Lattice\RateLimit\Attributes\RateLimit;
+
+#[Controller(&#x27;/api/auth&#x27;)]
+#[RateLimit(maxAttempts: 10, decaySeconds: 60)]
+final class AuthController
+{
+    #[Post(&#x27;/login&#x27;)]
+    #[RateLimit(maxAttempts: 5, decaySeconds: 300, key: &#x27;login&#x27;)]
+    public function login(#[Body] LoginDto $dto): Response { ... }
+}</code></pre>
+        <ul>
+        <li><code>maxAttempts</code> -- maximum requests allowed in the window (default: 60)</li>
+        <li><code>decaySeconds</code> -- window duration in seconds (default: 60)</li>
+        <li><code>key</code> -- custom rate limit key (defaults to IP + route)</li>
+        </ul>
+        <p>The <code>RateLimitGuard</code> enforces limits and returns <code>429 Too Many Requests</code> with headers: <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>, <code>X-RateLimit-Reset</code>.</p>
+        <hr>
+        <h2 id="input-validation-via-dtos">Input Validation via DTOs</h2>
+        <p>All user input is validated through typed DTOs with validation attributes. This prevents injection at the framework level.</p>
+        <pre><code class="language-php">final readonly class CreateUserDto
+{
+    public function __construct(
+        #[Required]
+        #[Email]
+        #[Unique(table: &#x27;users&#x27;, column: &#x27;email&#x27;)]
+        public string $email,
+
+        #[Required]
+        #[StringType(minLength: 8)]
+        public string $password,
+    ) {}
+}</code></pre>
+        <p>DTOs are validated before the controller method runs. Invalid input returns 422 with structured errors. This eliminates an entire class of vulnerabilities by ensuring only valid, typed data reaches business logic.</p>
+        <hr>
+        <h2 id="sql-injection-prevention">SQL Injection Prevention</h2>
+        <p>LatticePHP uses Illuminate's Eloquent ORM and Query Builder, which parameterize all queries by default. Raw queries should use bindings:</p>
+        <pre><code class="language-php">// Safe: parameterized by Eloquent
+$users = User::where(&#x27;email&#x27;, $email)-&gt;get();
+
+// Safe: parameterized binding
+$results = DB::select(&#x27;SELECT * FROM orders WHERE user_id = ?&#x27;, [$userId]);
+
+// NEVER do this:
+// DB::select(&quot;SELECT * FROM orders WHERE user_id = {$userId}&quot;);</code></pre>
+        <hr>
+        <h2 id="workspace-tenant-isolation">Workspace / Tenant Isolation</h2>
+        <p>LatticePHP provides built-in multi-tenancy through workspaces and tenants.</p>
+        <h3 id="workspace-guard">Workspace Guard</h3>
+        <pre><code class="language-php">use Lattice\Auth\Workspace\WorkspaceGuard;
+
+#[Controller(&#x27;/api/contacts&#x27;)]
+#[UseGuards(guards: [JwtAuthenticationGuard::class, WorkspaceGuard::class])]
+final class ContactController { ... }</code></pre>
+        <p>The <code>WorkspaceGuard</code> extracts the workspace from the <code>X-Workspace-Id</code> header and validates the user's membership. Models using the <code>BelongsToWorkspace</code> trait are automatically scoped.</p>
+        <h3 id="tenant-guard">Tenant Guard</h3>
+        <p>For full data isolation between tenants:</p>
+        <pre><code class="language-php">use Lattice\Auth\Tenancy\TenantGuard;
+
+#[Controller(&#x27;/api/data&#x27;)]
+#[UseGuards(guards: [JwtAuthenticationGuard::class, TenantGuard::class])]
+final class DataController { ... }</code></pre>
+        <p><code>TenantContext</code> and <code>WorkspaceContext</code> provide the current tenant/workspace ID throughout the request lifecycle.</p>
+        <hr>
+        <h2 id="security-checklist">Security Checklist</h2>
+        <ol>
+        <li>Use asymmetric JWT keys (RS256/ES256) in production</li>
+        <li>Set <code>CORS_ALLOWED_ORIGINS</code> to specific domains, never <code>*</code> in production</li>
+        <li>Enable rate limiting on authentication endpoints</li>
+        <li>Use argon2id for password hashing in high-security environments</li>
+        <li>Rotate encryption keys periodically; <code>Encrypter::generateKey()</code> creates new ones</li>
+        <li>Always use DTOs for input validation -- never trust raw request data</li>
+        <li>Apply <code>#[Authorize]</code> to every controller that requires authentication</li>
+        <li>Use workspace/tenant guards for multi-tenant data isolation</li>
+        <li>Store secrets in environment variables, never in config files or source code</li>
+        <li>Run <code>php lattice compile</code> in production to lock down the compiled manifest</li>
+        </ol>
+    </main>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

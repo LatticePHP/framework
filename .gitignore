@@ -1,0 +1,44 @@
+# Dependencies
+/vendor/
+**/vendor/
+composer.lock
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.phpstorm.meta.php
+_ide_helper.php
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# PHP tools
+.php-cs-fixer.cache
+.phpunit.result.cache
+.phpunit.cache/
+.phpunit.coverage/
+phpstan-baseline.neon
+coverage/
+
+# Build artifacts
+/build/
+/dist/
+
+# Logs
+*.log
+
+# Runtime
+.php_cs.cache
+HANDOFF.md

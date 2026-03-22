@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migration from Laravel — LatticePHP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <style>
+        :root { --bg: #0a0a0f; --bg-card: #12121a; --border: #1e1e2e; --text: #e4e4ef; --text-dim: #9494a8; --accent: #4ade80; --sidebar-w: 260px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.8; }
+        code,pre { font-family:'JetBrains Mono',monospace; }
+
+        /* Sidebar */
+        .sidebar { position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); background:#08080c; border-right:1px solid var(--border); padding:20px 0; overflow-y:auto; z-index:10; }
+        .sidebar-brand { padding:0 20px 16px; font-weight:700; color:var(--accent); font-size:1rem; }
+        .sidebar-brand a { color:var(--accent); text-decoration:none; }
+        .sidebar-section { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:#64748b; padding:12px 20px 4px; font-weight:600; }
+        .sidebar a { display:block; padding:5px 20px; font-size:0.8rem; color:var(--text-dim); text-decoration:none; }
+        .sidebar a:hover { color:var(--text); background:#111118; }
+        .sidebar a.active { color:var(--accent); background:rgba(74,222,128,0.05); border-right:2px solid var(--accent); }
+
+        /* Content */
+        .content { margin-left:var(--sidebar-w); padding:40px 60px; max-width:900px; }
+        .content h1 { font-size:2rem; margin:0 0 8px; color:var(--accent); }
+        .content h2 { font-size:1.5rem; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+        .content h3 { font-size:1.2rem; margin:24px 0 8px; }
+        .content h4 { font-size:1rem; margin:20px 0 6px; }
+        .content p { margin:8px 0; }
+        .content ul,.content ol { margin:8px 0 8px 24px; }
+        .content li { margin:4px 0; }
+        .content a { color:var(--accent); }
+        .content code { background:#1a1a2e; padding:2px 6px; border-radius:4px; font-size:0.85em; }
+        .content pre { background:#0d1117; border:1px solid var(--border); border-radius:8px; padding:16px; margin:12px 0; overflow-x:auto; }
+        .content pre code { background:none; padding:0; font-size:0.85rem; }
+        .content table { width:100%; border-collapse:collapse; margin:16px 0; }
+        .content th,.content td { padding:8px 12px; border:1px solid var(--border); text-align:left; font-size:0.9rem; }
+        .content th { background:var(--bg-card); font-weight:600; }
+        .content blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0; color:var(--text-dim); background:var(--bg-card); border-radius:0 6px 6px 0; }
+        .content hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+        .content img { max-width:100%; }
+        .content input[type="checkbox"] { margin-right:6px; }
+
+        .back-link { display:inline-block; margin-bottom:20px; color:var(--accent); font-size:0.85rem; text-decoration:none; }
+        .back-link:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .sidebar { display:none; }
+            .content { margin-left:0; padding:20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><a href="../index.html">&#x2B21; LatticePHP</a></div>
+        <div class="sidebar-section">Getting Started</div>
+        <a href="getting-started.html">Getting Started</a>
+        <a href="why-latticephp.html">Why LatticePHP</a>
+        <div class="sidebar-section">Core</div>
+        <a href="architecture.html">Architecture</a>
+        <a href="modules.html">Modules</a>
+        <a href="pipeline.html">Pipeline</a>
+        <div class="sidebar-section">HTTP & Data</div>
+        <a href="http-api.html">HTTP &amp; API</a>
+        <a href="database.html">Database</a>
+        <div class="sidebar-section">Auth & Security</div>
+        <a href="auth.html">Authentication</a>
+        <a href="security.html">Security</a>
+        <div class="sidebar-section">Advanced</div>
+        <a href="workflows.html">Workflows</a>
+        <a href="microservices.html">Microservices</a>
+        <a href="observability.html">Observability</a>
+        <div class="sidebar-section">Testing & DX</div>
+        <a href="testing.html">Testing</a>
+        <a href="runtime.html">Runtime</a>
+        <a href="package-authoring.html">Package Authoring</a>
+        <div class="sidebar-section">Migration</div>
+        <a href="migration-from-laravel.html" class="active">Migration from Laravel</a>
+    </nav>
+    <main class="content">
+        <a href="../index.html" class="back-link">&larr; Back to Home</a>
+        <h1 id="migration-from-laravel-to-latticephp">Migration from Laravel to LatticePHP</h1>
+        <h2 id="overview">Overview</h2>
+        <p>LatticePHP uses Illuminate components under the hood, so many concepts will feel familiar. But the programming model is different: modules instead of service providers, guards instead of middleware, DTOs instead of form requests, and attribute-based routing instead of route files. This guide provides a complete, mechanical process for converting a Laravel app to LatticePHP.</p>
+        <p><strong>Key principle:</strong> LatticePHP is backend-only. No Blade, no frontend tooling, no SSR.</p>
+        <hr>
+        <h2 id="1-concept-mapping-table">1. Concept Mapping Table</h2>
+        <table>
+        <thead><tr>
+        <th>Laravel Concept</th>
+        <th>LatticePHP Equivalent</th>
+        <th>Migration Effort</th>
+        <th>Notes</th>
+        </tr></thead><tbody>
+        <tr>
+        <td>Service Provider</td>
+        <td><code>#[Module]</code> class</td>
+        <td>Medium</td>
+        <td>Modules declare imports, providers, controllers, exports</td>
+        </tr>
+        <tr>
+        <td><code>routes/api.php</code> / <code>routes/web.php</code></td>
+        <td><code>#[Controller]</code> + <code>#[Get]</code>/<code>#[Post]</code>/<code>#[Put]</code>/<code>#[Delete]</code></td>
+        <td>Medium</td>
+        <td>Routes declared on controller methods via attributes</td>
+        </tr>
+        <tr>
+        <td>Middleware</td>
+        <td>Guard (<code>#[UseGuards]</code>) / Interceptor / Pipe</td>
+        <td>Medium</td>
+        <td>Guards for auth, interceptors for before/after logic</td>
+        </tr>
+        <tr>
+        <td>Form Request</td>
+        <td>DTO with validation attributes</td>
+        <td>Medium</td>
+        <td><code>readonly class</code> with <code>#[Required]</code>, <code>#[Email]</code>, etc.</td>
+        </tr>
+        <tr>
+        <td>Eloquent Model</td>
+        <td>Eloquent Model</td>
+        <td><strong>None</strong></td>
+        <td>Same <code>illuminate/database</code>, same relationships, same scopes</td>
+        </tr>
+        <tr>
+        <td>Migration</td>
+        <td>Migration</td>
+        <td><strong>None</strong></td>
+        <td>Same <code>Blueprint</code> API via <code>illuminate/database</code></td>
+        </tr>
+        <tr>
+        <td>Factory</td>
+        <td>Factory</td>
+        <td><strong>None</strong></td>
+        <td>Same factory pattern, extends <code>Lattice\Database\Factory</code></td>
+        </tr>
+        <tr>
+        <td>Seeder</td>
+        <td>Seeder</td>
+        <td><strong>None</strong></td>
+        <td>Same concept</td>
+        </tr>
+        <tr>
+        <td>Controller</td>
+        <td>Controller (<code>#[Controller]</code>)</td>
+        <td>Low</td>
+        <td>Thin controllers, inject services</td>
+        </tr>
+        <tr>
+        <td>Resource (API Resource)</td>
+        <td>Resource class</td>
+        <td>Low</td>
+        <td>Same <code>toArray()</code> pattern</td>
+        </tr>
+        <tr>
+        <td>Policy</td>
+        <td><code>#[Policy]</code> + <code>#[Can]</code></td>
+        <td>Low</td>
+        <td>Attribute-registered instead of <code>AuthServiceProvider</code></td>
+        </tr>
+        <tr>
+        <td>Event</td>
+        <td>Event class</td>
+        <td><strong>None</strong></td>
+        <td>Same <code>illuminate/events</code> underneath</td>
+        </tr>
+        <tr>
+        <td>Listener</td>
+        <td><code>#[Listener]</code></td>
+        <td>Low</td>
+        <td>Registered via attribute instead of <code>EventServiceProvider</code></td>
+        </tr>
+        <tr>
+        <td>Job (ShouldQueue)</td>
+        <td>Job class + <code>$queue-&gt;dispatch()</code></td>
+        <td>Low</td>
+        <td>Same queue mechanics, different dispatch API</td>
+        </tr>
+        <tr>
+        <td>Notification</td>
+        <td>Activity / custom service</td>
+        <td>Medium</td>
+        <td>No built-in notification channels</td>
+        </tr>
+        <tr>
+        <td>Facade</td>
+        <td>Constructor injection</td>
+        <td>Medium</td>
+        <td>No facades; all dependencies injected explicitly</td>
+        </tr>
+        <tr>
+        <td>Config (<code>config/*.php</code>)</td>
+        <td>Config (<code>config/*.php</code>)</td>
+        <td><strong>None</strong></td>
+        <td>Same file format, same <code>config()</code> helper</td>
+        </tr>
+        <tr>
+        <td><code>.env</code></td>
+        <td><code>.env</code></td>
+        <td><strong>None</strong></td>
+        <td>Same <code>env()</code> helper, same <code>.env</code> files</td>
+        </tr>
+        <tr>
+        <td><code>app()</code> helper</td>
+        <td>Constructor injection</td>
+        <td>Medium</td>
+        <td>No global <code>app()</code> — inject what you need</td>
+        </tr>
+        <tr>
+        <td>Route Model Binding</td>
+        <td><code>#[Param]</code> + service lookup</td>
+        <td>Low</td>
+        <td>Explicit instead of implicit</td>
+        </tr>
+        <tr>
+        <td>Artisan Command</td>
+        <td>CLI Command</td>
+        <td>Low</td>
+        <td><code>php lattice &lt;cmd&gt;</code> instead of <code>php artisan &lt;cmd&gt;</code></td>
+        </tr>
+        <tr>
+        <td>Blade / View</td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>LatticePHP is backend-only</td>
+        </tr>
+        <tr>
+        <td>Scheduler</td>
+        <td><code>#[Schedule]</code> attribute</td>
+        <td>Low</td>
+        <td>Same cron expressions</td>
+        </tr>
+        </tbody></table>
+        <hr>
+        <h2 id="2-step-by-step-conversion-process">2. Step-by-Step Conversion Process</h2>
+        <h3 id="phase-1-project-setup">Phase 1: Project Setup</h3>
+        <pre><code class="language-bash"># Create a new LatticePHP project
+composer create-project lattice/starter-api my-app
+
+# Copy these files directly (they work as-is):
+cp laravel-app/.env            my-app/.env
+cp laravel-app/config/*.php    my-app/config/
+cp laravel-app/database/migrations/*.php  my-app/database/migrations/
+cp laravel-app/database/factories/*.php   my-app/database/factories/
+cp laravel-app/database/seeders/*.php     my-app/database/seeders/</code></pre>
+        <h3 id="phase-2-plan-module-boundaries">Phase 2: Plan Module Boundaries</h3>
+        <p>Map each Laravel "domain" to a LatticePHP module:</p>
+        <pre><code>app/
+  Http/Controllers/UserController.php        -&gt; app/Modules/Users/UserController.php
+  Http/Controllers/OrderController.php       -&gt; app/Modules/Orders/OrderController.php
+  Http/Requests/CreateUserRequest.php        -&gt; app/Modules/Users/Dto/CreateUserDto.php
+  Http/Resources/UserResource.php            -&gt; app/Modules/Users/UserResource.php
+  Services/UserService.php                   -&gt; app/Modules/Users/UserService.php
+  Models/User.php                            -&gt; app/Models/User.php (unchanged)
+  Providers/AppServiceProvider.php           -&gt; app/AppModule.php
+  Providers/AuthServiceProvider.php          -&gt; app/Modules/Auth/AuthModule.php
+  Providers/EventServiceProvider.php         -&gt; (listeners registered via attributes)</code></pre>
+        <h3 id="phase-3-create-modules-replace-service-providers">Phase 3: Create Modules (Replace Service Providers)</h3>
+        <h3 id="phase-4-convert-routes-to-attributes">Phase 4: Convert Routes to Attributes</h3>
+        <h3 id="phase-5-convert-middleware-to-guards-interceptors">Phase 5: Convert Middleware to Guards/Interceptors</h3>
+        <h3 id="phase-6-convert-form-requests-to-dtos">Phase 6: Convert Form Requests to DTOs</h3>
+        <h3 id="phase-7-convert-events-listeners">Phase 7: Convert Events/Listeners</h3>
+        <h3 id="phase-8-convert-jobs">Phase 8: Convert Jobs</h3>
+        <h3 id="phase-9-verify-and-test">Phase 9: Verify and Test</h3>
+        <hr>
+        <h2 id="3-before-after-code-examples">3. Before/After Code Examples</h2>
+        <h3 id="3-1-routes-routes-api-php-to-controller-attributes">3.1 Routes: <code>routes/api.php</code> to Controller Attributes</h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">// routes/api.php
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
+
+Route::middleware(&#x27;auth:api&#x27;)-&gt;group(function () {
+    Route::get(&#x27;/users&#x27;, [UserController::class, &#x27;index&#x27;]);
+    Route::post(&#x27;/users&#x27;, [UserController::class, &#x27;store&#x27;]);
+    Route::get(&#x27;/users/{id}&#x27;, [UserController::class, &#x27;show&#x27;]);
+    Route::put(&#x27;/users/{id}&#x27;, [UserController::class, &#x27;update&#x27;]);
+    Route::delete(&#x27;/users/{id}&#x27;, [UserController::class, &#x27;destroy&#x27;]);
+
+    Route::get(&#x27;/users/{id}/orders&#x27;, [OrderController::class, &#x27;forUser&#x27;]);
+    Route::post(&#x27;/orders&#x27;, [OrderController::class, &#x27;store&#x27;]);
+});</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Modules\Users;
+
+use Lattice\Auth\JwtAuthenticationGuard;
+use Lattice\Http\Request;
+use Lattice\Http\Response;
+use Lattice\Http\ResponseFactory;
+use Lattice\Pipeline\Attributes\UseGuards;
+use Lattice\Routing\Attributes\Body;
+use Lattice\Routing\Attributes\Controller;
+use Lattice\Routing\Attributes\Delete;
+use Lattice\Routing\Attributes\Get;
+use Lattice\Routing\Attributes\Param;
+use Lattice\Routing\Attributes\Post;
+use Lattice\Routing\Attributes\Put;
+
+#[Controller(&#x27;/api/users&#x27;)]
+#[UseGuards(guards: [JwtAuthenticationGuard::class])]
+final class UserController
+{
+    public function __construct(
+        private readonly UserService $service,
+    ) {}
+
+    #[Get(&#x27;/&#x27;)]
+    public function index(Request $request): Response
+    {
+        $users = $this-&gt;service-&gt;list($request-&gt;query);
+        return ResponseFactory::paginated($users, UserResource::class);
+    }
+
+    #[Post(&#x27;/&#x27;)]
+    public function store(#[Body] CreateUserDto $dto): Response
+    {
+        $user = $this-&gt;service-&gt;create($dto);
+        return ResponseFactory::created([&#x27;data&#x27; =&gt; UserResource::make($user)-&gt;toArray()]);
+    }
+
+    #[Get(&#x27;/:id&#x27;)]
+    public function show(#[Param] int $id): Response
+    {
+        $user = $this-&gt;service-&gt;findOrFail($id);
+        return ResponseFactory::json([&#x27;data&#x27; =&gt; UserResource::make($user)-&gt;toArray()]);
+    }
+
+    #[Put(&#x27;/:id&#x27;)]
+    public function update(#[Param] int $id, #[Body] UpdateUserDto $dto): Response
+    {
+        $user = $this-&gt;service-&gt;update($id, $dto);
+        return ResponseFactory::json([&#x27;data&#x27; =&gt; UserResource::make($user)-&gt;toArray()]);
+    }
+
+    #[Delete(&#x27;/:id&#x27;)]
+    public function destroy(#[Param] int $id): Response
+    {
+        $this-&gt;service-&gt;delete($id);
+        return ResponseFactory::noContent();
+    }
+}</code></pre>
+        <p><strong>Key differences:</strong></p>
+        <ul>
+        <li>No <code>routes/api.php</code> file at all</li>
+        <li>Route verb + path declared as attributes on each method</li>
+        <li><code>{id}</code> becomes <code>/:id</code> with <code>#[Param]</code></li>
+        <li>Middleware <code>auth:api</code> becomes <code>#[UseGuards]</code></li>
+        <li>Controller must be registered in a module</li>
+        </ul>
+        <hr>
+        <h3 id="3-2-middleware-to-useguards">3.2 Middleware to <code>#[UseGuards]</code></h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">// app/Http/Middleware/EnsureUserIsAdmin.php
+class EnsureUserIsAdmin
+{
+    public function handle(Request $request, Closure $next): Response
+    {
+        if (! $request-&gt;user()?-&gt;isAdmin()) {
+            abort(403, &#x27;Admin access required.&#x27;);
+        }
+        return $next($request);
+    }
+}
+
+// In Kernel.php or route group:
+Route::middleware([&#x27;auth:api&#x27;, &#x27;admin&#x27;])-&gt;group(function () { ... });</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">// app/Guards/AdminGuard.php
+&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Guards;
+
+use Lattice\Pipeline\Guard;
+use Lattice\Pipeline\ExecutionContext;
+
+final class AdminGuard implements Guard
+{
+    public function canActivate(ExecutionContext $context): bool
+    {
+        $user = $context-&gt;getUser();
+        return $user?-&gt;hasRole(&#x27;admin&#x27;) ?? false;
+    }
+}
+
+// On the controller:
+#[Controller(&#x27;/api/admin&#x27;)]
+#[UseGuards(guards: [JwtAuthenticationGuard::class, AdminGuard::class])]
+final class AdminController { ... }</code></pre>
+        <p><strong>For cross-cutting concerns (logging, timing)</strong>, use Interceptors:</p>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">class LogRequests
+{
+    public function handle(Request $request, Closure $next): Response
+    {
+        Log::info(&#x27;Incoming&#x27;, [&#x27;url&#x27; =&gt; $request-&gt;url(), &#x27;method&#x27; =&gt; $request-&gt;method()]);
+        $response = $next($request);
+        Log::info(&#x27;Outgoing&#x27;, [&#x27;status&#x27; =&gt; $response-&gt;status()]);
+        return $response;
+    }
+}</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Interceptors;
+
+use Lattice\Pipeline\Interceptor;
+use Lattice\Pipeline\ExecutionContext;
+use Lattice\Pipeline\CallHandler;
+use Lattice\Observability\Log;
+
+final class LoggingInterceptor implements Interceptor
+{
+    public function intercept(ExecutionContext $context, CallHandler $next): mixed
+    {
+        Log::info(&#x27;Incoming&#x27;, [&#x27;handler&#x27; =&gt; $context-&gt;getHandler()]);
+        $result = $next-&gt;handle();
+        Log::info(&#x27;Handled&#x27;);
+        return $result;
+    }
+}</code></pre>
+        <hr>
+        <h3 id="3-3-form-request-to-dto-with-validation-attributes">3.3 Form Request to DTO with Validation Attributes</h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">// app/Http/Requests/CreateUserRequest.php
+class CreateUserRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            &#x27;name&#x27;     =&gt; [&#x27;required&#x27;, &#x27;string&#x27;, &#x27;max:100&#x27;],
+            &#x27;email&#x27;    =&gt; [&#x27;required&#x27;, &#x27;email&#x27;, &#x27;unique:users&#x27;],
+            &#x27;password&#x27; =&gt; [&#x27;required&#x27;, &#x27;string&#x27;, &#x27;min:8&#x27;],
+            &#x27;role&#x27;     =&gt; [&#x27;sometimes&#x27;, &#x27;in:admin,user,editor&#x27;],
+            &#x27;phone&#x27;    =&gt; [&#x27;nullable&#x27;, &#x27;string&#x27;, &#x27;max:30&#x27;],
+            &#x27;bio&#x27;      =&gt; [&#x27;nullable&#x27;, &#x27;string&#x27;, &#x27;max:500&#x27;],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            &#x27;email.unique&#x27; =&gt; &#x27;This email is already registered.&#x27;,
+        ];
+    }
+}
+
+// In controller:
+public function store(CreateUserRequest $request): JsonResponse
+{
+    $validated = $request-&gt;validated();
+    $user = User::create($validated);
+    return new UserResource($user);
+}</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Modules\Users\Dto;
+
+use Lattice\Validation\Attributes\Email;
+use Lattice\Validation\Attributes\InArray;
+use Lattice\Validation\Attributes\Nullable;
+use Lattice\Validation\Attributes\Required;
+use Lattice\Validation\Attributes\StringType;
+use Lattice\Validation\Attributes\Unique;
+
+final readonly class CreateUserDto
+{
+    public function __construct(
+        #[Required]
+        #[StringType(minLength: 1, maxLength: 100)]
+        public string $name,
+
+        #[Required]
+        #[Email]
+        #[Unique(table: &#x27;users&#x27;, column: &#x27;email&#x27;)]
+        public string $email,
+
+        #[Required]
+        #[StringType(minLength: 8)]
+        public string $password,
+
+        #[InArray(values: [&#x27;admin&#x27;, &#x27;user&#x27;, &#x27;editor&#x27;])]
+        public string $role = &#x27;user&#x27;,
+
+        #[Nullable]
+        #[StringType(maxLength: 30)]
+        public ?string $phone = null,
+
+        #[Nullable]
+        #[StringType(maxLength: 500)]
+        public ?string $bio = null,
+    ) {}
+}
+
+// In controller — DTO is auto-validated and injected:
+#[Post(&#x27;/&#x27;)]
+public function store(#[Body] CreateUserDto $dto): Response
+{
+    $user = $this-&gt;service-&gt;create($dto);
+    return ResponseFactory::created([&#x27;data&#x27; =&gt; UserResource::make($user)-&gt;toArray()]);
+}</code></pre>
+        <p><strong>Key differences:</strong></p>
+        <ul>
+        <li>Validation rules become attributes on constructor parameters</li>
+        <li>The DTO is immutable (<code>readonly class</code>)</li>
+        <li>Auto-validated before the controller method runs</li>
+        <li><code>#[Body]</code> attribute tells the framework to deserialize the request body into the DTO</li>
+        <li>No <code>authorize()</code> method — use <code>#[UseGuards]</code> on the controller instead</li>
+        <li>Invalid input returns 422 with structured error response automatically</li>
+        </ul>
+        <hr>
+        <h3 id="3-4-eloquent-model-minimal-changes">3.4 Eloquent Model (Minimal Changes)</h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class User extends Model
+{
+    use SoftDeletes, HasFactory;
+
+    protected $fillable = [&#x27;name&#x27;, &#x27;email&#x27;, &#x27;password&#x27;, &#x27;role&#x27;];
+    protected $hidden = [&#x27;password&#x27;, &#x27;remember_token&#x27;];
+    protected $casts = [&#x27;email_verified_at&#x27; =&gt; &#x27;datetime&#x27;];
+
+    public function orders()
+    {
+        return $this-&gt;hasMany(Order::class);
+    }
+}</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Lattice\Database\Model;
+
+final class User extends Model
+{
+    use SoftDeletes;
+    use HasFactory;
+
+    protected $fillable = [&#x27;name&#x27;, &#x27;email&#x27;, &#x27;password&#x27;, &#x27;role&#x27;];
+    protected $hidden = [&#x27;password&#x27;, &#x27;remember_token&#x27;];
+    protected $casts = [&#x27;email_verified_at&#x27; =&gt; &#x27;datetime&#x27;];
+
+    public function orders(): HasMany
+    {
+        return $this-&gt;hasMany(Order::class);
+    }
+}</code></pre>
+        <p><strong>What changed:</strong></p>
+        <ul>
+        <li><code>Illuminate\Database\Eloquent\Model</code> becomes <code>Lattice\Database\Model</code> (which extends it)</li>
+        <li>Add <code>declare(strict_types=1)</code> and explicit return types</li>
+        <li>Add <code>final</code> keyword (LatticePHP convention: final by default)</li>
+        <li>Everything else (relationships, scopes, casts, accessors, mutators) works identically</li>
+        </ul>
+        <hr>
+        <h3 id="3-5-controller-thin-controller-with-service-injection">3.5 Controller: Thin Controller with Service Injection</h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">class OrderController extends Controller
+{
+    public function store(CreateOrderRequest $request): JsonResponse
+    {
+        $order = Order::create([
+            &#x27;user_id&#x27; =&gt; $request-&gt;user()-&gt;id,
+            &#x27;product_id&#x27; =&gt; $request-&gt;product_id,
+            &#x27;quantity&#x27; =&gt; $request-&gt;quantity,
+            &#x27;total&#x27; =&gt; $request-&gt;quantity * Product::find($request-&gt;product_id)-&gt;price,
+        ]);
+
+        event(new OrderCreated($order));
+
+        return (new OrderResource($order))
+            -&gt;response()
+            -&gt;setStatusCode(201);
+    }
+}</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Modules\Orders;
+
+use Lattice\Auth\Principal;
+use Lattice\Http\Response;
+use Lattice\Http\ResponseFactory;
+use Lattice\Routing\Attributes\Body;
+use Lattice\Routing\Attributes\Controller;
+use Lattice\Routing\Attributes\CurrentUser;
+use Lattice\Routing\Attributes\Post;
+
+#[Controller(&#x27;/api/orders&#x27;)]
+#[UseGuards(guards: [JwtAuthenticationGuard::class])]
+final class OrderController
+{
+    public function __construct(
+        private readonly OrderService $service,
+    ) {}
+
+    #[Post(&#x27;/&#x27;)]
+    public function store(#[Body] CreateOrderDto $dto, #[CurrentUser] Principal $user): Response
+    {
+        $order = $this-&gt;service-&gt;create($dto, $user);
+        return ResponseFactory::created([&#x27;data&#x27; =&gt; OrderResource::make($order)-&gt;toArray()]);
+    }
+}</code></pre>
+        <p><strong>Key differences:</strong></p>
+        <ul>
+        <li>Business logic lives in the service, not the controller</li>
+        <li><code>$request-&gt;user()</code> becomes <code>#[CurrentUser] Principal $user</code></li>
+        <li>Events are dispatched inside the service layer</li>
+        <li>No <code>extends Controller</code> base class needed</li>
+        </ul>
+        <hr>
+        <h3 id="3-6-event-and-listener">3.6 Event and Listener</h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">// app/Events/OrderCreated.php
+class OrderCreated
+{
+    public function __construct(public Order $order) {}
+}
+
+// app/Listeners/SendOrderConfirmation.php
+class SendOrderConfirmation
+{
+    public function handle(OrderCreated $event): void
+    {
+        Mail::to($event-&gt;order-&gt;user)-&gt;send(new OrderConfirmationMail($event-&gt;order));
+    }
+}
+
+// app/Providers/EventServiceProvider.php
+protected $listen = [
+    OrderCreated::class =&gt; [
+        SendOrderConfirmation::class,
+    ],
+];</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+// app/Modules/Orders/Events/OrderCreated.php
+namespace App\Modules\Orders\Events;
+
+final readonly class OrderCreated
+{
+    public function __construct(
+        public int $orderId,
+        public int $userId,
+        public float $total,
+    ) {}
+}
+
+// app/Modules/Orders/Listeners/SendOrderConfirmation.php
+namespace App\Modules\Orders\Listeners;
+
+use App\Modules\Orders\Events\OrderCreated;
+use Lattice\Events\Attributes\Listener;
+
+#[Listener(event: OrderCreated::class)]
+final class SendOrderConfirmation
+{
+    public function __construct(
+        private readonly MailService $mailer,
+        private readonly OrderRepository $orders,
+    ) {}
+
+    public function handle(OrderCreated $event): void
+    {
+        $order = $this-&gt;orders-&gt;findOrFail($event-&gt;orderId);
+        $this-&gt;mailer-&gt;sendOrderConfirmation($order);
+    }
+}</code></pre>
+        <p><strong>Key differences:</strong></p>
+        <ul>
+        <li>No <code>EventServiceProvider</code> registration. The <code>#[Listener]</code> attribute auto-registers.</li>
+        <li>Events should use primitive/serializable data, not Eloquent models.</li>
+        <li>The listener class is auto-discovered by the compiler.</li>
+        </ul>
+        <hr>
+        <h3 id="3-7-job-queue">3.7 Job / Queue</h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">// app/Jobs/ProcessPayment.php
+class ProcessPayment implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public function __construct(private Order $order) {}
+
+    public function handle(PaymentGateway $gateway): void
+    {
+        $gateway-&gt;charge($this-&gt;order-&gt;total, $this-&gt;order-&gt;user-&gt;stripe_id);
+    }
+}
+
+// Dispatch:
+ProcessPayment::dispatch($order);</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Modules\Payments\Jobs;
+
+use Lattice\Queue\Job;
+
+final class ProcessPaymentJob implements Job
+{
+    public function __construct(
+        private readonly int $orderId,
+        private readonly float $amount,
+        private readonly string $stripeCustomerId,
+    ) {}
+
+    public function handle(PaymentGateway $gateway): void
+    {
+        $gateway-&gt;charge($this-&gt;amount, $this-&gt;stripeCustomerId);
+    }
+}
+
+// Dispatch (inject QueueDispatcher):
+$this-&gt;queue-&gt;dispatch(new ProcessPaymentJob(
+    orderId: $order-&gt;id,
+    amount: $order-&gt;total,
+    stripeCustomerId: $order-&gt;user-&gt;stripe_id,
+));</code></pre>
+        <p><strong>Key differences:</strong></p>
+        <ul>
+        <li>No <code>Dispatchable</code> trait, no static <code>dispatch()</code> method</li>
+        <li>Pass primitive data to the constructor, not Eloquent models (<code>SerializesModels</code> is gone)</li>
+        <li>Dispatch via injected <code>QueueDispatcher</code>, not static method</li>
+        <li>Same queue backends (Redis, SQS, database, etc.)</li>
+        </ul>
+        <hr>
+        <h3 id="3-8-api-resource">3.8 API Resource</h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">class UserResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            &#x27;id&#x27; =&gt; $this-&gt;id,
+            &#x27;name&#x27; =&gt; $this-&gt;name,
+            &#x27;email&#x27; =&gt; $this-&gt;email,
+            &#x27;role&#x27; =&gt; $this-&gt;role,
+            &#x27;created_at&#x27; =&gt; $this-&gt;created_at-&gt;toIso8601String(),
+            &#x27;orders_count&#x27; =&gt; $this-&gt;when($this-&gt;orders_count !== null, $this-&gt;orders_count),
+        ];
+    }
+}</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Modules\Users;
+
+use Lattice\Http\Resource;
+
+final class UserResource extends Resource
+{
+    public function toArray(): array
+    {
+        return [
+            &#x27;id&#x27; =&gt; $this-&gt;model-&gt;id,
+            &#x27;name&#x27; =&gt; $this-&gt;model-&gt;name,
+            &#x27;email&#x27; =&gt; $this-&gt;model-&gt;email,
+            &#x27;role&#x27; =&gt; $this-&gt;model-&gt;role,
+            &#x27;created_at&#x27; =&gt; $this-&gt;model-&gt;created_at?-&gt;toIso8601String(),
+        ];
+    }
+}</code></pre>
+        <p><strong>Key differences:</strong></p>
+        <ul>
+        <li><code>$this-&gt;id</code> becomes <code>$this-&gt;model-&gt;id</code> (explicit model reference)</li>
+        <li><code>toArray()</code> takes no parameters</li>
+        <li><code>Resource::make($model)</code> and <code>Resource::collection($models)</code> work the same way</li>
+        </ul>
+        <hr>
+        <h3 id="3-9-policy">3.9 Policy</h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">// app/Policies/OrderPolicy.php
+class OrderPolicy
+{
+    public function view(User $user, Order $order): bool
+    {
+        return $user-&gt;id === $order-&gt;user_id;
+    }
+
+    public function delete(User $user, Order $order): bool
+    {
+        return $user-&gt;id === $order-&gt;user_id || $user-&gt;isAdmin();
+    }
+}
+
+// Registered in AuthServiceProvider:
+protected $policies = [
+    Order::class =&gt; OrderPolicy::class,
+];
+
+// Used in controller:
+$this-&gt;authorize(&#x27;view&#x27;, $order);</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Modules\Orders;
+
+use App\Models\Order;
+use Lattice\Authorization\Attributes\Policy;
+use Lattice\Auth\Principal;
+
+#[Policy(model: Order::class)]
+final class OrderPolicy
+{
+    public function view(Principal $user, Order $order): bool
+    {
+        return (int) $user-&gt;getId() === $order-&gt;user_id;
+    }
+
+    public function delete(Principal $user, Order $order): bool
+    {
+        return (int) $user-&gt;getId() === $order-&gt;user_id || $user-&gt;hasRole(&#x27;admin&#x27;);
+    }
+}
+
+// Used on controller method:
+#[Get(&#x27;/:id&#x27;)]
+#[Can(&#x27;view&#x27;, Order::class)]
+public function show(#[Param] int $id): Response { ... }</code></pre>
+        <p><strong>Key differences:</strong></p>
+        <ul>
+        <li><code>#[Policy]</code> attribute replaces <code>AuthServiceProvider</code> registration</li>
+        <li><code>#[Can]</code> attribute on controller methods replaces <code>$this-&gt;authorize()</code></li>
+        <li><code>User</code> becomes <code>Principal</code> (the authenticated identity abstraction)</li>
+        </ul>
+        <hr>
+        <h3 id="3-10-factory-same">3.10 Factory (Same)</h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">class UserFactory extends Factory
+{
+    protected $model = User::class;
+
+    public function definition(): array
+    {
+        return [
+            &#x27;name&#x27; =&gt; fake()-&gt;name(),
+            &#x27;email&#x27; =&gt; fake()-&gt;unique()-&gt;safeEmail(),
+            &#x27;password&#x27; =&gt; bcrypt(&#x27;password&#x27;),
+            &#x27;role&#x27; =&gt; &#x27;user&#x27;,
+        ];
+    }
+}</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Database\Factories;
+
+use App\Models\User;
+use Lattice\Database\Factory;
+
+final class UserFactory extends Factory
+{
+    protected $model = User::class;
+
+    public function definition(): array
+    {
+        return [
+            &#x27;name&#x27; =&gt; fake()-&gt;name(),
+            &#x27;email&#x27; =&gt; fake()-&gt;unique()-&gt;safeEmail(),
+            &#x27;password&#x27; =&gt; &#x27;password&#x27;, // Model mutator handles hashing
+            &#x27;role&#x27; =&gt; &#x27;user&#x27;,
+        ];
+    }
+}</code></pre>
+        <p><strong>What changed:</strong> Only the base class import. Everything else is identical.</p>
+        <hr>
+        <h3 id="3-11-migration-same">3.11 Migration (Same)</h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">return new class extends Migration {
+    public function up(): void
+    {
+        Schema::create(&#x27;orders&#x27;, function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;foreignId(&#x27;user_id&#x27;)-&gt;constrained()-&gt;cascadeOnDelete();
+            $table-&gt;decimal(&#x27;total&#x27;, 10, 2);
+            $table-&gt;string(&#x27;status&#x27;)-&gt;default(&#x27;pending&#x27;);
+            $table-&gt;timestamps();
+            $table-&gt;softDeletes();
+        });
+    }
+};</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Schema\Blueprint;
+
+return new class {
+    public function up(): void
+    {
+        Capsule::schema()-&gt;create(&#x27;orders&#x27;, function (Blueprint $table): void {
+            $table-&gt;id();
+            $table-&gt;foreignId(&#x27;user_id&#x27;)-&gt;constrained()-&gt;cascadeOnDelete();
+            $table-&gt;decimal(&#x27;total&#x27;, 10, 2);
+            $table-&gt;string(&#x27;status&#x27;)-&gt;default(&#x27;pending&#x27;);
+            $table-&gt;timestamps();
+            $table-&gt;softDeletes();
+        });
+    }
+
+    public function down(): void
+    {
+        Capsule::schema()-&gt;dropIfExists(&#x27;orders&#x27;);
+    }
+};</code></pre>
+        <p><strong>What changed:</strong> <code>Schema::</code> becomes <code>Capsule::schema()-&gt;</code>. The <code>Blueprint</code> API is identical.</p>
+        <hr>
+        <h3 id="3-12-service-provider-to-module">3.12 Service Provider to Module</h3>
+        <p><strong>Laravel:</strong></p>
+        <pre><code class="language-php">// app/Providers/AppServiceProvider.php
+class AppServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        $this-&gt;app-&gt;singleton(PaymentGateway::class, StripeGateway::class);
+        $this-&gt;app-&gt;singleton(MailService::class, SmtpMailService::class);
+    }
+
+    public function boot(): void
+    {
+        // Register observers, macros, etc.
+    }
+}</code></pre>
+        <p><strong>LatticePHP:</strong></p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App;
+
+use App\Modules\Auth\AuthModule;
+use App\Modules\Orders\OrdersModule;
+use App\Modules\Payments\PaymentsModule;
+use App\Modules\Users\UsersModule;
+use Lattice\Module\Attribute\Module;
+
+#[Module(
+    imports: [
+        AuthModule::class,
+        UsersModule::class,
+        OrdersModule::class,
+        PaymentsModule::class,
+    ],
+)]
+final class AppModule {}</code></pre>
+        <p>Each domain gets its own module:</p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Modules\Payments;
+
+use Lattice\Module\Attribute\Module;
+
+#[Module(
+    providers: [
+        [&#x27;provide&#x27; =&gt; PaymentGateway::class, &#x27;useClass&#x27; =&gt; StripeGateway::class],
+    ],
+    controllers: [
+        PaymentController::class,
+    ],
+    exports: [
+        PaymentGateway::class,
+    ],
+)]
+final class PaymentsModule {}</code></pre>
+        <hr>
+        <h3 id="3-13-config-and-env-same">3.13 Config and <code>.env</code> (Same)</h3>
+        <p>**Laravel <code>config/database.php</code>:**</p>
+        <pre><code class="language-php">return [
+    &#x27;default&#x27; =&gt; env(&#x27;DB_CONNECTION&#x27;, &#x27;mysql&#x27;),
+    &#x27;connections&#x27; =&gt; [
+        &#x27;mysql&#x27; =&gt; [
+            &#x27;driver&#x27; =&gt; &#x27;mysql&#x27;,
+            &#x27;host&#x27; =&gt; env(&#x27;DB_HOST&#x27;, &#x27;127.0.0.1&#x27;),
+            &#x27;port&#x27; =&gt; env(&#x27;DB_PORT&#x27;, &#x27;3306&#x27;),
+            &#x27;database&#x27; =&gt; env(&#x27;DB_DATABASE&#x27;, &#x27;forge&#x27;),
+            &#x27;username&#x27; =&gt; env(&#x27;DB_USERNAME&#x27;, &#x27;forge&#x27;),
+            &#x27;password&#x27; =&gt; env(&#x27;DB_PASSWORD&#x27;, &#x27;&#x27;),
+        ],
+    ],
+];</code></pre>
+        <p>**LatticePHP <code>config/database.php</code>:**</p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+return [
+    &#x27;default&#x27; =&gt; env(&#x27;DB_CONNECTION&#x27;, &#x27;mysql&#x27;),
+    &#x27;connections&#x27; =&gt; [
+        &#x27;mysql&#x27; =&gt; [
+            &#x27;driver&#x27; =&gt; &#x27;mysql&#x27;,
+            &#x27;host&#x27; =&gt; env(&#x27;DB_HOST&#x27;, &#x27;127.0.0.1&#x27;),
+            &#x27;port&#x27; =&gt; env(&#x27;DB_PORT&#x27;, &#x27;3306&#x27;),
+            &#x27;database&#x27; =&gt; env(&#x27;DB_DATABASE&#x27;, &#x27;forge&#x27;),
+            &#x27;username&#x27; =&gt; env(&#x27;DB_USERNAME&#x27;, &#x27;forge&#x27;),
+            &#x27;password&#x27; =&gt; env(&#x27;DB_PASSWORD&#x27;, &#x27;&#x27;),
+        ],
+    ],
+];</code></pre>
+        <p><strong>Identical.</strong> Copy the file. Same <code>env()</code> function, same <code>config()</code> accessor.</p>
+        <hr>
+        <h2 id="4-what-works-the-same-copy-directly">4. What Works the Same (Copy Directly)</h2>
+        <p>These require zero or minimal changes:</p>
+        <table>
+        <thead><tr>
+        <th>Component</th>
+        <th>Change Required</th>
+        </tr></thead><tbody>
+        <tr>
+        <td>Eloquent models</td>
+        <td>Change base class import to <code>Lattice\Database\Model</code></td>
+        </tr>
+        <tr>
+        <td>Relationships (hasMany, belongsTo, etc.)</td>
+        <td>None</td>
+        </tr>
+        <tr>
+        <td>Scopes (local and global)</td>
+        <td>None</td>
+        </tr>
+        <tr>
+        <td>Accessors and mutators</td>
+        <td>None</td>
+        </tr>
+        <tr>
+        <td>Casts</td>
+        <td>None</td>
+        </tr>
+        <tr>
+        <td>Database migrations</td>
+        <td>Use <code>Capsule::schema()</code> instead of <code>Schema::</code> facade</td>
+        </tr>
+        <tr>
+        <td>Factories</td>
+        <td>Change base class to <code>Lattice\Database\Factory</code></td>
+        </tr>
+        <tr>
+        <td>Seeders</td>
+        <td>None</td>
+        </tr>
+        <tr>
+        <td><code>.env</code> files</td>
+        <td>None</td>
+        </tr>
+        <tr>
+        <td><code>config/*.php</code> files</td>
+        <td>None</td>
+        </tr>
+        <tr>
+        <td>Illuminate Collections</td>
+        <td>None (<code>collect()</code>, <code>Str::</code>, <code>Arr::</code>, <code>Carbon</code>)</td>
+        </tr>
+        <tr>
+        <td>Query Builder</td>
+        <td>None</td>
+        </tr>
+        <tr>
+        <td>Validation rules (logic)</td>
+        <td>Same rules, different syntax (attributes vs. arrays)</td>
+        </tr>
+        <tr>
+        <td>Hashing (<code>password_hash</code>)</td>
+        <td>None</td>
+        </tr>
+        </tbody></table>
+        <hr>
+        <h2 id="5-what-is-different-must-convert">5. What Is Different (Must Convert)</h2>
+        <table>
+        <thead><tr>
+        <th>Laravel Pattern</th>
+        <th>LatticePHP Pattern</th>
+        <th>Why</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>routes/api.php</code> file</td>
+        <td><code>#[Controller]</code> + <code>#[Get]</code>/<code>#[Post]</code> attributes</td>
+        <td>Routes belong to controllers, not a global file</td>
+        </tr>
+        <tr>
+        <td>Service Providers</td>
+        <td><code>#[Module]</code> classes</td>
+        <td>Explicit dependency graph, not boot-order</td>
+        </tr>
+        <tr>
+        <td>Middleware</td>
+        <td>Guards + Interceptors</td>
+        <td>Separated by concern (auth vs. cross-cutting)</td>
+        </tr>
+        <tr>
+        <td>Form Requests</td>
+        <td>DTOs with validation attributes</td>
+        <td>Immutable, typed, attribute-validated</td>
+        </tr>
+        <tr>
+        <td>Facades (<code>Cache::</code>, <code>Log::</code>)</td>
+        <td>Constructor injection</td>
+        <td>Explicit dependencies, no magic</td>
+        </tr>
+        <tr>
+        <td><code>app()</code> helper</td>
+        <td>Inject via constructor</td>
+        <td>No service locator pattern</td>
+        </tr>
+        <tr>
+        <td><code>$this-&gt;authorize()</code></td>
+        <td><code>#[Can]</code> attribute</td>
+        <td>Declarative authorization</td>
+        </tr>
+        <tr>
+        <td>Route Model Binding</td>
+        <td><code>#[Param]</code> + explicit lookup</td>
+        <td>No implicit magic</td>
+        </tr>
+        <tr>
+        <td><code>EventServiceProvider::$listen</code></td>
+        <td><code>#[Listener]</code> attribute</td>
+        <td>Auto-discovered, no manual registration</td>
+        </tr>
+        <tr>
+        <td><code>php artisan</code></td>
+        <td><code>php lattice</code></td>
+        <td>Different CLI entry point</td>
+        </tr>
+        <tr>
+        <td>Blade templates</td>
+        <td>N/A</td>
+        <td>Backend-only framework</td>
+        </tr>
+        <tr>
+        <td>Notification system</td>
+        <td>Custom service / Activity</td>
+        <td>No built-in channel abstraction</td>
+        </tr>
+        <tr>
+        <td>Broadcasting</td>
+        <td>Event transport / WebSocket adapter</td>
+        <td>Different architecture</td>
+        </tr>
+        </tbody></table>
+        <hr>
+        <h2 id="6-what-is-new-not-in-laravel">6. What Is New (Not in Laravel)</h2>
+        <h3 id="6-1-module-system">6.1 Module System</h3>
+        <p>Every feature lives in a self-contained module with explicit imports/exports:</p>
+        <pre><code class="language-php">#[Module(
+    imports: [DatabaseModule::class, CacheModule::class],
+    providers: [OrderService::class, OrderRepository::class],
+    controllers: [OrderController::class],
+    exports: [OrderService::class], // Other modules can use this
+)]
+final class OrdersModule {}</code></pre>
+        <p>Modules create clear dependency boundaries. If <code>OrdersModule</code> needs <code>PaymentGateway</code>, it must import <code>PaymentsModule</code>, which must export <code>PaymentGateway</code>.</p>
+        <h3 id="6-2-workspace-multi-tenancy">6.2 Workspace / Multi-Tenancy</h3>
+        <p>Built-in workspace isolation via the <code>BelongsToWorkspace</code> trait and <code>WorkspaceGuard</code>:</p>
+        <pre><code class="language-php">// Model
+final class Contact extends Model
+{
+    use BelongsToWorkspace; // Auto-scopes queries to current workspace
+}
+
+// Controller — guard enforces workspace context
+#[Controller(&#x27;/api/contacts&#x27;)]
+#[UseGuards(guards: [JwtAuthenticationGuard::class, WorkspaceGuard::class])]
+final class ContactController { ... }</code></pre>
+        <p>Data is automatically scoped — queries only return rows matching the current workspace.</p>
+        <h3 id="6-3-durable-workflow-engine">6.3 Durable Workflow Engine</h3>
+        <p>LatticePHP includes a native Temporal-like workflow engine. No external Temporal service required:</p>
+        <pre><code class="language-php">#[Workflow(&#x27;onboard-customer&#x27;)]
+final class OnboardCustomerWorkflow
+{
+    #[WorkflowMain]
+    public function execute(int $customerId): void
+    {
+        // Each activity is durable — survives process crashes
+        $this-&gt;activity(CreateAccount::class, $customerId);
+        $this-&gt;activity(SendWelcomeEmail::class, $customerId);
+        $this-&gt;activity(AssignSalesRep::class, $customerId);
+
+        // Wait for external signal (e.g., customer completes profile)
+        $this-&gt;waitForSignal(&#x27;profile-completed&#x27;, timeout: 86400);
+
+        $this-&gt;activity(ActivateSubscription::class, $customerId);
+    }
+}</code></pre>
+        <p>Features: deterministic replay, event sourcing, compensation/saga, signals, queries, timers.</p>
+        <h3 id="6-4-cqrs-support">6.4 CQRS Support</h3>
+        <p>Separate read and write models:</p>
+        <pre><code class="language-php">#[Command]
+final class CreateOrderCommand
+{
+    public function __construct(
+        public readonly int $userId,
+        public readonly array $items,
+    ) {}
+}
+
+#[Query]
+final class GetOrdersByUserQuery
+{
+    public function __construct(
+        public readonly int $userId,
+    ) {}
+}</code></pre>
+        <h3 id="6-5-circuit-breaker">6.5 Circuit Breaker</h3>
+        <p>Built-in resilience for external service calls:</p>
+        <pre><code class="language-php">#[CircuitBreaker(failureThreshold: 5, resetTimeout: 30)]
+public function callExternalApi(): Response
+{
+    return $this-&gt;httpClient-&gt;get(&#x27;https://api.external.com/data&#x27;);
+}</code></pre>
+        <h3 id="6-6-transport-aware-architecture">6.6 Transport-Aware Architecture</h3>
+        <p>Controllers can serve HTTP, gRPC, and message-based transports:</p>
+        <pre><code class="language-php">#[Controller(&#x27;/orders&#x27;)]
+final class OrderController
+{
+    // This same handler works for HTTP requests AND gRPC calls
+    #[Post(&#x27;/&#x27;)]
+    public function create(#[Body] CreateOrderDto $dto): OrderResource { ... }
+}</code></pre>
+        <h3 id="6-7-attribute-based-compilation">6.7 Attribute-Based Compilation</h3>
+        <p>In production, all attribute metadata is compiled into a manifest (no reflection at runtime):</p>
+        <pre><code class="language-bash">php lattice compile</code></pre>
+        <p>This makes the framework faster than Laravel in production because there is zero reflection overhead.</p>
+        <hr>
+        <h2 id="7-migration-checklist">7. Migration Checklist</h2>
+        <p>Use this checklist to track your conversion:</p>
+        <ul>
+        <li><input type="checkbox" disabled> Create new LatticePHP project</li>
+        <li><input type="checkbox" disabled> Copy <code>.env</code>, <code>config/</code>, migrations, factories, seeders</li>
+        <li><input type="checkbox" disabled> Identify domain boundaries and plan module structure</li>
+        <li><input type="checkbox" disabled> Create <code>AppModule</code> with all module imports</li>
+        <li><input type="checkbox" disabled> Convert models (change base class, add <code>final</code>, add return types)</li>
+        <li><input type="checkbox" disabled> Create DTOs for each Form Request</li>
+        <li><input type="checkbox" disabled> Convert controllers (add route attributes, inject services, use DTOs)</li>
+        <li><input type="checkbox" disabled> Convert middleware to guards and interceptors</li>
+        <li><input type="checkbox" disabled> Convert event listeners to <code>#[Listener]</code> classes</li>
+        <li><input type="checkbox" disabled> Convert jobs (use constructor with primitives, inject <code>QueueDispatcher</code>)</li>
+        <li><input type="checkbox" disabled> Convert policies to <code>#[Policy]</code> classes</li>
+        <li><input type="checkbox" disabled> Replace all facade usage with constructor injection</li>
+        <li><input type="checkbox" disabled> Replace <code>app()</code> calls with constructor injection</li>
+        <li><input type="checkbox" disabled> Replace <code>$this-&gt;authorize()</code> with <code>#[Can]</code> attributes</li>
+        <li><input type="checkbox" disabled> Convert API Resources (change base class, use <code>$this-&gt;model-&gt;</code>)</li>
+        <li><input type="checkbox" disabled> Add workspace support if multi-tenant</li>
+        <li><input type="checkbox" disabled> Run <code>php lattice compile</code> for production</li>
+        <li><input type="checkbox" disabled> Run full test suite</li>
+        </ul>
+        <hr>
+        <h2 id="8-common-gotchas">8. Common Gotchas</h2>
+        <ol>
+        <li><strong>No implicit model binding.</strong> You must use <code>#[Param]</code> to get the ID and look up the model yourself in the service layer.</li>
+        <li><strong>No global helpers in services.</strong> Replace <code>app()</code>, <code>config()</code>, <code>env()</code> with injected dependencies. <code>env()</code> should only be used in config files.</li>
+        <li><strong>Modules must export providers.</strong> If Module A needs a service from Module B, Module B must list that service in <code>exports</code>.</li>
+        <li><strong>DTOs are readonly.</strong> You cannot mutate a DTO after construction. If you need to transform data, create a new DTO or work with arrays in the service layer.</li>
+        <li><strong>No Blade, no views, no frontend.</strong> If your Laravel app serves HTML, the frontend must be a separate SPA/SSR application that calls your LatticePHP API.</li>
+        <li>**Routes use <code>:param</code> syntax, not <code>{param}</code>.** Write <code>/:id</code> not <code>/{id}</code>.</li>
+        <li>**No <code>artisan</code>.** The CLI is <code>php lattice</code>. Most generator commands have equivalents.</li>
+        <li><strong>Workspace scoping is automatic.</strong> If a model uses <code>BelongsToWorkspace</code>, all queries are automatically scoped. You do not need to manually add <code>where(&#x27;workspace_id&#x27;, ...)</code>.</li>
+        <li><strong>Guards are ordered.</strong> In <code>#[UseGuards(guards: [A::class, B::class])]</code>, guard A runs before guard B. If A rejects, B never runs.</li>
+        <li><strong>Compile in production.</strong> Always run <code>php lattice compile</code> before deploying. This eliminates runtime reflection and dramatically improves performance.</li>
+        </ol>
+    </main>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

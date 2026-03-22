@@ -1,0 +1,37 @@
+{
+    "name": "lattice/core",
+    "description": "Application kernel for the LatticePHP framework",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../contracts"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "lattice/contracts": "dev-main",
+        "psr/container": "^2.0",
+        "illuminate/container": "^12.0",
+        "symfony/console": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lattice\\Core\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lattice\\Core\\Tests\\": "tests/"
+        }
+    }
+}

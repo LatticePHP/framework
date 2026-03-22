@@ -1,0 +1,22 @@
+{
+    "name": "lattice/scheduler",
+    "description": "Task scheduling system for the LatticePHP framework",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lattice\\Scheduler\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lattice\\Scheduler\\Tests\\": "tests/"
+        }
+    }
+}

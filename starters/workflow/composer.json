@@ -1,0 +1,21 @@
+{
+    "name": "lattice/starter-workflow",
+    "description": "LatticePHP Workflow starter application",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "lattice/core": "dev-main",
+        "lattice/workflow": "dev-main",
+        "lattice/workflow-store": "dev-main",
+        "lattice/queue": "dev-main",
+        "lattice/database": "dev-main",
+        "lattice/scheduler": "dev-main",
+        "lattice/observability": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}

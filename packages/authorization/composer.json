@@ -1,0 +1,24 @@
+{
+    "name": "lattice/authorization",
+    "description": "Authorization policies and gates for LatticePHP",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "lattice/contracts": "^0.1",
+        "lattice/auth": "^0.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lattice\\Authorization\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lattice\\Authorization\\Tests\\": "tests/"
+        }
+    }
+}

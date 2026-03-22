@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runtime — LatticePHP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <style>
+        :root { --bg: #0a0a0f; --bg-card: #12121a; --border: #1e1e2e; --text: #e4e4ef; --text-dim: #9494a8; --accent: #4ade80; --sidebar-w: 260px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.8; }
+        code,pre { font-family:'JetBrains Mono',monospace; }
+
+        /* Sidebar */
+        .sidebar { position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); background:#08080c; border-right:1px solid var(--border); padding:20px 0; overflow-y:auto; z-index:10; }
+        .sidebar-brand { padding:0 20px 16px; font-weight:700; color:var(--accent); font-size:1rem; }
+        .sidebar-brand a { color:var(--accent); text-decoration:none; }
+        .sidebar-section { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:#64748b; padding:12px 20px 4px; font-weight:600; }
+        .sidebar a { display:block; padding:5px 20px; font-size:0.8rem; color:var(--text-dim); text-decoration:none; }
+        .sidebar a:hover { color:var(--text); background:#111118; }
+        .sidebar a.active { color:var(--accent); background:rgba(74,222,128,0.05); border-right:2px solid var(--accent); }
+
+        /* Content */
+        .content { margin-left:var(--sidebar-w); padding:40px 60px; max-width:900px; }
+        .content h1 { font-size:2rem; margin:0 0 8px; color:var(--accent); }
+        .content h2 { font-size:1.5rem; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+        .content h3 { font-size:1.2rem; margin:24px 0 8px; }
+        .content h4 { font-size:1rem; margin:20px 0 6px; }
+        .content p { margin:8px 0; }
+        .content ul,.content ol { margin:8px 0 8px 24px; }
+        .content li { margin:4px 0; }
+        .content a { color:var(--accent); }
+        .content code { background:#1a1a2e; padding:2px 6px; border-radius:4px; font-size:0.85em; }
+        .content pre { background:#0d1117; border:1px solid var(--border); border-radius:8px; padding:16px; margin:12px 0; overflow-x:auto; }
+        .content pre code { background:none; padding:0; font-size:0.85rem; }
+        .content table { width:100%; border-collapse:collapse; margin:16px 0; }
+        .content th,.content td { padding:8px 12px; border:1px solid var(--border); text-align:left; font-size:0.9rem; }
+        .content th { background:var(--bg-card); font-weight:600; }
+        .content blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0; color:var(--text-dim); background:var(--bg-card); border-radius:0 6px 6px 0; }
+        .content hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+        .content img { max-width:100%; }
+        .content input[type="checkbox"] { margin-right:6px; }
+
+        .back-link { display:inline-block; margin-bottom:20px; color:var(--accent); font-size:0.85rem; text-decoration:none; }
+        .back-link:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .sidebar { display:none; }
+            .content { margin-left:0; padding:20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><a href="../index.html">&#x2B21; LatticePHP</a></div>
+        <div class="sidebar-section">Getting Started</div>
+        <a href="getting-started.html">Getting Started</a>
+        <a href="why-latticephp.html">Why LatticePHP</a>
+        <div class="sidebar-section">Core</div>
+        <a href="architecture.html">Architecture</a>
+        <a href="modules.html">Modules</a>
+        <a href="pipeline.html">Pipeline</a>
+        <div class="sidebar-section">HTTP & Data</div>
+        <a href="http-api.html">HTTP &amp; API</a>
+        <a href="database.html">Database</a>
+        <div class="sidebar-section">Auth & Security</div>
+        <a href="auth.html">Authentication</a>
+        <a href="security.html">Security</a>
+        <div class="sidebar-section">Advanced</div>
+        <a href="workflows.html">Workflows</a>
+        <a href="microservices.html">Microservices</a>
+        <a href="observability.html">Observability</a>
+        <div class="sidebar-section">Testing & DX</div>
+        <a href="testing.html">Testing</a>
+        <a href="runtime.html" class="active">Runtime</a>
+        <a href="package-authoring.html">Package Authoring</a>
+        <div class="sidebar-section">Migration</div>
+        <a href="migration-from-laravel.html">Migration from Laravel</a>
+    </nav>
+    <main class="content">
+        <a href="../index.html" class="back-link">&larr; Back to Home</a>
+        <h1 id="runtime">Runtime</h1>
+        <p>LatticePHP supports multiple PHP runtimes. Your application code does not change between environments -- the runtime adapter handles the differences.</p>
+        <hr>
+        <h2 id="runtime-options">Runtime Options</h2>
+        <table>
+        <thead><tr>
+        <th>Runtime</th>
+        <th>Status</th>
+        <th>Use Case</th>
+        </tr></thead><tbody>
+        <tr>
+        <td>PHP-FPM</td>
+        <td>Baseline</td>
+        <td>Standard hosting, shared environments, simplest deployment</td>
+        </tr>
+        <tr>
+        <td>RoadRunner</td>
+        <td>First-class</td>
+        <td>High-performance long-running workers, recommended for production</td>
+        </tr>
+        <tr>
+        <td>OpenSwoole</td>
+        <td>Experimental</td>
+        <td>Coroutine-based async, advanced use cases</td>
+        </tr>
+        </tbody></table>
+        <hr>
+        <h2 id="php-fpm-baseline">PHP-FPM (Baseline)</h2>
+        <p>PHP-FPM is the default runtime. No additional packages required.</p>
+        <h3 id="development-server">Development Server</h3>
+        <pre><code class="language-bash">php lattice serve
+# Starts PHP built-in server on http://localhost:8000
+
+php lattice serve --port=3000
+# Custom port</code></pre>
+        <h3 id="production-with-nginx">Production with Nginx</h3>
+        <pre><code class="language-nginx">server {
+    listen 80;
+    server_name api.example.com;
+    root /var/www/app/public;
+    index index.php;
+
+    location / {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}</code></pre>
+        <p>PHP-FPM boots and destroys the application on every request. Simple, predictable, no state leakage. The trade-off is startup overhead on every request.</p>
+        <hr>
+        <h2 id="roadrunner-first-class">RoadRunner (First-Class)</h2>
+        <p>RoadRunner keeps your PHP application in memory between requests. The framework boots once, then handles thousands of requests without re-bootstrapping.</p>
+        <h3 id="installation">Installation</h3>
+        <pre><code class="language-bash">composer require lattice/roadrunner</code></pre>
+        <h3 id="key-classes">Key Classes</h3>
+        <p>All classes are in the <code>Lattice\RoadRunner</code> namespace:</p>
+        <p><strong>RoadRunnerConfig</strong> -- Worker configuration:</p>
+        <pre><code class="language-php">use Lattice\RoadRunner\RoadRunnerConfig;
+
+$config = new RoadRunnerConfig(
+    httpWorkers: 4,
+    grpcWorkers: 4,
+    maxMemory: 128,          // MB per worker
+    resetProviders: [        // Providers to reset between requests
+        CacheServiceProvider::class,
+    ],
+);
+
+// Or from array (e.g., config file)
+$config = RoadRunnerConfig::fromArray([
+    &#x27;httpWorkers&#x27; =&gt; 8,
+    &#x27;maxMemory&#x27; =&gt; 256,
+]);</code></pre>
+        <p><strong>WorkerLifecycle</strong> -- Hooks into the worker lifecycle:</p>
+        <pre><code class="language-php">use Lattice\RoadRunner\WorkerLifecycle;
+
+$lifecycle = new WorkerLifecycle();
+
+$lifecycle-&gt;onStartup(function (): void {
+    // Called once when the worker process starts
+    // Initialize connections, warm caches
+});
+
+$lifecycle-&gt;onRequest(function (): void {
+    // Called after each request completes
+    // Useful for clearing per-request state
+});
+
+$lifecycle-&gt;onDrain(function (): void {
+    // Called when the worker is draining (preparing to stop)
+    // Finish in-flight work, close connections gracefully
+});
+
+$lifecycle-&gt;onShutdown(function (): void {
+    // Called when the worker is stopping
+    // Final cleanup
+});</code></pre>
+        <p><strong>ContainerResetter</strong> -- Clears container state between requests:</p>
+        <pre><code class="language-php">use Lattice\RoadRunner\ContainerResetter;
+
+$resetter = new ContainerResetter();
+
+$resetter-&gt;addResetCallback(function (): void {
+    // Clear per-request singletons, flush resolved instances
+});
+
+// Called after each request:
+$resetter-&gt;reset($container); // Runs callbacks then calls $container-&gt;reset()</code></pre>
+        <p><strong>MemoryGuard</strong> -- Prevents memory leaks from crashing workers:</p>
+        <pre><code class="language-php">use Lattice\RoadRunner\MemoryGuard;
+
+$guard = new MemoryGuard();
+
+$guard-&gt;getCurrentUsageMb(); // e.g., 45.3
+$guard-&gt;check(128);          // true if usage &gt;= 128 MB</code></pre>
+        <p>When <code>MemoryGuard::check()</code> returns true, the worker stops and RoadRunner spawns a replacement. This prevents memory leaks from degrading performance over time.</p>
+        <p><strong>GracefulShutdown</strong> -- Handles SIGTERM/SIGINT:</p>
+        <pre><code class="language-php">use Lattice\RoadRunner\GracefulShutdown;
+
+$shutdown = new GracefulShutdown();
+$shutdown-&gt;register(); // Register signal handlers (no-op on Windows)
+
+// In the worker loop:
+if ($shutdown-&gt;shouldStop()) {
+    // Finish current request, then exit
+}</code></pre>
+        <h3 id="roadrunnerhttpworker">RoadRunnerHttpWorker</h3>
+        <p>The <code>RoadRunnerHttpWorker</code> (<code>Lattice\RoadRunner\Http\RoadRunnerHttpWorker</code>) ties everything together:</p>
+        <pre><code class="language-php">use Lattice\RoadRunner\Http\RoadRunnerHttpWorker;
+
+$worker = new RoadRunnerHttpWorker(
+    container: $container,
+    containerResetter: $resetter,
+    lifecycle: $lifecycle,
+    memoryGuard: $guard,
+    gracefulShutdown: $shutdown,
+    config: $config,
+);
+
+$worker-&gt;start();  // Enter worker loop
+// After each request, afterRequest() runs automatically:
+// 1. Trigger request callbacks
+// 2. Reset container state
+// 3. Check memory limit (stop if exceeded)
+// 4. Check graceful shutdown signal</code></pre>
+        <h3 id="roadrunner-rr-yaml">RoadRunner .rr.yaml</h3>
+        <pre><code class="language-yaml">version: &quot;3&quot;
+
+server:
+  command: &quot;php worker.php&quot;
+
+http:
+  address: &quot;0.0.0.0:8080&quot;
+  pool:
+    num_workers: 4
+    max_jobs: 1000        # Restart worker after N requests
+    allocate_timeout: 10s
+    destroy_timeout: 10s
+
+logs:
+  mode: production
+  level: info</code></pre>
+        <h3 id="common-pitfalls">Common Pitfalls</h3>
+        <ol>
+        <li><strong>Static state persists between requests.</strong> Clear static properties in reset callbacks or avoid them entirely.</li>
+        <li><strong>Database connections may timeout.</strong> Configure connection pool timeouts in your database config.</li>
+        <li><strong>File handles leak.</strong> Close all file handles in request callbacks.</li>
+        <li><strong>Memory grows gradually.</strong> Set <code>maxMemory</code> to catch leaks before they cause OOM kills.</li>
+        </ol>
+        <hr>
+        <h2 id="openswoole-experimental">OpenSwoole (Experimental)</h2>
+        <p>OpenSwoole provides coroutine-based concurrency. This runtime is experimental and not recommended for production without thorough testing.</p>
+        <pre><code class="language-bash">composer require lattice/openswoole</code></pre>
+        <p>OpenSwoole brings true async I/O to PHP -- database queries, HTTP calls, and file operations can run concurrently within a single worker. The trade-off is more complex debugging and potential issues with non-coroutine-safe extensions.</p>
+        <hr>
+        <h2 id="docker-deployment">Docker Deployment</h2>
+        <h3 id="php-fpm-dockerfile">PHP-FPM Dockerfile</h3>
+        <pre><code class="language-dockerfile">FROM php:8.4-fpm-alpine
+
+RUN apk add --no-cache icu-dev \
+    &amp;&amp; docker-php-ext-install intl pdo_mysql opcache
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY . /var/www/app
+WORKDIR /var/www/app
+
+RUN composer install --no-dev --optimize-autoloader
+RUN php lattice compile
+
+EXPOSE 9000
+CMD [&quot;php-fpm&quot;]</code></pre>
+        <h3 id="roadrunner-dockerfile">RoadRunner Dockerfile</h3>
+        <pre><code class="language-dockerfile">FROM php:8.4-cli-alpine
+
+RUN apk add --no-cache icu-dev \
+    &amp;&amp; docker-php-ext-install intl pdo_mysql opcache pcntl
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY . /var/www/app
+WORKDIR /var/www/app
+
+RUN composer install --no-dev --optimize-autoloader
+RUN php lattice compile
+RUN vendor/bin/rr get-binary
+
+EXPOSE 8080
+CMD [&quot;./rr&quot;, &quot;serve&quot;, &quot;-c&quot;, &quot;.rr.yaml&quot;]</code></pre>
+        <h3 id="docker-compose">Docker Compose</h3>
+        <pre><code class="language-yaml">services:
+  api:
+    build: .
+    ports:
+      - &quot;8080:8080&quot;
+    environment:
+      - APP_ENV=production
+      - DB_HOST=db
+      - REDIS_HOST=redis
+    depends_on:
+      - db
+      - redis
+    healthcheck:
+      test: [&quot;CMD&quot;, &quot;curl&quot;, &quot;-f&quot;, &quot;http://localhost:8080/health/live&quot;]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: lattice
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - db_data:/var/lib/mysql
+
+  redis:
+    image: redis:7-alpine
+
+volumes:
+  db_data:</code></pre>
+        <hr>
+        <h2 id="choosing-a-runtime">Choosing a Runtime</h2>
+        <table>
+        <thead><tr>
+        <th>Factor</th>
+        <th>PHP-FPM</th>
+        <th>RoadRunner</th>
+        <th>OpenSwoole</th>
+        </tr></thead><tbody>
+        <tr>
+        <td>Setup complexity</td>
+        <td>Low</td>
+        <td>Medium</td>
+        <td>High</td>
+        </tr>
+        <tr>
+        <td>Performance</td>
+        <td>Good</td>
+        <td>Excellent</td>
+        <td>Excellent</td>
+        </tr>
+        <tr>
+        <td>Memory efficiency</td>
+        <td>High (per-request)</td>
+        <td>Medium (pooled)</td>
+        <td>Medium (pooled)</td>
+        </tr>
+        <tr>
+        <td>State management</td>
+        <td>No concerns</td>
+        <td>Must reset state</td>
+        <td>Must reset state</td>
+        </tr>
+        <tr>
+        <td>Debugging</td>
+        <td>Standard tools</td>
+        <td>Standard tools</td>
+        <td>Coroutine-aware needed</td>
+        </tr>
+        <tr>
+        <td>Production readiness</td>
+        <td>Proven</td>
+        <td>Proven</td>
+        <td>Experimental</td>
+        </tr>
+        </tbody></table>
+        <p>Start with PHP-FPM. Move to RoadRunner when you need lower latency and higher throughput. Consider OpenSwoole only for specific async use cases.</p>
+    </main>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

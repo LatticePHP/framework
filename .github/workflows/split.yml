@@ -1,0 +1,92 @@
+name: Monorepo Split
+
+on:
+  push:
+    branches:
+      - main
+      - '*.x'
+    tags:
+      - 'v*'
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - { local: 'packages/contracts',          remote: 'contracts' }
+          - { local: 'packages/core',               remote: 'core' }
+          - { local: 'packages/compiler',            remote: 'compiler' }
+          - { local: 'packages/module',              remote: 'module' }
+          - { local: 'packages/pipeline',            remote: 'pipeline' }
+          - { local: 'packages/http',                remote: 'http' }
+          - { local: 'packages/routing',             remote: 'routing' }
+          - { local: 'packages/validation',          remote: 'validation' }
+          - { local: 'packages/openapi',             remote: 'openapi' }
+          - { local: 'packages/problem-details',     remote: 'problem-details' }
+          - { local: 'packages/jsonapi',             remote: 'jsonapi' }
+          - { local: 'packages/rate-limit',          remote: 'rate-limit' }
+          - { local: 'packages/database',            remote: 'database' }
+          - { local: 'packages/cache',               remote: 'cache' }
+          - { local: 'packages/filesystem',          remote: 'filesystem' }
+          - { local: 'packages/events',              remote: 'events' }
+          - { local: 'packages/scheduler',           remote: 'scheduler' }
+          - { local: 'packages/auth',                remote: 'auth' }
+          - { local: 'packages/jwt',                 remote: 'jwt' }
+          - { local: 'packages/pat',                 remote: 'pat' }
+          - { local: 'packages/api-key',             remote: 'api-key' }
+          - { local: 'packages/oauth',               remote: 'oauth' }
+          - { local: 'packages/social',              remote: 'social' }
+          - { local: 'packages/authorization',       remote: 'authorization' }
+          - { local: 'packages/queue',               remote: 'queue' }
+          - { local: 'packages/microservices',       remote: 'microservices' }
+          - { local: 'packages/grpc',                remote: 'grpc' }
+          - { local: 'packages/transport-nats',      remote: 'transport-nats' }
+          - { local: 'packages/transport-rabbitmq',  remote: 'transport-rabbitmq' }
+          - { local: 'packages/transport-sqs',       remote: 'transport-sqs' }
+          - { local: 'packages/transport-kafka',     remote: 'transport-kafka' }
+          - { local: 'packages/workflow',            remote: 'workflow' }
+          - { local: 'packages/workflow-store',      remote: 'workflow-store' }
+          - { local: 'packages/roadrunner',          remote: 'roadrunner' }
+          - { local: 'packages/openswoole',          remote: 'openswoole' }
+          - { local: 'packages/observability',       remote: 'observability' }
+          - { local: 'packages/devtools',            remote: 'devtools' }
+          - { local: 'packages/testing',             remote: 'testing' }
+          - { local: 'packages/mail',                remote: 'mail' }
+          - { local: 'packages/notifications',       remote: 'notifications' }
+          - { local: 'packages/serializer',          remote: 'serializer' }
+          - { local: 'packages/http-client',         remote: 'http-client' }
+
+    name: Split ${{ matrix.package.remote }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Split ${{ matrix.package.remote }} (branch)
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        uses: danharrin/monorepo-split-github-action@v2.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.SPLIT_TOKEN }}
+        with:
+          package_directory: ${{ matrix.package.local }}
+          repository_organization: 'LatticePHP'
+          repository_name: ${{ matrix.package.remote }}
+          branch: ${{ github.ref_name }}
+          user_name: 'latticephp-bot'
+          user_email: 'bot@latticephp.dev'
+
+      - name: Split ${{ matrix.package.remote }} (tag)
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        uses: danharrin/monorepo-split-github-action@v2.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.SPLIT_TOKEN }}
+        with:
+          tag: ${{ github.ref_name }}
+          package_directory: ${{ matrix.package.local }}
+          repository_organization: 'LatticePHP'
+          repository_name: ${{ matrix.package.remote }}
+          branch: main
+          user_name: 'latticephp-bot'
+          user_email: 'bot@latticephp.dev'

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microservices — LatticePHP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <style>
+        :root { --bg: #0a0a0f; --bg-card: #12121a; --border: #1e1e2e; --text: #e4e4ef; --text-dim: #9494a8; --accent: #4ade80; --sidebar-w: 260px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.8; }
+        code,pre { font-family:'JetBrains Mono',monospace; }
+
+        /* Sidebar */
+        .sidebar { position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); background:#08080c; border-right:1px solid var(--border); padding:20px 0; overflow-y:auto; z-index:10; }
+        .sidebar-brand { padding:0 20px 16px; font-weight:700; color:var(--accent); font-size:1rem; }
+        .sidebar-brand a { color:var(--accent); text-decoration:none; }
+        .sidebar-section { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:#64748b; padding:12px 20px 4px; font-weight:600; }
+        .sidebar a { display:block; padding:5px 20px; font-size:0.8rem; color:var(--text-dim); text-decoration:none; }
+        .sidebar a:hover { color:var(--text); background:#111118; }
+        .sidebar a.active { color:var(--accent); background:rgba(74,222,128,0.05); border-right:2px solid var(--accent); }
+
+        /* Content */
+        .content { margin-left:var(--sidebar-w); padding:40px 60px; max-width:900px; }
+        .content h1 { font-size:2rem; margin:0 0 8px; color:var(--accent); }
+        .content h2 { font-size:1.5rem; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+        .content h3 { font-size:1.2rem; margin:24px 0 8px; }
+        .content h4 { font-size:1rem; margin:20px 0 6px; }
+        .content p { margin:8px 0; }
+        .content ul,.content ol { margin:8px 0 8px 24px; }
+        .content li { margin:4px 0; }
+        .content a { color:var(--accent); }
+        .content code { background:#1a1a2e; padding:2px 6px; border-radius:4px; font-size:0.85em; }
+        .content pre { background:#0d1117; border:1px solid var(--border); border-radius:8px; padding:16px; margin:12px 0; overflow-x:auto; }
+        .content pre code { background:none; padding:0; font-size:0.85rem; }
+        .content table { width:100%; border-collapse:collapse; margin:16px 0; }
+        .content th,.content td { padding:8px 12px; border:1px solid var(--border); text-align:left; font-size:0.9rem; }
+        .content th { background:var(--bg-card); font-weight:600; }
+        .content blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0; color:var(--text-dim); background:var(--bg-card); border-radius:0 6px 6px 0; }
+        .content hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+        .content img { max-width:100%; }
+        .content input[type="checkbox"] { margin-right:6px; }
+
+        .back-link { display:inline-block; margin-bottom:20px; color:var(--accent); font-size:0.85rem; text-decoration:none; }
+        .back-link:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .sidebar { display:none; }
+            .content { margin-left:0; padding:20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><a href="../index.html">&#x2B21; LatticePHP</a></div>
+        <div class="sidebar-section">Getting Started</div>
+        <a href="getting-started.html">Getting Started</a>
+        <a href="why-latticephp.html">Why LatticePHP</a>
+        <div class="sidebar-section">Core</div>
+        <a href="architecture.html">Architecture</a>
+        <a href="modules.html">Modules</a>
+        <a href="pipeline.html">Pipeline</a>
+        <div class="sidebar-section">HTTP & Data</div>
+        <a href="http-api.html">HTTP &amp; API</a>
+        <a href="database.html">Database</a>
+        <div class="sidebar-section">Auth & Security</div>
+        <a href="auth.html">Authentication</a>
+        <a href="security.html">Security</a>
+        <div class="sidebar-section">Advanced</div>
+        <a href="workflows.html">Workflows</a>
+        <a href="microservices.html" class="active">Microservices</a>
+        <a href="observability.html">Observability</a>
+        <div class="sidebar-section">Testing & DX</div>
+        <a href="testing.html">Testing</a>
+        <a href="runtime.html">Runtime</a>
+        <a href="package-authoring.html">Package Authoring</a>
+        <div class="sidebar-section">Migration</div>
+        <a href="migration-from-laravel.html">Migration from Laravel</a>
+    </nav>
+    <main class="content">
+        <a href="../index.html" class="back-link">&larr; Back to Home</a>
+        <h1 id="microservices">Microservices</h1>
+        <p>LatticePHP provides first-class support for building microservices with typed message controllers, multiple transport adapters, and the same guard/pipe/interceptor pipeline used by HTTP controllers.</p>
+        <hr>
+        <h2 id="message-controllers">Message Controllers</h2>
+        <p>Message controllers handle incoming messages from transport layers. They are annotated with <code>#[MessageController]</code> and their methods with <code>#[CommandPattern]</code>, <code>#[EventPattern]</code>, or <code>#[ReplyPattern]</code>.</p>
+        <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Modules\Orders;
+
+use Lattice\Microservices\Attributes\MessageController;
+use Lattice\Microservices\Attributes\CommandPattern;
+use Lattice\Microservices\Attributes\EventPattern;
+use Lattice\Microservices\Attributes\ReplyPattern;
+use Lattice\Microservices\MessageEnvelope;
+
+#[MessageController(transport: &#x27;nats&#x27;)]
+final class OrderMessageController
+{
+    public function __construct(
+        private readonly OrderService $orders,
+    ) {}
+
+    #[CommandPattern(pattern: &#x27;orders.create&#x27;)]
+    public function createOrder(MessageEnvelope $envelope): array
+    {
+        $payload = $envelope-&gt;getPayload();
+        $order = $this-&gt;orders-&gt;create($payload);
+
+        return [&#x27;orderId&#x27; =&gt; $order-&gt;id, &#x27;status&#x27; =&gt; &#x27;created&#x27;];
+    }
+
+    #[EventPattern(pattern: &#x27;payments.completed&#x27;)]
+    public function onPaymentCompleted(MessageEnvelope $envelope): void
+    {
+        $payload = $envelope-&gt;getPayload();
+        $this-&gt;orders-&gt;markPaid($payload[&#x27;orderId&#x27;]);
+    }
+
+    #[ReplyPattern(pattern: &#x27;orders.status&#x27;)]
+    public function getOrderStatus(MessageEnvelope $envelope): array
+    {
+        $order = $this-&gt;orders-&gt;find($envelope-&gt;getPayload()[&#x27;orderId&#x27;]);
+        return [&#x27;orderId&#x27; =&gt; $order-&gt;id, &#x27;status&#x27; =&gt; $order-&gt;status];
+    }
+}</code></pre>
+        <h3 id="pattern-types">Pattern Types</h3>
+        <table>
+        <thead><tr>
+        <th>Attribute</th>
+        <th>Namespace</th>
+        <th>Purpose</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>#[CommandPattern(pattern: &#x27;orders.create&#x27;)]</code></td>
+        <td><code>Lattice\Microservices\Attributes</code></td>
+        <td>Request-response: caller expects a reply</td>
+        </tr>
+        <tr>
+        <td><code>#[EventPattern(pattern: &#x27;payments.completed&#x27;)]</code></td>
+        <td><code>Lattice\Microservices\Attributes</code></td>
+        <td>Fire-and-forget: no reply expected</td>
+        </tr>
+        <tr>
+        <td><code>#[ReplyPattern(pattern: &#x27;orders.status&#x27;)]</code></td>
+        <td><code>Lattice\Microservices\Attributes</code></td>
+        <td>Query pattern: read-only response</td>
+        </tr>
+        </tbody></table>
+        <hr>
+        <h2 id="messageenvelope">MessageEnvelope</h2>
+        <p>Every message is wrapped in a <code>MessageEnvelope</code> (<code>Lattice\Microservices\MessageEnvelope</code>).</p>
+        <pre><code class="language-php">use Lattice\Microservices\MessageEnvelope;
+
+$envelope = new MessageEnvelope(
+    messageId: &#x27;msg_abc123&#x27;,
+    messageType: &#x27;orders.create&#x27;,
+    payload: [&#x27;productId&#x27; =&gt; 42, &#x27;quantity&#x27; =&gt; 2],
+    schemaVersion: &#x27;1.0.0&#x27;,
+    correlationId: &#x27;corr_xyz&#x27;,
+    causationId: &#x27;cause_789&#x27;,
+    headers: [&#x27;X-Tenant-Id&#x27; =&gt; &#x27;tenant_1&#x27;],
+);
+
+$envelope-&gt;getMessageId();       // &#x27;msg_abc123&#x27;
+$envelope-&gt;getMessageType();     // &#x27;orders.create&#x27;
+$envelope-&gt;getPayload();         // [&#x27;productId&#x27; =&gt; 42, &#x27;quantity&#x27; =&gt; 2]
+$envelope-&gt;getSchemaVersion();   // &#x27;1.0.0&#x27;
+$envelope-&gt;getCorrelationId();   // &#x27;corr_xyz&#x27; (auto-generated if not provided)
+$envelope-&gt;getCausationId();     // &#x27;cause_789&#x27;
+$envelope-&gt;getHeaders();         // [&#x27;X-Tenant-Id&#x27; =&gt; &#x27;tenant_1&#x27;]
+$envelope-&gt;getTimestamp();       // DateTimeImmutable
+$envelope-&gt;getAttempt();         // 1</code></pre>
+        <p>The <code>correlationId</code> is auto-generated if not provided, ensuring every message is traceable.</p>
+        <hr>
+        <h2 id="messagerouter">MessageRouter</h2>
+        <p>The <code>MessageRouter</code> (<code>Lattice\Microservices\MessageRouter</code>) dispatches envelopes to the correct handler.</p>
+        <pre><code class="language-php">use Lattice\Microservices\MessageRouter;
+use Lattice\Microservices\MessageEnvelope;
+
+$router = new MessageRouter();
+$router-&gt;register(&#x27;orders.create&#x27;, OrderMessageController::class, &#x27;createOrder&#x27;);
+$router-&gt;register(&#x27;payments.completed&#x27;, OrderMessageController::class, &#x27;onPaymentCompleted&#x27;);
+$router-&gt;register(&#x27;orders.*&#x27;, OrderMessageController::class, &#x27;catchAll&#x27;);
+
+$match = $router-&gt;route($envelope);
+// Returns HandlerMatch with: handlerClass, method, matchedPattern</code></pre>
+        <p>The router supports exact matching (priority) and wildcard patterns: <code>*</code> matches a single segment, <code>**</code> matches multiple segments including dots.</p>
+        <hr>
+        <h2 id="schema-versioning">Schema Versioning</h2>
+        <p>Use <code>SchemaVersion</code> (<code>Lattice\Microservices\Versioning\SchemaVersion</code>) for message compatibility checks.</p>
+        <pre><code class="language-php">use Lattice\Microservices\Versioning\SchemaVersion;
+
+$v1 = SchemaVersion::parse(&#x27;1.2.3&#x27;);
+$v2 = SchemaVersion::parse(&#x27;1.5.0&#x27;);
+$v3 = SchemaVersion::parse(&#x27;2.0.0&#x27;);
+
+$v1-&gt;isCompatible($v2); // true (same major version)
+$v1-&gt;isCompatible($v3); // false (different major version)
+
+echo $v1; // &quot;1.2.3&quot;</code></pre>
+        <hr>
+        <h2 id="transport-adapters">Transport Adapters</h2>
+        <p>LatticePHP provides transport adapters for common message brokers. All implement <code>TransportInterface</code> from <code>Lattice\Contracts\Messaging</code>.</p>
+        <h3 id="available-transports">Available Transports</h3>
+        <table>
+        <thead><tr>
+        <th>Package</th>
+        <th>Transport</th>
+        <th>Best For</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>lattice/transport-nats</code></td>
+        <td>NATS</td>
+        <td>Low-latency pub/sub</td>
+        </tr>
+        <tr>
+        <td><code>lattice/transport-rabbitmq</code></td>
+        <td>RabbitMQ</td>
+        <td>Reliable message queuing</td>
+        </tr>
+        <tr>
+        <td><code>lattice/transport-sqs</code></td>
+        <td>Amazon SQS</td>
+        <td>AWS-native serverless</td>
+        </tr>
+        <tr>
+        <td><code>lattice/transport-kafka</code></td>
+        <td>Apache Kafka</td>
+        <td>High-throughput event streaming</td>
+        </tr>
+        </tbody></table>
+        <h3 id="transportinterface">TransportInterface</h3>
+        <p>Every transport implements:</p>
+        <pre><code class="language-php">interface TransportInterface
+{
+    public function publish(MessageEnvelopeInterface $envelope, string $channel): void;
+    public function subscribe(string $channel, callable $handler): void;
+    public function acknowledge(MessageEnvelopeInterface $envelope): void;
+    public function reject(MessageEnvelopeInterface $envelope, bool $requeue = false): void;
+}</code></pre>
+        <h3 id="publishing-messages">Publishing Messages</h3>
+        <pre><code class="language-php">use Lattice\Microservices\MessageEnvelope;
+
+$envelope = new MessageEnvelope(
+    messageId: bin2hex(random_bytes(16)),
+    messageType: &#x27;orders.created&#x27;,
+    payload: [&#x27;orderId&#x27; =&gt; 123, &#x27;total&#x27; =&gt; 49.99],
+);
+
+$transport-&gt;publish($envelope, &#x27;orders&#x27;);</code></pre>
+        <h3 id="subscribing-to-messages">Subscribing to Messages</h3>
+        <pre><code class="language-php">$transport-&gt;subscribe(&#x27;orders&#x27;, function (MessageEnvelopeInterface $envelope) use ($transport): void {
+    try {
+        // Process message
+        $this-&gt;handleOrder($envelope-&gt;getPayload());
+        $transport-&gt;acknowledge($envelope);
+    } catch (\Throwable $e) {
+        $transport-&gt;reject($envelope, requeue: true);
+    }
+});</code></pre>
+        <hr>
+        <h2 id="inmemorytransport-for-testing">InMemoryTransport for Testing</h2>
+        <p>The <code>InMemoryTransport</code> (<code>Lattice\Microservices\Transport\InMemoryTransport</code>) captures all published messages and delivers them synchronously to subscribers.</p>
+        <pre><code class="language-php">use Lattice\Microservices\Transport\InMemoryTransport;
+use Lattice\Microservices\MessageEnvelope;
+
+$transport = new InMemoryTransport();
+$received = [];
+
+$transport-&gt;subscribe(&#x27;orders&#x27;, function ($envelope) use (&amp;$received): void {
+    $received[] = $envelope;
+});
+
+$envelope = new MessageEnvelope(
+    messageId: &#x27;test-1&#x27;,
+    messageType: &#x27;orders.create&#x27;,
+    payload: [&#x27;item&#x27; =&gt; &#x27;widget&#x27;],
+);
+
+$transport-&gt;publish($envelope, &#x27;orders&#x27;);
+
+// Assertions
+assert(count($received) === 1);
+assert($transport-&gt;getPublished()[0][&#x27;channel&#x27;] === &#x27;orders&#x27;);
+
+// Acknowledge / reject tracking
+$transport-&gt;acknowledge($envelope);
+assert(in_array(&#x27;test-1&#x27;, $transport-&gt;getAcknowledged()));</code></pre>
+        <h3 id="inmemorytransport-inspection-methods">InMemoryTransport Inspection Methods</h3>
+        <table>
+        <thead><tr>
+        <th>Method</th>
+        <th>Returns</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>getPublished()</code></td>
+        <td>All published <code>[channel, envelope]</code> pairs</td>
+        </tr>
+        <tr>
+        <td><code>getSubscriptions()</code></td>
+        <td>All registered subscriptions by channel</td>
+        </tr>
+        <tr>
+        <td><code>getAcknowledged()</code></td>
+        <td>List of acknowledged message IDs</td>
+        </tr>
+        <tr>
+        <td><code>getRejected()</code></td>
+        <td>List of <code>[messageId, requeue]</code> pairs</td>
+        </tr>
+        </tbody></table>
+        <hr>
+        <h2 id="module-registration">Module Registration</h2>
+        <p>Register your message controller in a module:</p>
+        <pre><code class="language-php">use Lattice\Module\Attribute\Module;
+
+#[Module(
+    controllers: [OrderMessageController::class],
+    providers: [OrderService::class],
+)]
+final class OrdersModule {}</code></pre>
+        <p>The compiler discovers <code>#[MessageController]</code> attributes and registers routes in the <code>MessageRouter</code> automatically.</p>
+        <hr>
+        <h2 id="error-handling">Error Handling</h2>
+        <p>Failed messages are rejected with an optional requeue flag. For dead-letter handling, configure your transport broker (RabbitMQ DLX, SQS DLQ, Kafka error topics) at the infrastructure level. The <code>attempt</code> field on <code>MessageEnvelope</code> tracks retry count so handlers can implement max-retry logic.</p>
+    </main>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

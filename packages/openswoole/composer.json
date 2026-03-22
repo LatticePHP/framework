@@ -1,0 +1,22 @@
+{
+    "name": "lattice/openswoole",
+    "description": "Experimental OpenSwoole integration for LatticePHP",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lattice\\OpenSwoole\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lattice\\OpenSwoole\\Tests\\": "tests/"
+        }
+    }
+}

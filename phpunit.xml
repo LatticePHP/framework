@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         cacheDirectory=".phpunit.cache">
+    <testsuites>
+        <testsuite name="Contracts">
+            <directory>packages/contracts/tests</directory>
+        </testsuite>
+        <testsuite name="Core">
+            <directory>packages/core/tests</directory>
+        </testsuite>
+        <testsuite name="Compiler">
+            <directory>packages/compiler/tests</directory>
+        </testsuite>
+        <testsuite name="Module">
+            <directory>packages/module/tests</directory>
+        </testsuite>
+        <testsuite name="Pipeline">
+            <directory>packages/pipeline/tests</directory>
+        </testsuite>
+        <testsuite name="Http">
+            <directory>packages/http/tests</directory>
+        </testsuite>
+        <testsuite name="Routing">
+            <directory>packages/routing/tests</directory>
+        </testsuite>
+        <testsuite name="Validation">
+            <directory>packages/validation/tests</directory>
+        </testsuite>
+        <testsuite name="Auth">
+            <directory>packages/auth/tests</directory>
+        </testsuite>
+        <testsuite name="Jwt">
+            <directory>packages/jwt/tests</directory>
+        </testsuite>
+        <testsuite name="Authorization">
+            <directory>packages/authorization/tests</directory>
+        </testsuite>
+        <testsuite name="Microservices">
+            <directory>packages/microservices/tests</directory>
+        </testsuite>
+        <testsuite name="Queue">
+            <directory>packages/queue/tests</directory>
+        </testsuite>
+        <testsuite name="Workflow">
+            <directory>packages/workflow/tests</directory>
+        </testsuite>
+        <testsuite name="Database">
+            <directory>packages/database/tests</directory>
+        </testsuite>
+        <testsuite name="Observability">
+            <directory>packages/observability/tests</directory>
+        </testsuite>
+        <testsuite name="Testing">
+            <directory>packages/testing/tests</directory>
+        </testsuite>
+        <testsuite name="HttpClient">
+            <directory>packages/http-client/tests</directory>
+        </testsuite>
+        <testsuite name="Mail">
+            <directory>packages/mail/tests</directory>
+        </testsuite>
+        <testsuite name="Notifications">
+            <directory>packages/notifications/tests</directory>
+        </testsuite>
+        <testsuite name="Cache">
+            <directory>packages/cache/tests</directory>
+        </testsuite>
+        <testsuite name="Events">
+            <directory>packages/events/tests</directory>
+        </testsuite>
+        <testsuite name="Scheduler">
+            <directory>packages/scheduler/tests</directory>
+        </testsuite>
+        <testsuite name="DevTools">
+            <directory>packages/devtools/tests</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>packages/*/src</directory>
+        </include>
+    </source>
+</phpunit>

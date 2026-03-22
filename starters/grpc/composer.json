@@ -1,0 +1,20 @@
+{
+    "name": "lattice/starter-grpc",
+    "description": "LatticePHP gRPC starter application",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "lattice/core": "dev-main",
+        "lattice/grpc": "dev-main",
+        "lattice/routing": "dev-main",
+        "lattice/validation": "dev-main",
+        "lattice/database": "dev-main",
+        "lattice/observability": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}

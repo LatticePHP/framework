@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Lattice\Core\Console\LatticeApplication;
+
+$app = LatticeApplication::create(dirname(__DIR__));
+exit($app->run());

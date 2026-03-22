@@ -1,0 +1,24 @@
+{
+    "name": "lattice/filesystem",
+    "description": "Filesystem abstraction layer for the LatticePHP framework",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "illuminate/filesystem": "^12.0",
+        "league/flysystem": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lattice\\Filesystem\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lattice\\Filesystem\\Tests\\": "tests/"
+        }
+    }
+}

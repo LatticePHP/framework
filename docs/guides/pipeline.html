@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline — LatticePHP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <style>
+        :root { --bg: #0a0a0f; --bg-card: #12121a; --border: #1e1e2e; --text: #e4e4ef; --text-dim: #9494a8; --accent: #4ade80; --sidebar-w: 260px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.8; }
+        code,pre { font-family:'JetBrains Mono',monospace; }
+
+        /* Sidebar */
+        .sidebar { position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); background:#08080c; border-right:1px solid var(--border); padding:20px 0; overflow-y:auto; z-index:10; }
+        .sidebar-brand { padding:0 20px 16px; font-weight:700; color:var(--accent); font-size:1rem; }
+        .sidebar-brand a { color:var(--accent); text-decoration:none; }
+        .sidebar-section { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:#64748b; padding:12px 20px 4px; font-weight:600; }
+        .sidebar a { display:block; padding:5px 20px; font-size:0.8rem; color:var(--text-dim); text-decoration:none; }
+        .sidebar a:hover { color:var(--text); background:#111118; }
+        .sidebar a.active { color:var(--accent); background:rgba(74,222,128,0.05); border-right:2px solid var(--accent); }
+
+        /* Content */
+        .content { margin-left:var(--sidebar-w); padding:40px 60px; max-width:900px; }
+        .content h1 { font-size:2rem; margin:0 0 8px; color:var(--accent); }
+        .content h2 { font-size:1.5rem; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+        .content h3 { font-size:1.2rem; margin:24px 0 8px; }
+        .content h4 { font-size:1rem; margin:20px 0 6px; }
+        .content p { margin:8px 0; }
+        .content ul,.content ol { margin:8px 0 8px 24px; }
+        .content li { margin:4px 0; }
+        .content a { color:var(--accent); }
+        .content code { background:#1a1a2e; padding:2px 6px; border-radius:4px; font-size:0.85em; }
+        .content pre { background:#0d1117; border:1px solid var(--border); border-radius:8px; padding:16px; margin:12px 0; overflow-x:auto; }
+        .content pre code { background:none; padding:0; font-size:0.85rem; }
+        .content table { width:100%; border-collapse:collapse; margin:16px 0; }
+        .content th,.content td { padding:8px 12px; border:1px solid var(--border); text-align:left; font-size:0.9rem; }
+        .content th { background:var(--bg-card); font-weight:600; }
+        .content blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0; color:var(--text-dim); background:var(--bg-card); border-radius:0 6px 6px 0; }
+        .content hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+        .content img { max-width:100%; }
+        .content input[type="checkbox"] { margin-right:6px; }
+
+        .back-link { display:inline-block; margin-bottom:20px; color:var(--accent); font-size:0.85rem; text-decoration:none; }
+        .back-link:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .sidebar { display:none; }
+            .content { margin-left:0; padding:20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><a href="../index.html">&#x2B21; LatticePHP</a></div>
+        <div class="sidebar-section">Getting Started</div>
+        <a href="getting-started.html">Getting Started</a>
+        <a href="why-latticephp.html">Why LatticePHP</a>
+        <div class="sidebar-section">Core</div>
+        <a href="architecture.html">Architecture</a>
+        <a href="modules.html">Modules</a>
+        <a href="pipeline.html" class="active">Pipeline</a>
+        <div class="sidebar-section">HTTP & Data</div>
+        <a href="http-api.html">HTTP &amp; API</a>
+        <a href="database.html">Database</a>
+        <div class="sidebar-section">Auth & Security</div>
+        <a href="auth.html">Authentication</a>
+        <a href="security.html">Security</a>
+        <div class="sidebar-section">Advanced</div>
+        <a href="workflows.html">Workflows</a>
+        <a href="microservices.html">Microservices</a>
+        <a href="observability.html">Observability</a>
+        <div class="sidebar-section">Testing & DX</div>
+        <a href="testing.html">Testing</a>
+        <a href="runtime.html">Runtime</a>
+        <a href="package-authoring.html">Package Authoring</a>
+        <div class="sidebar-section">Migration</div>
+        <a href="migration-from-laravel.html">Migration from Laravel</a>
+    </nav>
+    <main class="content">
+        <a href="../index.html" class="back-link">&larr; Back to Home</a>
+        <h1 id="request-pipeline">Request Pipeline</h1>
+        <h2 id="overview">Overview</h2>
+        <p>Every HTTP request in LatticePHP flows through a four-stage pipeline before reaching your controller. The <code>PipelineExecutor</code> orchestrates the stages in this exact order:</p>
+        <pre><code>Guards -&gt; Interceptors(before) -&gt; Pipes -&gt; Controller -&gt; Interceptors(after) -&gt; Filters(on error)</code></pre>
+        <p>If a guard denies access, execution stops. If the controller throws, exception filters catch it. Interceptors wrap the controller in an onion model -- code runs before AND after.</p>
+        <h2 id="pipeline-architecture">Pipeline Architecture</h2>
+        <p><code>Lattice\Pipeline\PipelineExecutor</code> is the core engine:</p>
+        <pre><code class="language-php">final class PipelineExecutor
+{
+    public function execute(ExecutionContextInterface $context, callable $handler, PipelineConfig $config): mixed
+    {
+        try {
+            // 1. Run guards -- all must pass
+            $this-&gt;guardChain-&gt;execute($config-&gt;getGuards(), $context);
+
+            // 2. Wrap handler: pipes run inside interceptor chain
+            $pipedHandler = function () use ($config, $handler, $context): mixed {
+                if (!empty($config-&gt;getPipes())) {
+                    $this-&gt;pipeChain-&gt;execute($config-&gt;getPipes(), null, []);
+                }
+                return $handler($context);
+            };
+
+            // 3. Run through interceptor onion
+            return $this-&gt;interceptorChain-&gt;execute($config-&gt;getInterceptors(), $context, $pipedHandler);
+        } catch (\Throwable $exception) {
+            // 4. Route to exception filters
+            if (!empty($config-&gt;getFilters())) {
+                return $this-&gt;filterChain-&gt;handle($exception, $context, $config-&gt;getFilters());
+            }
+            throw $exception;
+        }
+    }
+}</code></pre>
+        <h2 id="how-httpkernel-wires-the-pipeline">How HttpKernel Wires the Pipeline</h2>
+        <p><code>Lattice\Http\HttpKernel::handle()</code> builds the pipeline for every request:</p>
+        <ol>
+        <li>Matches the route via <code>Router::match()</code></li>
+        <li>Creates an <code>HttpExecutionContext</code> with request, controller class, and method name</li>
+        <li>Resolves guard/interceptor/pipe/filter class names from the DI container</li>
+        <li>Merges global guards before route guards: <code>array_merge($globalGuards, $routeGuards)</code></li>
+        <li>Appends <code>ProblemDetailsFilter</code> as the fallback error handler</li>
+        <li>Passes everything to <code>PipelineExecutor::execute()</code></li>
+        </ol>
+        <pre><code class="language-php">$config = new PipelineConfig(
+    guards: $guards,
+    pipes: $pipes,
+    interceptors: $interceptors,
+    filters: $filters,
+);
+
+$executor = new PipelineExecutor(
+    guardChain: new GuardChain(),
+    interceptorChain: new InterceptorChain(),
+    pipeChain: new PipeChain(),
+    filterChain: new FilterChain(),
+);
+
+$result = $executor-&gt;execute($context, $handler, $config);</code></pre>
+        <h2 id="guards">Guards</h2>
+        <p>Guards implement <code>GuardInterface</code> and decide whether a request can proceed. Return <code>true</code> to allow, <code>false</code> to deny.</p>
+        <pre><code class="language-php">final class JwtAuthenticationGuard implements GuardInterface
+{
+    public function canActivate(ExecutionContextInterface $context): bool
+    {
+        $token = $context-&gt;getRequest()-&gt;bearerToken();
+        if ($token === null) return false;
+
+        $claims = $this-&gt;encoder-&gt;decode($token, ...);
+        $context-&gt;setPrincipal(new Principal(...));
+        return true;
+    }
+}</code></pre>
+        <h3 id="guardchain-execution">GuardChain Execution</h3>
+        <p><code>GuardChain::execute()</code> runs guards in sequence. ALL must return <code>true</code>. The first <code>false</code> throws <code>ForbiddenException</code> (403) and stops the chain:</p>
+        <pre><code class="language-php">final class GuardChain
+{
+    public function execute(array $guards, ExecutionContextInterface $context): bool
+    {
+        foreach ($guards as $guard) {
+            if (!$guard-&gt;canActivate($context)) {
+                throw new ForbiddenException();
+            }
+        }
+        return true;
+    }
+}</code></pre>
+        <h3 id="guard-ordering">Guard Ordering</h3>
+        <p>Global guards run BEFORE route guards. This is guaranteed by <code>HttpKernel</code>:</p>
+        <pre><code class="language-php">$guards = array_merge($globalGuards, $routeGuards);</code></pre>
+        <p>From the integration test proving this:</p>
+        <pre><code class="language-php">// Order log captures: [&#x27;global&#x27;, &#x27;route&#x27;]
+$config = new PipelineConfig(guards: [$globalGuard, $routeGuard]);
+$executor-&gt;execute($context, fn () =&gt; &#x27;ok&#x27;, $config);
+$this-&gt;assertSame([&#x27;global&#x27;, &#x27;route&#x27;], $order);</code></pre>
+        <h3 id="applying-guards-with-useguards">Applying Guards with #[UseGuards]</h3>
+        <pre><code class="language-php">use Lattice\Pipeline\Attributes\UseGuards;
+
+#[Get(&#x27;/me&#x27;)]
+#[UseGuards(guards: [JwtAuthenticationGuard::class])]
+public function me(#[CurrentUser] Principal $user): Response { ... }</code></pre>
+        <h2 id="interceptors">Interceptors</h2>
+        <p>Interceptors implement <code>InterceptorInterface</code> and wrap the controller call in an onion model. They can run logic before and after the handler:</p>
+        <pre><code class="language-php">final class LoggingInterceptor implements InterceptorInterface
+{
+    public function intercept(ExecutionContextInterface $context, callable $next): mixed
+    {
+        // BEFORE controller
+        $this-&gt;log[] = &#x27;request:&#x27; . $context-&gt;getHandler();
+
+        $result = $next($context);  // Call the next layer (or controller)
+
+        // AFTER controller
+        $this-&gt;log[] = &#x27;response:&#x27; . $result-&gt;statusCode;
+        return $result;
+    }
+}</code></pre>
+        <h3 id="onion-ordering">Onion Ordering</h3>
+        <p>With interceptors <code>[A, B]</code>, execution flows as <code>A.before -&gt; B.before -&gt; handler -&gt; B.after -&gt; A.after</code>:</p>
+        <pre><code class="language-php">$log = [];
+$interceptorA = new MCIOnionInterceptor($log, &#x27;A&#x27;);
+$interceptorB = new MCIOnionInterceptor($log, &#x27;B&#x27;);
+
+$config = new PipelineConfig(interceptors: [$interceptorA, $interceptorB]);
+$executor-&gt;execute($context, function () use (&amp;$log) {
+    $log[] = &#x27;handler&#x27;;
+    return &#x27;result&#x27;;
+}, $config);
+
+// Result: [&#x27;A.before&#x27;, &#x27;B.before&#x27;, &#x27;handler&#x27;, &#x27;B.after&#x27;, &#x27;A.after&#x27;]</code></pre>
+        <p>The <code>InterceptorChain</code> builds this by wrapping from inside out:</p>
+        <pre><code class="language-php">$pipeline = $handler;
+foreach (array_reverse($interceptors) as $interceptor) {
+    $pipeline = fn($ctx) =&gt; $interceptor-&gt;intercept($ctx, $next);
+}
+return $pipeline($context);</code></pre>
+        <h3 id="response-modification">Response Modification</h3>
+        <p>Interceptors can modify responses after the controller runs:</p>
+        <pre><code class="language-php">final class ResponseHeaderInterceptor implements InterceptorInterface
+{
+    public function intercept(ExecutionContextInterface $context, callable $next): mixed
+    {
+        $result = $next($context);
+        if ($result instanceof Response) {
+            return $result-&gt;withHeader(&#x27;X-Custom&#x27;, &#x27;value&#x27;);
+        }
+        return $result;
+    }
+}</code></pre>
+        <h2 id="pipes">Pipes</h2>
+        <p>Pipes implement <code>PipeInterface</code> and transform input data before the controller executes:</p>
+        <pre><code class="language-php">final class TrimPipe implements PipeInterface
+{
+    public function transform(mixed $value, array $metadata = []): mixed
+    {
+        if (is_string($value)) {
+            return trim($value);
+        }
+        return $value;
+    }
+}</code></pre>
+        <p>Apply with <code>#[UsePipes]</code>:</p>
+        <pre><code class="language-php">#[Post(&#x27;/contacts&#x27;)]
+#[UsePipes(pipes: [TrimPipe::class, StripTagsPipe::class])]
+public function create(#[Body] CreateContactDto $dto): Response { ... }</code></pre>
+        <h2 id="exception-filters">Exception Filters</h2>
+        <p>Filters implement <code>ExceptionFilterInterface</code> and catch exceptions thrown by the controller or earlier pipeline stages:</p>
+        <pre><code class="language-php">final class CustomExceptionFilter implements ExceptionFilterInterface
+{
+    public function catch(\Throwable $exception, ExecutionContextInterface $context): mixed
+    {
+        return Response::json([
+            &#x27;error&#x27; =&gt; $exception-&gt;getMessage(),
+            &#x27;type&#x27; =&gt; get_class($exception),
+        ], 500);
+    }
+}</code></pre>
+        <h3 id="problemdetailsfilter-default">ProblemDetailsFilter (Default)</h3>
+        <p><code>HttpKernel</code> automatically appends <code>ProblemDetailsFilter</code> as the last filter on every route. It formats errors as RFC 9457 Problem Details:</p>
+        <pre><code class="language-php">$result = $executor-&gt;execute(
+    $context,
+    fn () =&gt; throw new \RuntimeException(&#x27;Unhandled error&#x27;),
+    new PipelineConfig(filters: [new ProblemDetailsFilter()]),
+);
+
+// Response: 500, Content-Type: application/problem+json
+// Body: { &quot;status&quot;: 500, &quot;title&quot;: &quot;Internal Server Error&quot;, &quot;correlationId&quot;: &quot;...&quot; }</code></pre>
+        <p>For HTTP exceptions like <code>ForbiddenException</code>, it preserves the correct status code:</p>
+        <pre><code class="language-php">// ForbiddenException -&gt; 403, detail: &quot;Access denied&quot;
+$this-&gt;assertSame(403, $result-&gt;statusCode);
+$this-&gt;assertSame(&#x27;Access denied&#x27;, $result-&gt;body[&#x27;detail&#x27;]);</code></pre>
+        <h2 id="cors-handling">CORS Handling</h2>
+        <p><code>HttpKernel</code> intercepts OPTIONS requests with an <code>Origin</code> header before routing. If a <code>CorsGuard</code> is registered as a global guard, it handles the preflight:</p>
+        <pre><code class="language-php">$corsGuard = new CorsGuard(new CorsConfig(
+    allowedOrigins: [&#x27;https://app.example.com&#x27;],
+));</code></pre>
+        <p>A disallowed origin causes the <code>CorsGuard</code> to deny the request (403). For non-preflight requests, CORS runs as a normal guard in the chain.</p>
+        <h2 id="rate-limiting">Rate Limiting</h2>
+        <p>Apply the <code>#[RateLimit]</code> attribute to a controller. The <code>RateLimitGuard</code> reads the attribute and enforces limits:</p>
+        <pre><code class="language-php">use Lattice\RateLimit\Attributes\RateLimit;
+
+#[RateLimit(maxAttempts: 2, decaySeconds: 60, key: &#x27;test-rate-limit&#x27;)]
+final class ApiController
+{
+    public function index(): array { return [&#x27;ok&#x27; =&gt; true]; }
+}</code></pre>
+        <p>From the integration test -- requests 1-2 pass, request 3 throws <code>ForbiddenException</code>:</p>
+        <pre><code class="language-php">$executor-&gt;execute($context, $handler, $config); // 200
+$executor-&gt;execute($context, $handler, $config); // 200
+$executor-&gt;execute($context, $handler, $config); // ForbiddenException (over limit)</code></pre>
+        <h2 id="principal-flow-through-the-pipeline">Principal Flow Through the Pipeline</h2>
+        <p>The principal (authenticated user) is set by a guard and flows through every subsequent layer:</p>
+        <pre><code>Guard (sets principal) -&gt; Interceptor (reads principal) -&gt; Controller (reads via #[CurrentUser])</code></pre>
+        <p>From the integration test:</p>
+        <pre><code class="language-php">$authGuard = new MCIPrincipalSettingGuard($principal);
+$interceptor = new MCIPrincipalReadingInterceptor();
+
+$config = new PipelineConfig(guards: [$authGuard], interceptors: [$interceptor]);
+$executor-&gt;execute($context, function (ExecutionContextInterface $ctx) {
+    $controllerPrincipal = $ctx-&gt;getPrincipal(); // Available here
+    return Response::json([&#x27;user_id&#x27; =&gt; $controllerPrincipal-&gt;getId()]);
+}, $config);
+
+// Guard sets it, interceptor reads it, controller reads it
+$this-&gt;assertSame(42, $context-&gt;getPrincipal()-&gt;getId());
+$this-&gt;assertSame(42, $interceptor-&gt;readPrincipal-&gt;getId());</code></pre>
+        <h2 id="full-pipeline-example">Full Pipeline Example</h2>
+        <p>A real-world request flows through CORS, rate limiting, JWT auth, logging, and error handling:</p>
+        <pre><code class="language-php">$config = new PipelineConfig(
+    guards: [$corsGuard, $rateLimitGuard, $jwtGuard],
+    interceptors: [$loggingInterceptor],
+    filters: [$problemDetailsFilter],
+);
+
+$result = $executor-&gt;execute($context, function (ExecutionContextInterface $ctx) {
+    return Response::json([
+        &#x27;user_id&#x27; =&gt; $ctx-&gt;getPrincipal()-&gt;getId(),
+        &#x27;items&#x27; =&gt; [&#x27;item1&#x27;, &#x27;item2&#x27;],
+    ]);
+}, $config);
+
+// Guards ran: CORS allowed, rate limit passed, JWT decoded
+// Interceptor logged: request + response
+// Result: 200, user_id = &#x27;user-99&#x27;</code></pre>
+    </main>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

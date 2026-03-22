@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package greeter;
+
+option php_namespace = "App\\Proto\\Greeter";
+option php_metadata_namespace = "App\\Proto\\GPBMetadata";
+
+service Greeter {
+    // Unary RPC
+    rpc SayHello (HelloRequest) returns (HelloReply);
+
+    // Server streaming RPC
+    rpc SayHelloStream (HelloStreamRequest) returns (stream HelloReply);
+}
+
+message HelloRequest {
+    string name = 1;
+}
+
+message HelloStreamRequest {
+    string name = 1;
+    int32 count = 2;
+}
+
+message HelloReply {
+    string message = 1;
+}

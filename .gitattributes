@@ -1,0 +1,59 @@
+# Enforce LF line endings for all text files
+* text=auto eol=lf
+
+# Explicitly mark file types
+*.php text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.xml text eol=lf
+*.neon text eol=lf
+*.txt text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.vue text eol=lf
+*.html text eol=lf
+*.sh text eol=lf
+*.bash text eol=lf
+*.env text eol=lf
+*.lock text eol=lf
+
+# Dockerfile
+Dockerfile text eol=lf
+
+# Git config
+.gitattributes text eol=lf
+.gitignore text eol=lf
+
+# Binary files (do not normalize)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.phar binary
+
+# Export ignore (excluded from dist archives via composer --prefer-dist)
+/tests export-ignore
+/docs export-ignore
+/examples export-ignore
+/starters export-ignore
+/website export-ignore
+/.github export-ignore
+/Dockerfile export-ignore
+/docker-compose.yml export-ignore
+/phpunit.xml export-ignore
+/phpstan.neon export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/CONTRIBUTING.md export-ignore
+/CHANGELOG.md export-ignore

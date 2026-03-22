@@ -1,0 +1,46 @@
+{
+    "name": "lattice/http",
+    "description": "HTTP kernel and request handling for the LatticePHP framework",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../contracts"
+        },
+        {
+            "type": "path",
+            "url": "../routing"
+        },
+        {
+            "type": "path",
+            "url": "../database"
+        },
+        {
+            "type": "path",
+            "url": "../validation"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "lattice/contracts": "@dev",
+        "lattice/routing": "@dev",
+        "lattice/database": "@dev",
+        "lattice/validation": "@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lattice\\Http\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lattice\\Http\\Tests\\": "tests/"
+        }
+    }
+}

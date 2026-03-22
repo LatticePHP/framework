@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started — LatticePHP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <style>
+        :root { --bg: #0a0a0f; --bg-card: #12121a; --border: #1e1e2e; --text: #e4e4ef; --text-dim: #9494a8; --accent: #4ade80; --sidebar-w: 260px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.8; }
+        code,pre { font-family:'JetBrains Mono',monospace; }
+
+        /* Sidebar */
+        .sidebar { position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); background:#08080c; border-right:1px solid var(--border); padding:20px 0; overflow-y:auto; z-index:10; }
+        .sidebar-brand { padding:0 20px 16px; font-weight:700; color:var(--accent); font-size:1rem; }
+        .sidebar-brand a { color:var(--accent); text-decoration:none; }
+        .sidebar-section { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:#64748b; padding:12px 20px 4px; font-weight:600; }
+        .sidebar a { display:block; padding:5px 20px; font-size:0.8rem; color:var(--text-dim); text-decoration:none; }
+        .sidebar a:hover { color:var(--text); background:#111118; }
+        .sidebar a.active { color:var(--accent); background:rgba(74,222,128,0.05); border-right:2px solid var(--accent); }
+
+        /* Content */
+        .content { margin-left:var(--sidebar-w); padding:40px 60px; max-width:900px; }
+        .content h1 { font-size:2rem; margin:0 0 8px; color:var(--accent); }
+        .content h2 { font-size:1.5rem; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+        .content h3 { font-size:1.2rem; margin:24px 0 8px; }
+        .content h4 { font-size:1rem; margin:20px 0 6px; }
+        .content p { margin:8px 0; }
+        .content ul,.content ol { margin:8px 0 8px 24px; }
+        .content li { margin:4px 0; }
+        .content a { color:var(--accent); }
+        .content code { background:#1a1a2e; padding:2px 6px; border-radius:4px; font-size:0.85em; }
+        .content pre { background:#0d1117; border:1px solid var(--border); border-radius:8px; padding:16px; margin:12px 0; overflow-x:auto; }
+        .content pre code { background:none; padding:0; font-size:0.85rem; }
+        .content table { width:100%; border-collapse:collapse; margin:16px 0; }
+        .content th,.content td { padding:8px 12px; border:1px solid var(--border); text-align:left; font-size:0.9rem; }
+        .content th { background:var(--bg-card); font-weight:600; }
+        .content blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0; color:var(--text-dim); background:var(--bg-card); border-radius:0 6px 6px 0; }
+        .content hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+        .content img { max-width:100%; }
+        .content input[type="checkbox"] { margin-right:6px; }
+
+        .back-link { display:inline-block; margin-bottom:20px; color:var(--accent); font-size:0.85rem; text-decoration:none; }
+        .back-link:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .sidebar { display:none; }
+            .content { margin-left:0; padding:20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><a href="../index.html">&#x2B21; LatticePHP</a></div>
+        <div class="sidebar-section">Getting Started</div>
+        <a href="getting-started.html" class="active">Getting Started</a>
+        <a href="why-latticephp.html">Why LatticePHP</a>
+        <div class="sidebar-section">Core</div>
+        <a href="architecture.html">Architecture</a>
+        <a href="modules.html">Modules</a>
+        <a href="pipeline.html">Pipeline</a>
+        <div class="sidebar-section">HTTP & Data</div>
+        <a href="http-api.html">HTTP &amp; API</a>
+        <a href="database.html">Database</a>
+        <div class="sidebar-section">Auth & Security</div>
+        <a href="auth.html">Authentication</a>
+        <a href="security.html">Security</a>
+        <div class="sidebar-section">Advanced</div>
+        <a href="workflows.html">Workflows</a>
+        <a href="microservices.html">Microservices</a>
+        <a href="observability.html">Observability</a>
+        <div class="sidebar-section">Testing & DX</div>
+        <a href="testing.html">Testing</a>
+        <a href="runtime.html">Runtime</a>
+        <a href="package-authoring.html">Package Authoring</a>
+        <div class="sidebar-section">Migration</div>
+        <a href="migration-from-laravel.html">Migration from Laravel</a>
+    </nav>
+    <main class="content">
+        <a href="../index.html" class="back-link">&larr; Back to Home</a>
+        <h1 id="getting-started-with-latticephp">Getting Started with LatticePHP</h1>
+        <p>This guide walks you through creating your first LatticePHP API, using real patterns from the working CRM example and starter kit.</p>
+        <h2 id="prerequisites">Prerequisites</h2>
+        <ul>
+        <li><strong>PHP 8.4+</strong> with extensions: <code>ext-pdo</code>, <code>ext-pdo_sqlite</code>, <code>ext-mbstring</code>, <code>ext-json</code></li>
+        <li><strong>Composer 2.x</strong></li>
+        <li><strong>SQLite</strong> (default) or MySQL/PostgreSQL</li>
+        </ul>
+        <p>Verify your environment:</p>
+        <pre><code class="language-bash">php -v          # Must show 8.4.x or higher
+composer -V     # Must show 2.x
+php -m | grep pdo_sqlite</code></pre>
+        <h2 id="installation">Installation</h2>
+        <pre><code class="language-bash">composer create-project lattice/starter-api myapp
+cd myapp</code></pre>
+        <h2 id="project-structure">Project Structure</h2>
+        <pre><code>myapp/
+  app/
+    AppModule.php              # Root module (registers controllers)
+    Http/
+      HealthController.php     # Health check endpoint
+      UserController.php       # Example CRUD controller
+    Dto/
+      CreateUserDto.php        # Validated request DTO
+      UserResource.php         # Response serializer
+    Models/
+      User.php                 # Eloquent model
+    Modules/
+      App/
+        AppModule.php          # Module with imports (e.g., AuthModule)
+    Providers/
+      AppServiceProvider.php   # Service provider for bindings
+  bootstrap/
+    app.php                    # Application bootstrap
+  bin/
+    lattice                    # CLI entry point
+  config/
+    app.php                    # App config
+    database.php               # Database connections
+    cors.php                   # CORS settings
+    auth.php                   # Auth config
+  database/
+    migrations/                # Migration files
+    seeders/                   # Seeder classes
+    factories/                 # Model factories
+  public/
+    index.php                  # HTTP entry point
+  storage/                     # Logs, cache, temp files
+  tests/                       # PHPUnit tests</code></pre>
+        <h2 id="how-bootstrap-works">How Bootstrap Works</h2>
+        <p>The entry point is <code>public/index.php</code>:</p>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+require_once __DIR__ . &#x27;/../vendor/autoload.php&#x27;;
+
+use Lattice\Core\Http\RequestFactory;
+use Lattice\Core\Http\ResponseEmitter;
+
+$app = require __DIR__ . &#x27;/../bootstrap/app.php&#x27;;
+$request = RequestFactory::fromGlobals();
+$response = $app-&gt;handleRequest($request);
+ResponseEmitter::emit($response);</code></pre>
+        <p>The bootstrap file (<code>bootstrap/app.php</code>) configures and creates the application:</p>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+use Lattice\Core\Application;
+use App\Modules\App\AppModule;
+
+$basePath = dirname(__DIR__);
+if (file_exists($basePath . &#x27;/.env&#x27;)) {
+    \Lattice\Core\Environment\EnvLoader::loadFile($basePath . &#x27;/.env&#x27;);
+}
+
+if (class_exists(\Illuminate\Database\Capsule\Manager::class)) {
+    $capsule = new \Illuminate\Database\Capsule\Manager();
+    $dbConfig = require $basePath . &#x27;/config/database.php&#x27;;
+    $default = $dbConfig[&#x27;default&#x27;] ?? &#x27;sqlite&#x27;;
+    $capsule-&gt;addConnection($dbConfig[&#x27;connections&#x27;][$default] ?? [
+        &#x27;driver&#x27; =&gt; &#x27;sqlite&#x27;,
+        &#x27;database&#x27; =&gt; $basePath . &#x27;/database/database.sqlite&#x27;,
+    ]);
+    $capsule-&gt;setAsGlobal();
+    $capsule-&gt;bootEloquent();
+}
+
+return Application::configure(basePath: $basePath)
+    -&gt;withModules([AppModule::class])
+    -&gt;withHttp()
+    -&gt;create();</code></pre>
+        <p>The builder chain: <code>Application::configure()</code> returns an <code>ApplicationBuilder</code>. Call <code>withModules()</code> to register your root module, <code>withHttp()</code> to enable the HTTP transport, and <code>create()</code> to produce the <code>Application</code> instance.</p>
+        <h2 id="first-run">First Run</h2>
+        <pre><code class="language-bash">cd myapp
+php bin/lattice serve</code></pre>
+        <p>Visit <code>http://localhost:8000/health</code> to see:</p>
+        <pre><code class="language-json">{&quot;status&quot;: &quot;ok&quot;, &quot;timestamp&quot;: &quot;2026-03-22T10:00:00+00:00&quot;}</code></pre>
+        <p>That response comes from the starter's <code>HealthController</code>:</p>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App\Http;
+
+use Lattice\Routing\Attributes\Controller;
+use Lattice\Routing\Attributes\Get;
+
+#[Controller(&#x27;/health&#x27;)]
+final class HealthController
+{
+    #[Get(&#x27;/&#x27;)]
+    public function check(): array
+    {
+        return [
+            &#x27;status&#x27; =&gt; &#x27;ok&#x27;,
+            &#x27;timestamp&#x27; =&gt; (new \DateTimeImmutable())-&gt;format(\DateTimeInterface::RFC3339),
+        ];
+    }
+}</code></pre>
+        <p>Returning an array from a controller method automatically serializes it to JSON with a 200 status.</p>
+        <h2 id="create-your-first-module">Create Your First Module</h2>
+        <p>Modules are the organizational unit in LatticePHP. Every feature lives in a module. Here is how the CRM structures its Contacts feature:</p>
+        <pre><code>app/Modules/Contacts/
+  ContactsModule.php
+  ContactController.php
+  ContactService.php
+  ContactResource.php
+  Dto/
+    CreateContactDto.php
+    UpdateContactDto.php</code></pre>
+        <h3 id="define-the-module">Define the Module</h3>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App\Modules\Contacts;
+
+use Lattice\Module\Attribute\Module;
+
+#[Module(
+    providers: [ContactService::class],
+    controllers: [ContactController::class],
+    exports: [ContactService::class],
+)]
+final class ContactsModule {}</code></pre>
+        <h3 id="register-it-in-your-root-module">Register It in Your Root Module</h3>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App;
+
+use App\Modules\Contacts\ContactsModule;
+use Lattice\Module\Attribute\Module;
+
+#[Module(
+    imports: [ContactsModule::class],
+)]
+final class AppModule {}</code></pre>
+        <p>The <code>imports</code> array triggers recursive module discovery. When the application boots, it walks the import tree, registers all providers, and collects all controllers.</p>
+        <h2 id="create-a-controller">Create a Controller</h2>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App\Modules\Contacts;
+
+use App\Models\Contact;
+use App\Modules\Contacts\Dto\CreateContactDto;
+use Lattice\Http\Response;
+use Lattice\Http\ResponseFactory;
+use Lattice\Routing\Attributes\Body;
+use Lattice\Routing\Attributes\Controller;
+use Lattice\Routing\Attributes\Delete;
+use Lattice\Routing\Attributes\Get;
+use Lattice\Routing\Attributes\Param;
+use Lattice\Routing\Attributes\Post;
+
+#[Controller(&#x27;/api/contacts&#x27;)]
+final class ContactController
+{
+    #[Get(&#x27;/&#x27;)]
+    public function index(): array
+    {
+        return ContactResource::collection(Contact::all());
+    }
+
+    #[Get(&#x27;/:id&#x27;)]
+    public function show(#[Param] int $id): array
+    {
+        $contact = Contact::findOrFail($id);
+        return ContactResource::make($contact)-&gt;toArray();
+    }
+
+    #[Post(&#x27;/&#x27;)]
+    public function store(#[Body] CreateContactDto $dto): Response
+    {
+        $contact = Contact::create([
+            &#x27;first_name&#x27; =&gt; $dto-&gt;first_name,
+            &#x27;last_name&#x27; =&gt; $dto-&gt;last_name,
+            &#x27;email&#x27; =&gt; $dto-&gt;email,
+        ]);
+
+        return ResponseFactory::created(
+            [&#x27;data&#x27; =&gt; ContactResource::make($contact)-&gt;toArray()],
+        );
+    }
+
+    #[Delete(&#x27;/:id&#x27;)]
+    public function destroy(#[Param] int $id): Response
+    {
+        Contact::findOrFail($id)-&gt;delete();
+        return ResponseFactory::noContent();
+    }
+}</code></pre>
+        <h2 id="create-a-model">Create a Model</h2>
+        <p>Models extend <code>Lattice\Database\Model</code> (which extends Eloquent's base Model):</p>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App\Models;
+
+use Lattice\Database\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+final class Contact extends Model
+{
+    use SoftDeletes;
+
+    protected $table = &#x27;contacts&#x27;;
+
+    protected $fillable = [&#x27;first_name&#x27;, &#x27;last_name&#x27;, &#x27;email&#x27;, &#x27;phone&#x27;, &#x27;status&#x27;];
+
+    protected $casts = [&#x27;deleted_at&#x27; =&gt; &#x27;datetime&#x27;];
+}</code></pre>
+        <h2 id="create-a-migration">Create a Migration</h2>
+        <p>Place migration files in <code>database/migrations/</code>:</p>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create(&#x27;contacts&#x27;, function (Blueprint $table) {
+            $table-&gt;id();
+            $table-&gt;string(&#x27;first_name&#x27;);
+            $table-&gt;string(&#x27;last_name&#x27;);
+            $table-&gt;string(&#x27;email&#x27;)-&gt;unique();
+            $table-&gt;string(&#x27;phone&#x27;)-&gt;nullable();
+            $table-&gt;string(&#x27;status&#x27;)-&gt;default(&#x27;lead&#x27;);
+            $table-&gt;timestamps();
+            $table-&gt;softDeletes();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists(&#x27;contacts&#x27;);
+    }
+};</code></pre>
+        <h2 id="run-migrations-and-seeds">Run Migrations and Seeds</h2>
+        <pre><code class="language-bash">php bin/lattice migrate
+php bin/lattice db:seed</code></pre>
+        <h2 id="run-tests">Run Tests</h2>
+        <pre><code class="language-bash">php bin/lattice test
+# or directly:
+./vendor/bin/phpunit</code></pre>
+        <h2 id="next-steps">Next Steps</h2>
+        <ul>
+        <li><a href="architecture.html">Architecture</a> -- understand the 4-layer design and request lifecycle</li>
+        <li><a href="modules.html">Modules</a> -- module system deep dive with imports, exports, providers</li>
+        <li><a href="http-api.html">HTTP API</a> -- controllers, DTOs, resources, pagination, error handling</li>
+        <li><a href="auth.html">Auth</a> -- JWT, guards, workspace isolation</li>
+        <li><a href="database.html">Database</a> -- Eloquent, migrations, filtering, search</li>
+        </ul>
+    </main>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

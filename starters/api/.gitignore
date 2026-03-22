@@ -1,0 +1,41 @@
+/vendor/
+/node_modules/
+
+# Environment files
+.env
+.env.backup
+.env.production
+
+# IDE
+/.idea/
+/.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Storage
+/storage/logs/*.log
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# Database
+/database/database.sqlite
+
+# Composer
+composer.phar
+
+# PHPUnit
+.phpunit.result.cache
+.phpunit.cache/
+
+# Coverage
+/coverage/
+/.php-cs-fixer.cache
+
+# Build artifacts
+/build/

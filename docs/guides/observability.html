@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observability — LatticePHP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <style>
+        :root { --bg: #0a0a0f; --bg-card: #12121a; --border: #1e1e2e; --text: #e4e4ef; --text-dim: #9494a8; --accent: #4ade80; --sidebar-w: 260px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.8; }
+        code,pre { font-family:'JetBrains Mono',monospace; }
+
+        /* Sidebar */
+        .sidebar { position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); background:#08080c; border-right:1px solid var(--border); padding:20px 0; overflow-y:auto; z-index:10; }
+        .sidebar-brand { padding:0 20px 16px; font-weight:700; color:var(--accent); font-size:1rem; }
+        .sidebar-brand a { color:var(--accent); text-decoration:none; }
+        .sidebar-section { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:#64748b; padding:12px 20px 4px; font-weight:600; }
+        .sidebar a { display:block; padding:5px 20px; font-size:0.8rem; color:var(--text-dim); text-decoration:none; }
+        .sidebar a:hover { color:var(--text); background:#111118; }
+        .sidebar a.active { color:var(--accent); background:rgba(74,222,128,0.05); border-right:2px solid var(--accent); }
+
+        /* Content */
+        .content { margin-left:var(--sidebar-w); padding:40px 60px; max-width:900px; }
+        .content h1 { font-size:2rem; margin:0 0 8px; color:var(--accent); }
+        .content h2 { font-size:1.5rem; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+        .content h3 { font-size:1.2rem; margin:24px 0 8px; }
+        .content h4 { font-size:1rem; margin:20px 0 6px; }
+        .content p { margin:8px 0; }
+        .content ul,.content ol { margin:8px 0 8px 24px; }
+        .content li { margin:4px 0; }
+        .content a { color:var(--accent); }
+        .content code { background:#1a1a2e; padding:2px 6px; border-radius:4px; font-size:0.85em; }
+        .content pre { background:#0d1117; border:1px solid var(--border); border-radius:8px; padding:16px; margin:12px 0; overflow-x:auto; }
+        .content pre code { background:none; padding:0; font-size:0.85rem; }
+        .content table { width:100%; border-collapse:collapse; margin:16px 0; }
+        .content th,.content td { padding:8px 12px; border:1px solid var(--border); text-align:left; font-size:0.9rem; }
+        .content th { background:var(--bg-card); font-weight:600; }
+        .content blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0; color:var(--text-dim); background:var(--bg-card); border-radius:0 6px 6px 0; }
+        .content hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+        .content img { max-width:100%; }
+        .content input[type="checkbox"] { margin-right:6px; }
+
+        .back-link { display:inline-block; margin-bottom:20px; color:var(--accent); font-size:0.85rem; text-decoration:none; }
+        .back-link:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .sidebar { display:none; }
+            .content { margin-left:0; padding:20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><a href="../index.html">&#x2B21; LatticePHP</a></div>
+        <div class="sidebar-section">Getting Started</div>
+        <a href="getting-started.html">Getting Started</a>
+        <a href="why-latticephp.html">Why LatticePHP</a>
+        <div class="sidebar-section">Core</div>
+        <a href="architecture.html">Architecture</a>
+        <a href="modules.html">Modules</a>
+        <a href="pipeline.html">Pipeline</a>
+        <div class="sidebar-section">HTTP & Data</div>
+        <a href="http-api.html">HTTP &amp; API</a>
+        <a href="database.html">Database</a>
+        <div class="sidebar-section">Auth & Security</div>
+        <a href="auth.html">Authentication</a>
+        <a href="security.html">Security</a>
+        <div class="sidebar-section">Advanced</div>
+        <a href="workflows.html">Workflows</a>
+        <a href="microservices.html">Microservices</a>
+        <a href="observability.html" class="active">Observability</a>
+        <div class="sidebar-section">Testing & DX</div>
+        <a href="testing.html">Testing</a>
+        <a href="runtime.html">Runtime</a>
+        <a href="package-authoring.html">Package Authoring</a>
+        <div class="sidebar-section">Migration</div>
+        <a href="migration-from-laravel.html">Migration from Laravel</a>
+    </nav>
+    <main class="content">
+        <a href="../index.html" class="back-link">&larr; Back to Home</a>
+        <h1 id="observability">Observability</h1>
+        <p>LatticePHP provides structured logging, correlation IDs, distributed tracing, metrics, health endpoints, and audit logging. All classes live in the <code>lattice/observability</code> package.</p>
+        <hr>
+        <h2 id="structured-logging">Structured Logging</h2>
+        <h3 id="log-facade">Log Facade</h3>
+        <p>The <code>Log</code> class (<code>Lattice\Observability\Log</code>) is a static facade over <code>StructuredLogger</code>.</p>
+        <pre><code class="language-php">use Lattice\Observability\Log;
+
+Log::info(&#x27;Order created&#x27;, [&#x27;orderId&#x27; =&gt; 123, &#x27;total&#x27; =&gt; 49.99]);
+Log::error(&#x27;Payment failed&#x27;, [&#x27;orderId&#x27; =&gt; 123, &#x27;error&#x27; =&gt; $e-&gt;getMessage()]);
+Log::warning(&#x27;Rate limit approaching&#x27;, [&#x27;remaining&#x27; =&gt; 5]);
+Log::debug(&#x27;Cache hit&#x27;, [&#x27;key&#x27; =&gt; &#x27;user:42&#x27;]);</code></pre>
+        <p>All PSR-3 levels are supported: <code>emergency</code>, <code>alert</code>, <code>critical</code>, <code>error</code>, <code>warning</code>, <code>notice</code>, <code>info</code>, <code>debug</code>.</p>
+        <h3 id="structuredlogger">StructuredLogger</h3>
+        <p><code>Lattice\Observability\Logger\StructuredLogger</code> implements <code>Psr\Log\LoggerInterface</code>. Every log call creates a <code>LogEntry</code> with level, message, context, timestamp, and optional correlation ID.</p>
+        <pre><code class="language-php">use Lattice\Observability\Logger\StructuredLogger;
+use Lattice\Observability\Logger\StreamLogHandler;
+
+$logger = new StructuredLogger(
+    handler: new StreamLogHandler(&#x27;php://stderr&#x27;),
+    correlationId: &#x27;req_abc123&#x27;,
+);
+
+$logger-&gt;info(&#x27;Request started&#x27;, [&#x27;path&#x27; =&gt; &#x27;/api/orders&#x27;]);</code></pre>
+        <h3 id="log-handlers">Log Handlers</h3>
+        <table>
+        <thead><tr>
+        <th>Handler</th>
+        <th>Class</th>
+        <th>Purpose</th>
+        </tr></thead><tbody>
+        <tr>
+        <td>Stream</td>
+        <td><code>Lattice\Observability\Logger\StreamLogHandler</code></td>
+        <td>Write to any stream (<code>php://stderr</code>, file path)</td>
+        </tr>
+        <tr>
+        <td>Daily File</td>
+        <td><code>Lattice\Observability\Logger\DailyFileHandler</code></td>
+        <td>Rotate log files daily with retention</td>
+        </tr>
+        <tr>
+        <td>Multi-Channel</td>
+        <td><code>Lattice\Observability\Logger\MultiChannelHandler</code></td>
+        <td>Fan out to multiple handlers</td>
+        </tr>
+        <tr>
+        <td>In-Memory</td>
+        <td><code>Lattice\Observability\Logger\InMemoryLogHandler</code></td>
+        <td>Capture logs in tests</td>
+        </tr>
+        </tbody></table>
+        <h3 id="dailyfilehandler">DailyFileHandler</h3>
+        <pre><code class="language-php">use Lattice\Observability\Logger\DailyFileHandler;
+
+$handler = new DailyFileHandler(
+    basePath: &#x27;/var/log/lattice/app&#x27;,    // Produces: app-2026-03-22.log
+    retentionDays: 14,
+);
+
+// Prune old logs (call from scheduler)
+$removed = $handler-&gt;pruneOldLogs();</code></pre>
+        <h3 id="multi-channel-logging">Multi-Channel Logging</h3>
+        <pre><code class="language-php">use Lattice\Observability\Logger\MultiChannelHandler;
+use Lattice\Observability\Logger\StreamLogHandler;
+use Lattice\Observability\Logger\DailyFileHandler;
+
+$multi = new MultiChannelHandler();
+$multi-&gt;addHandler(&#x27;stderr&#x27;, new StreamLogHandler(&#x27;php://stderr&#x27;));
+$multi-&gt;addHandler(&#x27;daily&#x27;, new DailyFileHandler(&#x27;/var/log/lattice/app&#x27;, retentionDays: 14));
+
+$logger = new StructuredLogger($multi);
+// Every log entry goes to both handlers</code></pre>
+        <h3 id="logging-configuration">Logging Configuration</h3>
+        <p>In <code>config/logging.php</code>:</p>
+        <pre><code class="language-php">return [
+    &#x27;default&#x27; =&gt; env(&#x27;LOG_CHANNEL&#x27;, &#x27;stack&#x27;),
+    &#x27;channels&#x27; =&gt; [
+        &#x27;stack&#x27; =&gt; [
+            &#x27;driver&#x27; =&gt; &#x27;stack&#x27;,
+            &#x27;channels&#x27; =&gt; explode(&#x27;,&#x27;, env(&#x27;LOG_STACK&#x27;, &#x27;daily,stderr&#x27;)),
+        ],
+        &#x27;daily&#x27; =&gt; [
+            &#x27;driver&#x27; =&gt; &#x27;daily&#x27;,
+            &#x27;path&#x27; =&gt; storage_path(&#x27;logs/lattice.log&#x27;),
+            &#x27;level&#x27; =&gt; env(&#x27;LOG_LEVEL&#x27;, &#x27;debug&#x27;),
+            &#x27;days&#x27; =&gt; (int) env(&#x27;LOG_DAYS&#x27;, 14),
+        ],
+        &#x27;stderr&#x27; =&gt; [
+            &#x27;driver&#x27; =&gt; &#x27;stderr&#x27;,
+            &#x27;level&#x27; =&gt; env(&#x27;LOG_LEVEL&#x27;, &#x27;debug&#x27;),
+            &#x27;formatter&#x27; =&gt; env(&#x27;LOG_STDERR_FORMATTER&#x27;, &#x27;json&#x27;),
+        ],
+    ],
+    &#x27;context&#x27; =&gt; [
+        &#x27;correlation_id&#x27; =&gt; true,
+        &#x27;tenant_id&#x27; =&gt; true,
+        &#x27;workspace_id&#x27; =&gt; true,
+        &#x27;user_id&#x27; =&gt; true,
+        &#x27;request_path&#x27; =&gt; true,
+    ],
+];</code></pre>
+        <hr>
+        <h2 id="correlation-ids">Correlation IDs</h2>
+        <p><code>CorrelationContext</code> (<code>Lattice\Observability\CorrelationContext</code>) carries trace context across request boundaries.</p>
+        <pre><code class="language-php">use Lattice\Observability\CorrelationContext;
+
+// Generate a new context
+$ctx = CorrelationContext::generate();
+$ctx-&gt;getCorrelationId(); // UUID v4
+
+// Build from incoming HTTP headers
+$ctx = CorrelationContext::fromHeaders([
+    &#x27;X-Correlation-ID&#x27; =&gt; &#x27;abc-123&#x27;,
+    &#x27;X-Trace-ID&#x27; =&gt; &#x27;trace-456&#x27;,
+    &#x27;X-Span-ID&#x27; =&gt; &#x27;span-789&#x27;,
+    &#x27;X-Tenant-ID&#x27; =&gt; &#x27;tenant_1&#x27;,
+]);
+
+$ctx-&gt;getCorrelationId(); // &#x27;abc-123&#x27;
+$ctx-&gt;getTraceId();       // &#x27;trace-456&#x27;
+$ctx-&gt;getTenantId();      // &#x27;tenant_1&#x27;
+$ctx-&gt;toArray();          // All non-null fields as array</code></pre>
+        <p>The <code>CorrelationIdMiddleware</code> (<code>Lattice\Observability\Middleware\CorrelationIdMiddleware</code>) extracts or generates correlation IDs for every incoming request automatically.</p>
+        <hr>
+        <h2 id="request-logging">Request Logging</h2>
+        <p>The <code>RequestLoggingInterceptor</code> (<code>Lattice\Observability\Middleware\RequestLoggingInterceptor</code>) implements <code>InterceptorInterface</code> and logs every request with timing, handler info, and status.</p>
+        <pre><code class="language-php">// Successful request log:
+// Log::info(&#x27;Request handled&#x27;, [
+//     &#x27;handler&#x27; =&gt; &#x27;OrderController::index&#x27;,
+//     &#x27;module&#x27; =&gt; &#x27;OrdersModule&#x27;,
+//     &#x27;correlation_id&#x27; =&gt; &#x27;abc-123&#x27;,
+//     &#x27;duration_ms&#x27; =&gt; 12.45,
+//     &#x27;method&#x27; =&gt; &#x27;GET&#x27;,
+//     &#x27;path&#x27; =&gt; &#x27;/api/orders&#x27;,
+//     &#x27;status&#x27; =&gt; 200,
+// ]);
+
+// Failed request log:
+// Log::error(&#x27;Request failed&#x27;, [
+//     &#x27;handler&#x27; =&gt; &#x27;OrderController::store&#x27;,
+//     &#x27;error&#x27; =&gt; &#x27;Validation failed&#x27;,
+//     &#x27;error_class&#x27; =&gt; &#x27;Lattice\\Validation\\ValidationException&#x27;,
+//     &#x27;duration_ms&#x27; =&gt; 3.21,
+// ]);</code></pre>
+        <p>Enable in <code>config/observability.php</code>:</p>
+        <pre><code class="language-php">&#x27;request_log&#x27; =&gt; [
+    &#x27;enabled&#x27; =&gt; (bool) env(&#x27;REQUEST_LOG_ENABLED&#x27;, false),
+    &#x27;exclude_paths&#x27; =&gt; [&#x27;/health&#x27;, &#x27;/metrics&#x27;],
+    &#x27;log_body&#x27; =&gt; (bool) env(&#x27;REQUEST_LOG_BODY&#x27;, false),
+    &#x27;max_body_size&#x27; =&gt; 10240,
+],</code></pre>
+        <hr>
+        <h2 id="query-logging">Query Logging</h2>
+        <p>The <code>QueryLoggingHandler</code> (<code>Lattice\Observability\Middleware\QueryLoggingHandler</code>) tracks database queries and flags slow ones.</p>
+        <pre><code class="language-php">use Lattice\Observability\Middleware\QueryLoggingHandler;
+
+$queryLogger = new QueryLoggingHandler(slowQueryThresholdMs: 100.0);
+
+// Called by the database layer:
+$queryLogger-&gt;log(&#x27;SELECT * FROM orders WHERE id = ?&#x27;, [42], timeMs: 5.3);
+$queryLogger-&gt;log(&#x27;SELECT * FROM products JOIN ...&#x27;, [], timeMs: 250.1);
+// ^ Logs: &quot;Slow query&quot; warning with SQL and timing
+
+$queryLogger-&gt;getQueryCount();  // 2
+$queryLogger-&gt;getTotalTime();   // 255.4
+$queryLogger-&gt;getQueries();     // Array of [sql, bindings, time_ms]
+$queryLogger-&gt;reset();          // Clear between requests (long-running workers)</code></pre>
+        <hr>
+        <h2 id="opentelemetry-integration">OpenTelemetry Integration</h2>
+        <p>The <code>OtelExporter</code> (<code>Lattice\Observability\OpenTelemetry\OtelExporter</code>) exports traces, metrics, and logs to any OTLP-compatible collector (Jaeger, Grafana Tempo, Datadog).</p>
+        <pre><code class="language-php">use Lattice\Observability\OpenTelemetry\OtelExporter;
+
+$exporter = new OtelExporter(
+    endpoint: &#x27;http://localhost:4318&#x27;,
+    serviceName: &#x27;order-service&#x27;,
+    sampleRate: 1.0,
+    timeoutMs: 5000,
+);
+
+// Export traces
+$exporter-&gt;exportSpan($span);
+$exporter-&gt;exportSpans([$span1, $span2]);
+
+// Export metrics
+$exporter-&gt;exportMetrics($metricsCollector-&gt;getMetrics());
+
+// Export logs
+$exporter-&gt;exportLogs([$logEntry1, $logEntry2]);</code></pre>
+        <p>Configure in <code>config/observability.php</code>:</p>
+        <pre><code class="language-php">&#x27;tracing&#x27; =&gt; [
+    &#x27;enabled&#x27; =&gt; (bool) env(&#x27;TRACING_ENABLED&#x27;, false),
+    &#x27;endpoint&#x27; =&gt; env(&#x27;TRACING_ENDPOINT&#x27;, &#x27;http://localhost:4318&#x27;),
+    &#x27;service_name&#x27; =&gt; env(&#x27;TRACING_SERVICE_NAME&#x27;, env(&#x27;APP_NAME&#x27;, &#x27;lattice&#x27;)),
+    &#x27;sample_rate&#x27; =&gt; (float) env(&#x27;TRACING_SAMPLE_RATE&#x27;, 1.0),
+],</code></pre>
+        <hr>
+        <h2 id="metrics">Metrics</h2>
+        <p>The <code>MetricsCollector</code> interface (<code>Lattice\Observability\Metrics\MetricsCollector</code>) provides counters, gauges, and histograms.</p>
+        <pre><code class="language-php">use Lattice\Observability\Metrics\InMemoryMetricsCollector;
+
+$metrics = new InMemoryMetricsCollector();
+
+$metrics-&gt;counter(&#x27;http_requests_total&#x27;, 1, [&#x27;method&#x27; =&gt; &#x27;GET&#x27;, &#x27;path&#x27; =&gt; &#x27;/api/orders&#x27;]);
+$metrics-&gt;gauge(&#x27;queue_depth&#x27;, 42, [&#x27;queue&#x27; =&gt; &#x27;default&#x27;]);
+$metrics-&gt;histogram(&#x27;request_duration_ms&#x27;, 12.5, [&#x27;handler&#x27; =&gt; &#x27;OrderController::index&#x27;]);
+
+$all = $metrics-&gt;getMetrics(); // Structured array for export</code></pre>
+        <p>Enable the <code>/metrics</code> endpoint in <code>config/observability.php</code>:</p>
+        <pre><code class="language-php">&#x27;metrics&#x27; =&gt; [
+    &#x27;enabled&#x27; =&gt; (bool) env(&#x27;METRICS_ENABLED&#x27;, false),
+    &#x27;path&#x27; =&gt; &#x27;/metrics&#x27;,
+    &#x27;prefix&#x27; =&gt; env(&#x27;METRICS_PREFIX&#x27;, &#x27;lattice&#x27;),
+],</code></pre>
+        <hr>
+        <h2 id="health-checks">Health Checks</h2>
+        <p>The <code>HealthController</code> (<code>Lattice\Observability\Health\HealthController</code>) exposes three endpoints:</p>
+        <table>
+        <thead><tr>
+        <th>Endpoint</th>
+        <th>Purpose</th>
+        <th>Response</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>GET /health</code></td>
+        <td>Full health check with all registered checks</td>
+        <td><code>{&quot;status&quot;: &quot;up&quot;, &quot;checks&quot;: {...}}</code></td>
+        </tr>
+        <tr>
+        <td><code>GET /health/live</code></td>
+        <td>Liveness probe (always returns up if process is alive)</td>
+        <td><code>{&quot;status&quot;: &quot;up&quot;}</code></td>
+        </tr>
+        <tr>
+        <td><code>GET /health/ready</code></td>
+        <td>Readiness probe (fails if any check is down)</td>
+        <td><code>{&quot;status&quot;: &quot;up&quot;, &quot;checks&quot;: {...}}</code></td>
+        </tr>
+        </tbody></table>
+        <h3 id="custom-health-checks">Custom Health Checks</h3>
+        <p>Implement <code>HealthCheckInterface</code> and register with <code>HealthRegistry</code>:</p>
+        <pre><code class="language-php">use Lattice\Observability\Health\HealthCheckInterface;
+use Lattice\Observability\Health\HealthResult;
+use Lattice\Observability\Health\HealthStatus;
+
+final class DatabaseHealthCheck implements HealthCheckInterface
+{
+    public function getName(): string
+    {
+        return &#x27;database&#x27;;
+    }
+
+    public function check(): HealthResult
+    {
+        try {
+            // Run a simple query
+            $this-&gt;db-&gt;select(&#x27;SELECT 1&#x27;);
+            return new HealthResult(status: HealthStatus::Up, message: &#x27;Connected&#x27;);
+        } catch (\Throwable $e) {
+            return new HealthResult(status: HealthStatus::Down, message: $e-&gt;getMessage());
+        }
+    }
+}
+
+// Register
+$registry = new HealthRegistry();
+$registry-&gt;register(new DatabaseHealthCheck($db));
+$registry-&gt;register(new CacheHealthCheck($cache));
+
+$results = $registry-&gt;toArray();
+// {&quot;status&quot;: &quot;up&quot;, &quot;checks&quot;: {&quot;database&quot;: {&quot;status&quot;: &quot;up&quot;, ...}, &quot;cache&quot;: {...}}}</code></pre>
+        <p><code>HealthStatus</code> is an enum with values: <code>Up</code>, <code>Down</code>, <code>Degraded</code>.</p>
+        <hr>
+        <h2 id="audit-logging">Audit Logging</h2>
+        <h3 id="auditaction-attribute">AuditAction Attribute</h3>
+        <p>Mark controller methods for automatic audit logging:</p>
+        <pre><code class="language-php">use Lattice\Observability\Audit\Attributes\AuditAction;
+
+#[AuditAction(&#x27;Created new invoice&#x27;, category: &#x27;billing&#x27;)]
+public function create(#[Body] CreateInvoiceDto $dto): Response { ... }</code></pre>
+        <h3 id="auditlogger">AuditLogger</h3>
+        <p>The <code>AuditLogger</code> (<code>Lattice\Observability\Audit\AuditLogger</code>) writes structured audit events:</p>
+        <pre><code class="language-php">use Lattice\Observability\Audit\AuditLogger;
+use Lattice\Observability\Audit\AuditEvent;
+
+$audit-&gt;log(new AuditEvent(
+    type: &#x27;order&#x27;,
+    actor: &#x27;user:42&#x27;,
+    action: &#x27;created&#x27;,
+    target: &#x27;order:123&#x27;,
+    correlationId: $correlationId,
+));</code></pre>
+        <h3 id="auditlog-model">AuditLog Model</h3>
+        <p>The <code>AuditLog</code> Eloquent model (<code>Lattice\Observability\Audit\AuditLog</code>) provides query helpers:</p>
+        <pre><code class="language-php">use Lattice\Observability\Audit\AuditLog;
+
+AuditLog::forUser(42)-&gt;get();
+AuditLog::forModel(&#x27;Order&#x27;, 123)-&gt;get();
+AuditLog::between($startDate, $endDate)-&gt;get();</code></pre>
+        <p>Configure in <code>config/observability.php</code>:</p>
+        <pre><code class="language-php">&#x27;audit&#x27; =&gt; [
+    &#x27;enabled&#x27; =&gt; (bool) env(&#x27;AUDIT_ENABLED&#x27;, true),
+    &#x27;table&#x27; =&gt; &#x27;audit_logs&#x27;,
+    &#x27;retention_days&#x27; =&gt; (int) env(&#x27;AUDIT_RETENTION_DAYS&#x27;, 90),
+    &#x27;exclude_fields&#x27; =&gt; [&#x27;password&#x27;, &#x27;password_hash&#x27;, &#x27;remember_token&#x27;, &#x27;secret&#x27;],
+],</code></pre>
+    </main>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

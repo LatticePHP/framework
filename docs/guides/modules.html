@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modules — LatticePHP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <style>
+        :root { --bg: #0a0a0f; --bg-card: #12121a; --border: #1e1e2e; --text: #e4e4ef; --text-dim: #9494a8; --accent: #4ade80; --sidebar-w: 260px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.8; }
+        code,pre { font-family:'JetBrains Mono',monospace; }
+
+        /* Sidebar */
+        .sidebar { position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); background:#08080c; border-right:1px solid var(--border); padding:20px 0; overflow-y:auto; z-index:10; }
+        .sidebar-brand { padding:0 20px 16px; font-weight:700; color:var(--accent); font-size:1rem; }
+        .sidebar-brand a { color:var(--accent); text-decoration:none; }
+        .sidebar-section { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:#64748b; padding:12px 20px 4px; font-weight:600; }
+        .sidebar a { display:block; padding:5px 20px; font-size:0.8rem; color:var(--text-dim); text-decoration:none; }
+        .sidebar a:hover { color:var(--text); background:#111118; }
+        .sidebar a.active { color:var(--accent); background:rgba(74,222,128,0.05); border-right:2px solid var(--accent); }
+
+        /* Content */
+        .content { margin-left:var(--sidebar-w); padding:40px 60px; max-width:900px; }
+        .content h1 { font-size:2rem; margin:0 0 8px; color:var(--accent); }
+        .content h2 { font-size:1.5rem; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+        .content h3 { font-size:1.2rem; margin:24px 0 8px; }
+        .content h4 { font-size:1rem; margin:20px 0 6px; }
+        .content p { margin:8px 0; }
+        .content ul,.content ol { margin:8px 0 8px 24px; }
+        .content li { margin:4px 0; }
+        .content a { color:var(--accent); }
+        .content code { background:#1a1a2e; padding:2px 6px; border-radius:4px; font-size:0.85em; }
+        .content pre { background:#0d1117; border:1px solid var(--border); border-radius:8px; padding:16px; margin:12px 0; overflow-x:auto; }
+        .content pre code { background:none; padding:0; font-size:0.85rem; }
+        .content table { width:100%; border-collapse:collapse; margin:16px 0; }
+        .content th,.content td { padding:8px 12px; border:1px solid var(--border); text-align:left; font-size:0.9rem; }
+        .content th { background:var(--bg-card); font-weight:600; }
+        .content blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0; color:var(--text-dim); background:var(--bg-card); border-radius:0 6px 6px 0; }
+        .content hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+        .content img { max-width:100%; }
+        .content input[type="checkbox"] { margin-right:6px; }
+
+        .back-link { display:inline-block; margin-bottom:20px; color:var(--accent); font-size:0.85rem; text-decoration:none; }
+        .back-link:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .sidebar { display:none; }
+            .content { margin-left:0; padding:20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><a href="../index.html">&#x2B21; LatticePHP</a></div>
+        <div class="sidebar-section">Getting Started</div>
+        <a href="getting-started.html">Getting Started</a>
+        <a href="why-latticephp.html">Why LatticePHP</a>
+        <div class="sidebar-section">Core</div>
+        <a href="architecture.html">Architecture</a>
+        <a href="modules.html" class="active">Modules</a>
+        <a href="pipeline.html">Pipeline</a>
+        <div class="sidebar-section">HTTP & Data</div>
+        <a href="http-api.html">HTTP &amp; API</a>
+        <a href="database.html">Database</a>
+        <div class="sidebar-section">Auth & Security</div>
+        <a href="auth.html">Authentication</a>
+        <a href="security.html">Security</a>
+        <div class="sidebar-section">Advanced</div>
+        <a href="workflows.html">Workflows</a>
+        <a href="microservices.html">Microservices</a>
+        <a href="observability.html">Observability</a>
+        <div class="sidebar-section">Testing & DX</div>
+        <a href="testing.html">Testing</a>
+        <a href="runtime.html">Runtime</a>
+        <a href="package-authoring.html">Package Authoring</a>
+        <div class="sidebar-section">Migration</div>
+        <a href="migration-from-laravel.html">Migration from Laravel</a>
+    </nav>
+    <main class="content">
+        <a href="../index.html" class="back-link">&larr; Back to Home</a>
+        <h1 id="modules">Modules</h1>
+        <h2 id="what-is-a-module">What Is a Module</h2>
+        <p>A module is a self-contained unit of functionality declared with the <code>#[Module]</code> attribute. It groups providers (services), controllers, and exports into a cohesive boundary with explicit dependencies.</p>
+        <p>Here is the CRM's root module -- the single entry point that imports all feature modules:</p>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App;
+
+use App\Modules\Activities\ActivitiesModule;
+use App\Modules\Auth\AuthModule;
+use App\Modules\Companies\CompaniesModule;
+use App\Modules\Contacts\ContactsModule;
+use App\Modules\Dashboard\DashboardModule;
+use App\Modules\Deals\DealsModule;
+use App\Modules\Notes\NotesModule;
+use Lattice\Module\Attribute\Module;
+
+#[Module(
+    imports: [
+        AuthModule::class,
+        ContactsModule::class,
+        CompaniesModule::class,
+        DealsModule::class,
+        ActivitiesModule::class,
+        NotesModule::class,
+        DashboardModule::class,
+    ],
+)]
+final class AppModule {}</code></pre>
+        <p>This module is registered in <code>bootstrap/app.php</code>:</p>
+        <pre><code class="language-php">return Application::configure(basePath: $basePath)
+    -&gt;withModules([AppModule::class])
+    -&gt;withHttp()
+    -&gt;create();</code></pre>
+        <h2 id="the-module-attribute">The #[Module] Attribute</h2>
+        <p>The attribute accepts four arrays:</p>
+        <pre><code class="language-php">#[Module(
+    imports: [],       // Other module classes this module depends on
+    providers: [],     // Service classes to register in the DI container
+    controllers: [],   // Controller classes that handle HTTP requests
+    exports: [],       // Services to make available to importing modules
+)]</code></pre>
+        <h3 id="a-feature-module-from-the-crm">A Feature Module (from the CRM)</h3>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App\Modules\Contacts;
+
+use Lattice\Module\Attribute\Module;
+
+#[Module(
+    providers: [ContactService::class],
+    controllers: [ContactController::class],
+    exports: [ContactService::class],
+)]
+final class ContactsModule {}</code></pre>
+        <p>This declares:</p>
+        <ul>
+        <li><code>ContactService</code> is registered as a provider (available for injection within this module)</li>
+        <li><code>ContactController</code> handles HTTP routes</li>
+        <li><code>ContactService</code> is exported (other modules that import <code>ContactsModule</code> can inject it)</li>
+        </ul>
+        <h3 id="a-minimal-module-from-integration-tests">A Minimal Module (from integration tests)</h3>
+        <pre><code class="language-php">#[Module(
+    controllers: [TestController::class],
+)]
+final class TestModule {}</code></pre>
+        <p>A module with only controllers and no providers or imports works fine. The framework discovers routes from the controller and handles DI through the container.</p>
+        <h2 id="two-module-attribute-classes">Two #[Module] Attribute Classes</h2>
+        <p>LatticePHP has two <code>Module</code> attribute classes:</p>
+        <table>
+        <thead><tr>
+        <th>Class</th>
+        <th>Namespace</th>
+        <th>Extra Feature</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>Lattice\Module\Attribute\Module</code></td>
+        <td><code>lattice/module</code></td>
+        <td>Standard module definition</td>
+        </tr>
+        <tr>
+        <td><code>Lattice\Compiler\Attributes\Module</code></td>
+        <td><code>lattice/compiler</code></td>
+        <td>Adds <code>global: bool</code> parameter</td>
+        </tr>
+        </tbody></table>
+        <p><strong>Which to use:</strong> Use <code>Lattice\Module\Attribute\Module</code> for application code. This is what the CRM uses for all its feature modules. The compiler variant adds a <code>global</code> flag for framework-level modules that should be available everywhere without explicit imports.</p>
+        <p>The starter kit's root <code>AppModule</code> uses the compiler variant:</p>
+        <pre><code class="language-php">use Lattice\Compiler\Attributes\Module;
+
+#[Module(
+    imports: [],
+    providers: [],
+    controllers: [HealthController::class, UserController::class],
+    exports: [],
+)]
+final class AppModule {}</code></pre>
+        <p>Both attributes have identical <code>imports</code>, <code>providers</code>, <code>controllers</code>, and <code>exports</code> parameters. The compiler variant just adds <code>global: bool</code> (defaults to <code>false</code>).</p>
+        <h2 id="module-lifecycle">Module Lifecycle</h2>
+        <p>When the application boots, modules go through a defined lifecycle:</p>
+        <h3 id="1-discovery">1. Discovery</h3>
+        <p>The application reads the <code>#[Module]</code> attribute from each root module class passed to <code>withModules()</code>. It then recursively follows the <code>imports</code> array to discover the full module graph.</p>
+        <pre><code>AppModule
+  -&gt; AuthModule
+  -&gt; ContactsModule
+  -&gt; CompaniesModule
+  -&gt; DealsModule
+  -&gt; ActivitiesModule
+  -&gt; NotesModule
+  -&gt; DashboardModule</code></pre>
+        <h3 id="2-provider-registration">2. Provider Registration</h3>
+        <p>For each discovered module, the framework calls <code>register()</code> on every class in the <code>providers</code> array. This is where services bind themselves into the container:</p>
+        <pre><code class="language-php">$this-&gt;app-&gt;getContainer()-&gt;singleton(TestService::class, TestService::class);</code></pre>
+        <h3 id="3-provider-boot">3. Provider Boot</h3>
+        <p>After all providers are registered, the framework calls <code>boot()</code> on each. This is where providers can use other services that were registered in step 2.</p>
+        <h3 id="4-controller-collection">4. Controller Collection</h3>
+        <p>All <code>controllers</code> arrays from all modules are merged. The <code>RouteDiscoverer</code> reads <code>#[Controller]</code>, <code>#[Get]</code>, <code>#[Post]</code>, etc. attributes to build route definitions.</p>
+        <p>This lifecycle is verified in integration tests:</p>
+        <pre><code class="language-php">$this-&gt;app-&gt;boot();
+
+$moduleDefinitions = $this-&gt;app-&gt;getModuleDefinitions();
+$this-&gt;assertNotEmpty($moduleDefinitions);
+$this-&gt;assertArrayHasKey(TestModule::class, $moduleDefinitions);
+
+$controllers = $this-&gt;app-&gt;getControllers();
+$this-&gt;assertContains(TestController::class, $controllers);</code></pre>
+        <h2 id="recursive-module-discovery">Recursive Module Discovery</h2>
+        <p>Imports form a tree. The framework walks it depth-first:</p>
+        <pre><code class="language-php">// Root module imports ContactsModule and CompaniesModule
+#[Module(imports: [ContactsModule::class, CompaniesModule::class])]
+final class AppModule {}
+
+// ContactsModule has no imports
+#[Module(providers: [ContactService::class], controllers: [ContactController::class])]
+final class ContactsModule {}
+
+// CompaniesModule has no imports
+#[Module(providers: [CompanyService::class], controllers: [CompanyController::class])]
+final class CompaniesModule {}</code></pre>
+        <p>The discovery order is: <code>AppModule</code> -> <code>ContactsModule</code> -> <code>CompaniesModule</code>. Each module is discovered exactly once (duplicates are deduplicated).</p>
+        <h2 id="cross-module-exports">Cross-Module Exports</h2>
+        <p>The <code>exports</code> array controls what a module shares with its importers.</p>
+        <pre><code class="language-php">#[Module(
+    providers: [ContactService::class, ContactRepository::class],
+    controllers: [ContactController::class],
+    exports: [ContactService::class],  // Only ContactService is shared
+)]
+final class ContactsModule {}</code></pre>
+        <p><code>ContactRepository</code> stays private to <code>ContactsModule</code>. Only <code>ContactService</code> is available for injection in modules that import <code>ContactsModule</code>.</p>
+        <p>In the CRM, <code>ContactsModule</code> exports its service so that other modules (like DealsModule) can inject <code>ContactService</code> to look up contacts when creating deals.</p>
+        <h2 id="serviceprovider-integration">ServiceProvider Integration</h2>
+        <p>For complex setup logic, use a <code>ServiceProvider</code> class in the <code>providers</code> array:</p>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App\Providers;
+
+use Lattice\Core\Support\ServiceProvider;
+
+final class AppServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        // Bind interfaces to implementations
+        // $this-&gt;app-&gt;getContainer()-&gt;singleton(FooInterface::class, FooImpl::class);
+    }
+
+    public function boot(): void
+    {
+        // Run after all providers are registered
+        // Access other services safely here
+    }
+}</code></pre>
+        <p>Register it in a module:</p>
+        <pre><code class="language-php">#[Module(
+    imports: [AuthModule::class],
+    providers: [AppServiceProvider::class],
+)]
+final class AppModule {}</code></pre>
+        <h2 id="dynamic-modules">Dynamic Modules</h2>
+        <p>Some framework modules accept configuration. For example, setting up a database connection:</p>
+        <pre><code class="language-php">use Lattice\Core\Application;
+
+$capsule = new \Illuminate\Database\Capsule\Manager();
+$capsule-&gt;addConnection([
+    &#x27;driver&#x27; =&gt; &#x27;sqlite&#x27;,
+    &#x27;database&#x27; =&gt; $basePath . &#x27;/database/database.sqlite&#x27;,
+]);
+$capsule-&gt;setAsGlobal();
+$capsule-&gt;bootEloquent();</code></pre>
+        <p>This pattern is used in both the starter kit and the CRM's <code>bootstrap/app.php</code>. The database is configured before the Application is created, then Eloquent is available to all modules.</p>
+        <h2 id="module-organization-patterns">Module Organization Patterns</h2>
+        <h3 id="flat-starter-kit">Flat (starter kit)</h3>
+        <p>For small APIs, put controllers and DTOs at the app level:</p>
+        <pre><code>app/
+  AppModule.php
+  Http/
+    HealthController.php
+    UserController.php
+  Dto/
+    CreateUserDto.php
+  Models/
+    User.php</code></pre>
+        <h3 id="modular-crm">Modular (CRM)</h3>
+        <p>For larger applications, each feature gets its own module directory:</p>
+        <pre><code>app/
+  AppModule.php
+  Models/
+    Contact.php
+    Company.php
+    Deal.php
+  Modules/
+    Contacts/
+      ContactsModule.php
+      ContactController.php
+      ContactService.php
+      ContactResource.php
+      Dto/
+        CreateContactDto.php
+        UpdateContactDto.php
+    Companies/
+      CompaniesModule.php
+      CompanyController.php
+      CompanyService.php
+    Deals/
+      DealsModule.php
+      DealController.php
+      DealService.php</code></pre>
+        <p>The CRM places models in a shared <code>app/Models/</code> directory (since multiple modules reference them) and keeps module-specific code (controllers, services, DTOs, resources) inside the module folder.</p>
+        <h2 id="constructor-injection">Constructor Injection</h2>
+        <p>Controllers receive their dependencies through constructor injection. The DI container resolves them automatically:</p>
+        <pre><code class="language-php">#[Controller(&#x27;/api/contacts&#x27;)]
+final class ContactController
+{
+    public function __construct(
+        private readonly ContactService $service,
+    ) {}
+
+    #[Post(&#x27;/&#x27;)]
+    public function store(#[Body] CreateContactDto $dto, #[CurrentUser] Principal $user): Response
+    {
+        $contact = $this-&gt;service-&gt;create($dto, $user);
+        return ResponseFactory::created(
+            [&#x27;data&#x27; =&gt; ContactResource::make($contact)-&gt;toArray()],
+        );
+    }
+}</code></pre>
+        <p>This works because <code>ContactService</code> is listed in the module's <code>providers</code> array. The container resolves it and passes it to the controller constructor.</p>
+        <p>Proven in integration tests:</p>
+        <pre><code class="language-php">// Constructor injection test
+$response = $this-&gt;handleRequest(&#x27;GET&#x27;, &#x27;/api/test/greet/World&#x27;);
+$this-&gt;assertSame(200, $response-&gt;statusCode);
+$this-&gt;assertSame(&#x27;Hello, World!&#x27;, $response-&gt;body[&#x27;greeting&#x27;]);</code></pre>
+    </main>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

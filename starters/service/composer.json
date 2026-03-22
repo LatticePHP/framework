@@ -1,0 +1,22 @@
+{
+    "name": "lattice/starter-service",
+    "description": "LatticePHP microservice starter application",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "lattice/core": "dev-main",
+        "lattice/http": "dev-main",
+        "lattice/routing": "dev-main",
+        "lattice/microservices": "dev-main",
+        "lattice/queue": "dev-main",
+        "lattice/events": "dev-main",
+        "lattice/database": "dev-main",
+        "lattice/observability": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}

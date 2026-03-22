@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP &amp; API — LatticePHP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"></script>
+    <style>
+        :root { --bg: #0a0a0f; --bg-card: #12121a; --border: #1e1e2e; --text: #e4e4ef; --text-dim: #9494a8; --accent: #4ade80; --sidebar-w: 260px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.8; }
+        code,pre { font-family:'JetBrains Mono',monospace; }
+
+        /* Sidebar */
+        .sidebar { position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); background:#08080c; border-right:1px solid var(--border); padding:20px 0; overflow-y:auto; z-index:10; }
+        .sidebar-brand { padding:0 20px 16px; font-weight:700; color:var(--accent); font-size:1rem; }
+        .sidebar-brand a { color:var(--accent); text-decoration:none; }
+        .sidebar-section { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em; color:#64748b; padding:12px 20px 4px; font-weight:600; }
+        .sidebar a { display:block; padding:5px 20px; font-size:0.8rem; color:var(--text-dim); text-decoration:none; }
+        .sidebar a:hover { color:var(--text); background:#111118; }
+        .sidebar a.active { color:var(--accent); background:rgba(74,222,128,0.05); border-right:2px solid var(--accent); }
+
+        /* Content */
+        .content { margin-left:var(--sidebar-w); padding:40px 60px; max-width:900px; }
+        .content h1 { font-size:2rem; margin:0 0 8px; color:var(--accent); }
+        .content h2 { font-size:1.5rem; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+        .content h3 { font-size:1.2rem; margin:24px 0 8px; }
+        .content h4 { font-size:1rem; margin:20px 0 6px; }
+        .content p { margin:8px 0; }
+        .content ul,.content ol { margin:8px 0 8px 24px; }
+        .content li { margin:4px 0; }
+        .content a { color:var(--accent); }
+        .content code { background:#1a1a2e; padding:2px 6px; border-radius:4px; font-size:0.85em; }
+        .content pre { background:#0d1117; border:1px solid var(--border); border-radius:8px; padding:16px; margin:12px 0; overflow-x:auto; }
+        .content pre code { background:none; padding:0; font-size:0.85rem; }
+        .content table { width:100%; border-collapse:collapse; margin:16px 0; }
+        .content th,.content td { padding:8px 12px; border:1px solid var(--border); text-align:left; font-size:0.9rem; }
+        .content th { background:var(--bg-card); font-weight:600; }
+        .content blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0; color:var(--text-dim); background:var(--bg-card); border-radius:0 6px 6px 0; }
+        .content hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+        .content img { max-width:100%; }
+        .content input[type="checkbox"] { margin-right:6px; }
+
+        .back-link { display:inline-block; margin-bottom:20px; color:var(--accent); font-size:0.85rem; text-decoration:none; }
+        .back-link:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .sidebar { display:none; }
+            .content { margin-left:0; padding:20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><a href="../index.html">&#x2B21; LatticePHP</a></div>
+        <div class="sidebar-section">Getting Started</div>
+        <a href="getting-started.html">Getting Started</a>
+        <a href="why-latticephp.html">Why LatticePHP</a>
+        <div class="sidebar-section">Core</div>
+        <a href="architecture.html">Architecture</a>
+        <a href="modules.html">Modules</a>
+        <a href="pipeline.html">Pipeline</a>
+        <div class="sidebar-section">HTTP & Data</div>
+        <a href="http-api.html" class="active">HTTP &amp; API</a>
+        <a href="database.html">Database</a>
+        <div class="sidebar-section">Auth & Security</div>
+        <a href="auth.html">Authentication</a>
+        <a href="security.html">Security</a>
+        <div class="sidebar-section">Advanced</div>
+        <a href="workflows.html">Workflows</a>
+        <a href="microservices.html">Microservices</a>
+        <a href="observability.html">Observability</a>
+        <div class="sidebar-section">Testing & DX</div>
+        <a href="testing.html">Testing</a>
+        <a href="runtime.html">Runtime</a>
+        <a href="package-authoring.html">Package Authoring</a>
+        <div class="sidebar-section">Migration</div>
+        <a href="migration-from-laravel.html">Migration from Laravel</a>
+    </nav>
+    <main class="content">
+        <a href="../index.html" class="back-link">&larr; Back to Home</a>
+        <h1 id="http-api">HTTP API</h1>
+        <h2 id="controllers">Controllers</h2>
+        <p>Controllers are classes annotated with <code>#[Controller]</code> that define a route prefix. Methods annotated with route attributes handle individual endpoints.</p>
+        <p>From the CRM's <code>ContactController</code>:</p>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App\Modules\Contacts;
+
+use App\Models\Contact;
+use App\Modules\Contacts\Dto\CreateContactDto;
+use App\Modules\Contacts\Dto\UpdateContactDto;
+use Lattice\Http\Request;
+use Lattice\Http\Response;
+use Lattice\Http\ResponseFactory;
+use Lattice\Routing\Attributes\Body;
+use Lattice\Routing\Attributes\Controller;
+use Lattice\Routing\Attributes\CurrentUser;
+use Lattice\Routing\Attributes\Delete;
+use Lattice\Routing\Attributes\Get;
+use Lattice\Routing\Attributes\Param;
+use Lattice\Routing\Attributes\Post;
+use Lattice\Routing\Attributes\Put;
+use Lattice\Auth\Principal;
+
+#[Controller(&#x27;/api/contacts&#x27;)]
+final class ContactController
+{
+    public function __construct(
+        private readonly ContactService $service,
+    ) {}
+
+    #[Get(&#x27;/&#x27;)]
+    public function index(Request $request): Response { /* ... */ }
+
+    #[Post(&#x27;/&#x27;)]
+    public function store(#[Body] CreateContactDto $dto, #[CurrentUser] Principal $user): Response { /* ... */ }
+
+    #[Get(&#x27;/:id&#x27;)]
+    public function show(#[Param] int $id): Response { /* ... */ }
+
+    #[Put(&#x27;/:id&#x27;)]
+    public function update(#[Param] int $id, #[Body] UpdateContactDto $dto): Response { /* ... */ }
+
+    #[Delete(&#x27;/:id&#x27;)]
+    public function destroy(#[Param] int $id): Response { /* ... */ }
+}</code></pre>
+        <p>Controllers must be listed in a module's <code>controllers</code> array to be discovered.</p>
+        <h2 id="route-attributes">Route Attributes</h2>
+        <p>Five HTTP method attributes are available:</p>
+        <table>
+        <thead><tr>
+        <th>Attribute</th>
+        <th>HTTP Method</th>
+        <th>Example</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>#[Get(&#x27;/&#x27;)]</code></td>
+        <td>GET</td>
+        <td>List or read</td>
+        </tr>
+        <tr>
+        <td><code>#[Post(&#x27;/&#x27;)]</code></td>
+        <td>POST</td>
+        <td>Create</td>
+        </tr>
+        <tr>
+        <td><code>#[Put(&#x27;/:id&#x27;)]</code></td>
+        <td>PUT</td>
+        <td>Full update</td>
+        </tr>
+        <tr>
+        <td><code>#[Delete(&#x27;/:id&#x27;)]</code></td>
+        <td>DELETE</td>
+        <td>Remove</td>
+        </tr>
+        <tr>
+        <td><code>#[Get(&#x27;/search&#x27;)]</code></td>
+        <td>GET</td>
+        <td>Custom action</td>
+        </tr>
+        </tbody></table>
+        <p>Path parameters use colon syntax: <code>/:id</code>, <code>/:email</code>, <code>/:name</code>. The integration tests prove both styles work:</p>
+        <pre><code class="language-php">#[Get(&#x27;/contacts/:id&#x27;)]        // colon-style (preferred)
+#[Get(&#x27;/contacts/{id}&#x27;)]       // brace-style (also works)</code></pre>
+        <p>Static routes match before parameterized routes. <code>/api/contacts</code> (index) matches before <code>/api/contacts/:id</code>.</p>
+        <h2 id="parameter-binding">Parameter Binding</h2>
+        <p>The <code>ParameterResolver</code> automatically resolves controller method parameters based on attributes and types.</p>
+        <h3 id="body-request-body-deserialization">#[Body] -- Request Body Deserialization</h3>
+        <p>Deserializes the JSON request body into a DTO. Validation attributes on the DTO are checked automatically.</p>
+        <pre><code class="language-php">#[Post(&#x27;/&#x27;)]
+public function store(#[Body] CreateContactDto $dto): Response
+{
+    $contact = Contact::create([
+        &#x27;first_name&#x27; =&gt; $dto-&gt;first_name,
+        &#x27;last_name&#x27; =&gt; $dto-&gt;last_name,
+        &#x27;email&#x27; =&gt; $dto-&gt;email,
+    ]);
+    return ResponseFactory::created([&#x27;data&#x27; =&gt; ContactResource::make($contact)-&gt;toArray()]);
+}</code></pre>
+        <h3 id="param-path-parameters">#[Param] -- Path Parameters</h3>
+        <p>Extracts values from the URL path. Type coercion is automatic -- a parameter typed as <code>int</code> receives an integer, not a string.</p>
+        <pre><code class="language-php">#[Get(&#x27;/:id&#x27;)]
+public function show(#[Param] int $id): array
+{
+    $contact = Contact::findOrFail($id);
+    return ContactResource::make($contact)-&gt;toArray();
+}
+
+#[Get(&#x27;/by-email/:email&#x27;)]
+public function findByEmail(#[Param] string $email): array
+{
+    return [&#x27;email&#x27; =&gt; $email];
+}</code></pre>
+        <p>Proven in integration tests:</p>
+        <pre><code class="language-php">// Int coercion
+$response = $this-&gt;handleRequest(&#x27;GET&#x27;, &#x27;/api/test/contacts/1&#x27;);
+$this-&gt;assertSame(1, $response-&gt;body[&#x27;id&#x27;]);  // int, not &quot;1&quot;
+
+// String param
+$response = $this-&gt;handleRequest(&#x27;GET&#x27;, &#x27;/api/test/contacts/by-email/hello@world.com&#x27;);
+$this-&gt;assertSame(&#x27;hello@world.com&#x27;, $response-&gt;body[&#x27;email&#x27;]);</code></pre>
+        <h3 id="currentuser-authenticated-principal">#[CurrentUser] -- Authenticated Principal</h3>
+        <p>Injects the authenticated user identity set by a guard. Returns a <code>Principal</code> or <code>PrincipalInterface</code> object.</p>
+        <pre><code class="language-php">#[Post(&#x27;/&#x27;)]
+public function store(#[Body] CreateContactDto $dto, #[CurrentUser] Principal $user): Response
+{
+    $contact = $this-&gt;service-&gt;create($dto, $user);
+    return ResponseFactory::created([&#x27;data&#x27; =&gt; ContactResource::make($contact)-&gt;toArray()]);
+}</code></pre>
+        <p>If no guard has authenticated the request, accessing <code>#[CurrentUser]</code> results in a 401 or 403 response.</p>
+        <h3 id="query-query-string-parameters">#[Query] -- Query String Parameters</h3>
+        <p>Extracts named values from the query string.</p>
+        <h3 id="request-auto-injected">Request -- Auto-Injected</h3>
+        <p>The <code>Request</code> object is auto-injected without any attribute when typed as <code>Lattice\Http\Request</code>:</p>
+        <pre><code class="language-php">#[Get(&#x27;/&#x27;)]
+public function index(Request $request): Response
+{
+    $filter = QueryFilter::fromRequest($request-&gt;query);
+    $contacts = Contact::filter($filter)
+        -&gt;paginate($filter-&gt;getPerPage(), [&#x27;*&#x27;], &#x27;page&#x27;, $filter-&gt;getPage());
+    return ResponseFactory::paginated($contacts, ContactResource::class);
+}</code></pre>
+        <p>You can also access query parameters directly:</p>
+        <pre><code class="language-php">$status = $request-&gt;getQuery(&#x27;status&#x27;);
+$token = $request-&gt;bearerToken();</code></pre>
+        <h2 id="dtos-with-validation">DTOs with Validation</h2>
+        <p>DTOs are plain PHP classes with validation attributes. Two styles are supported.</p>
+        <h3 id="constructor-based-dtos-recommended">Constructor-Based DTOs (recommended)</h3>
+        <p>Properties are declared as constructor parameters. This is the pattern used in the CRM:</p>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App\Modules\Contacts\Dto;
+
+use Lattice\Validation\Attributes\Email;
+use Lattice\Validation\Attributes\InArray;
+use Lattice\Validation\Attributes\Nullable;
+use Lattice\Validation\Attributes\Required;
+use Lattice\Validation\Attributes\StringType;
+
+final readonly class CreateContactDto
+{
+    public function __construct(
+        #[Required]
+        #[StringType(minLength: 1, maxLength: 100)]
+        public string $first_name,
+
+        #[Required]
+        #[StringType(minLength: 1, maxLength: 100)]
+        public string $last_name,
+
+        #[Required]
+        #[Email]
+        public string $email,
+
+        #[Nullable]
+        #[StringType(maxLength: 30)]
+        public ?string $phone = null,
+
+        #[Nullable]
+        public ?int $company_id = null,
+
+        #[InArray(values: [&#x27;lead&#x27;, &#x27;prospect&#x27;, &#x27;customer&#x27;, &#x27;churned&#x27;, &#x27;inactive&#x27;])]
+        public string $status = &#x27;lead&#x27;,
+
+        #[Nullable]
+        public ?array $tags = null,
+    ) {}
+}</code></pre>
+        <h3 id="property-based-dtos">Property-Based DTOs</h3>
+        <p>Properties are declared as public class properties (no constructor). The DtoMapper sets them directly:</p>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App\Dto;
+
+use Lattice\Validation\Attributes\Email;
+use Lattice\Validation\Attributes\Required;
+use Lattice\Validation\Attributes\StringType;
+
+final class PropertyBasedDto
+{
+    #[Required] #[StringType] public string $name;
+    #[Required] #[Email] public string $email;
+}</code></pre>
+        <p>Both styles are proven working in integration tests.</p>
+        <h3 id="available-validation-attributes">Available Validation Attributes</h3>
+        <table>
+        <thead><tr>
+        <th>Attribute</th>
+        <th>Purpose</th>
+        <th>Parameters</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>#[Required]</code></td>
+        <td>Field must be present and non-null</td>
+        <td>--</td>
+        </tr>
+        <tr>
+        <td><code>#[StringType]</code></td>
+        <td>Must be a string</td>
+        <td><code>minLength</code>, <code>maxLength</code></td>
+        </tr>
+        <tr>
+        <td><code>#[Email]</code></td>
+        <td>Must be valid email format</td>
+        <td>--</td>
+        </tr>
+        <tr>
+        <td><code>#[Nullable]</code></td>
+        <td>Field may be null</td>
+        <td>--</td>
+        </tr>
+        <tr>
+        <td><code>#[InArray]</code></td>
+        <td>Value must be in allowed list</td>
+        <td><code>values: [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]</code></td>
+        </tr>
+        </tbody></table>
+        <h3 id="validation-errors">Validation Errors</h3>
+        <p>When validation fails, the framework returns a 422 response in RFC 9457 Problem Details format:</p>
+        <pre><code class="language-json">{
+    &quot;type&quot;: &quot;https://httpstatuses.io/422&quot;,
+    &quot;title&quot;: &quot;Unprocessable Entity&quot;,
+    &quot;status&quot;: 422,
+    &quot;detail&quot;: &quot;The given data was invalid.&quot;,
+    &quot;errors&quot;: {
+        &quot;email&quot;: [&quot;The email field must be a valid email address.&quot;]
+    }
+}</code></pre>
+        <p>Default values in DTOs are honored. If a field with a default is omitted from the request body, the default is used:</p>
+        <pre><code class="language-php">// DTO has: public string $status = &#x27;active&#x27;
+// Request body omits status
+// Result: $dto-&gt;status === &#x27;active&#x27;</code></pre>
+        <h2 id="api-resources">API Resources</h2>
+        <p>Resources transform models into JSON-safe arrays. Extend <code>Lattice\Http\Resource</code> and implement <code>toArray()</code>:</p>
+        <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+namespace App\Modules\Contacts;
+
+use App\Modules\Companies\CompanyResource;
+use Lattice\Http\Resource;
+
+final class ContactResource extends Resource
+{
+    public function toArray(): array
+    {
+        return [
+            &#x27;id&#x27; =&gt; $this-&gt;resource-&gt;id,
+            &#x27;first_name&#x27; =&gt; $this-&gt;resource-&gt;first_name,
+            &#x27;last_name&#x27; =&gt; $this-&gt;resource-&gt;last_name,
+            &#x27;full_name&#x27; =&gt; $this-&gt;resource-&gt;full_name,
+            &#x27;email&#x27; =&gt; $this-&gt;resource-&gt;email,
+            &#x27;phone&#x27; =&gt; $this-&gt;resource-&gt;phone,
+            &#x27;title&#x27; =&gt; $this-&gt;resource-&gt;title,
+            &#x27;status&#x27; =&gt; $this-&gt;resource-&gt;status,
+            &#x27;company&#x27; =&gt; $this-&gt;whenLoaded(&#x27;company&#x27;, fn ($company) =&gt; CompanyResource::make($company)-&gt;toArray()),
+            &#x27;deals_count&#x27; =&gt; $this-&gt;when(
+                $this-&gt;resource-&gt;relationLoaded(&#x27;deals&#x27;),
+                fn () =&gt; $this-&gt;resource-&gt;deals-&gt;count(),
+            ),
+            &#x27;created_at&#x27; =&gt; $this-&gt;resource-&gt;created_at?-&gt;toIso8601String(),
+            &#x27;updated_at&#x27; =&gt; $this-&gt;resource-&gt;updated_at?-&gt;toIso8601String(),
+        ];
+    }
+}</code></pre>
+        <h3 id="resource-methods">Resource Methods</h3>
+        <table>
+        <thead><tr>
+        <th>Method</th>
+        <th>Purpose</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>Resource::make($model)</code></td>
+        <td>Wrap a single model</td>
+        </tr>
+        <tr>
+        <td><code>Resource::collection($models)</code></td>
+        <td>Transform a collection to <code>list&lt;array&gt;</code></td>
+        </tr>
+        <tr>
+        <td><code>Resource::paginatedCollection($paginator)</code></td>
+        <td>Wrap a paginator with meta/links</td>
+        </tr>
+        <tr>
+        <td><code>$this-&gt;when($condition, $value)</code></td>
+        <td>Include field conditionally</td>
+        </tr>
+        <tr>
+        <td><code>$this-&gt;whenLoaded(&#x27;relation&#x27;, $callback)</code></td>
+        <td>Include only if relation is eager-loaded</td>
+        </tr>
+        </tbody></table>
+        <p>Usage:</p>
+        <pre><code class="language-php">// Single resource
+ContactResource::make($contact)-&gt;toArray();
+
+// Collection
+ContactResource::collection(Contact::all());
+
+// In a response
+ResponseFactory::json([&#x27;data&#x27; =&gt; ContactResource::make($contact)-&gt;toArray()]);</code></pre>
+        <h2 id="responsefactory">ResponseFactory</h2>
+        <p><code>Lattice\Http\ResponseFactory</code> provides static methods for common response types:</p>
+        <pre><code class="language-php">// 200 JSON response
+ResponseFactory::json([&#x27;data&#x27; =&gt; $contact]);
+
+// 201 Created
+ResponseFactory::created([&#x27;data&#x27; =&gt; ContactResource::make($contact)-&gt;toArray()]);
+
+// 202 Accepted
+ResponseFactory::accepted([&#x27;job_id&#x27; =&gt; $jobId]);
+
+// 204 No Content
+ResponseFactory::noContent();
+
+// Paginated with meta and links
+ResponseFactory::paginated($contacts-&gt;paginate(15), ContactResource::class);
+
+// 422 Validation error
+ResponseFactory::validationError([&#x27;email&#x27; =&gt; [&#x27;The email is already taken.&#x27;]]);
+
+// Generic error (RFC 9457 Problem Details)
+ResponseFactory::error(&#x27;Resource not found&#x27;, 404);
+
+// 429 Too Many Requests with rate limit headers
+ResponseFactory::tooManyRequests(limit: 100, reset: time() + 60);</code></pre>
+        <h3 id="return-type-conventions">Return Type Conventions</h3>
+        <p>The framework handles different return types automatically:</p>
+        <table>
+        <thead><tr>
+        <th>Return Type</th>
+        <th>HTTP Status</th>
+        <th>Behavior</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>array</code></td>
+        <td>200</td>
+        <td>Serialized to JSON</td>
+        </tr>
+        <tr>
+        <td><code>Response</code></td>
+        <td>Whatever you set</td>
+        <td>Passed through directly</td>
+        </tr>
+        <tr>
+        <td><code>void</code></td>
+        <td>204</td>
+        <td>No Content, empty body</td>
+        </tr>
+        </tbody></table>
+        <h2 id="pagination">Pagination</h2>
+        <p>Use Eloquent's <code>paginate()</code> with <code>ResponseFactory::paginated()</code>:</p>
+        <pre><code class="language-php">#[Get(&#x27;/&#x27;)]
+public function index(Request $request): Response
+{
+    $filter = QueryFilter::fromRequest($request-&gt;query);
+    $contacts = Contact::filter($filter)
+        -&gt;with([&#x27;company&#x27;])
+        -&gt;paginate($filter-&gt;getPerPage(), [&#x27;*&#x27;], &#x27;page&#x27;, $filter-&gt;getPage());
+
+    return ResponseFactory::paginated($contacts, ContactResource::class);
+}</code></pre>
+        <p>The response includes <code>data</code>, <code>meta</code>, and <code>links</code>:</p>
+        <pre><code class="language-json">{
+    &quot;data&quot;: [
+        {&quot;id&quot;: 1, &quot;first_name&quot;: &quot;Alice&quot;, &quot;email&quot;: &quot;alice@example.com&quot;}
+    ],
+    &quot;meta&quot;: {
+        &quot;total&quot;: 42,
+        &quot;per_page&quot;: 15,
+        &quot;current_page&quot;: 1,
+        &quot;last_page&quot;: 3,
+        &quot;from&quot;: 1,
+        &quot;to&quot;: 15
+    },
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;/?page=1&quot;,
+        &quot;last&quot;: &quot;/?page=3&quot;,
+        &quot;prev&quot;: null,
+        &quot;next&quot;: &quot;/?page=2&quot;
+    }
+}</code></pre>
+        <h2 id="error-handling">Error Handling</h2>
+        <p>All errors follow RFC 9457 Problem Details format:</p>
+        <pre><code class="language-json">{
+    &quot;type&quot;: &quot;https://httpstatuses.io/404&quot;,
+    &quot;title&quot;: &quot;Not Found&quot;,
+    &quot;status&quot;: 404,
+    &quot;detail&quot;: &quot;No query results for model [Contact].&quot;
+}</code></pre>
+        <p>Exception mapping:</p>
+        <table>
+        <thead><tr>
+        <th>Exception</th>
+        <th>Status Code</th>
+        </tr></thead><tbody>
+        <tr>
+        <td><code>ModelNotFoundException</code></td>
+        <td>404</td>
+        </tr>
+        <tr>
+        <td><code>ValidationException</code></td>
+        <td>422</td>
+        </tr>
+        <tr>
+        <td><code>ForbiddenException</code> (guard denial)</td>
+        <td>403</td>
+        </tr>
+        <tr>
+        <td><code>UnauthorizedException</code></td>
+        <td>401</td>
+        </tr>
+        <tr>
+        <td><code>RuntimeException</code></td>
+        <td>500</td>
+        </tr>
+        </tbody></table>
+        <p>The framework catches exceptions at the pipeline level and converts them to Problem Details responses. After a 500 error, subsequent requests continue working normally (proven in integration tests with 6 sequential requests).</p>
+        <h2 id="guards">Guards</h2>
+        <p>Protect routes with <code>#[UseGuards]</code>:</p>
+        <pre><code class="language-php">use Lattice\Auth\JwtAuthenticationGuard;
+use Lattice\Auth\Workspace\WorkspaceGuard;
+use Lattice\Pipeline\Attributes\UseGuards;
+
+#[Controller(&#x27;/api/contacts&#x27;)]
+#[UseGuards(guards: [JwtAuthenticationGuard::class, WorkspaceGuard::class])]
+final class ContactController
+{
+    // All routes in this controller require JWT auth + workspace context
+}</code></pre>
+        <p>Guards can be applied at the class level (all routes) or method level (individual routes):</p>
+        <pre><code class="language-php">#[Get(&#x27;/health&#x27;)]
+public function health(): array
+{
+    return [&#x27;status&#x27; =&gt; &#x27;ok&#x27;];  // No guard, publicly accessible
+}
+
+#[Get(&#x27;/protected&#x27;)]
+#[UseGuards(guards: [TestAuthGuard::class])]
+public function protected(#[CurrentUser] PrincipalInterface $user): array
+{
+    return [&#x27;user_id&#x27; =&gt; $user-&gt;getId()];  // Guard required
+}</code></pre>
+        <p>A guard implements <code>GuardInterface</code> and sets the <code>Principal</code> on the execution context:</p>
+        <pre><code class="language-php">final class TestAuthGuard implements GuardInterface
+{
+    public function canActivate(ExecutionContextInterface $context): bool
+    {
+        if (!$context instanceof HttpExecutionContext) {
+            return false;
+        }
+
+        $token = $context-&gt;getRequest()-&gt;bearerToken();
+
+        if ($token === &#x27;valid-token&#x27;) {
+            $context-&gt;setPrincipal(new Principal(id: &#x27;1&#x27;, type: &#x27;user&#x27;));
+            return true;
+        }
+
+        return false;
+    }
+}</code></pre>
+        <h2 id="cors">CORS</h2>
+        <p>CORS is configured in <code>config/cors.php</code>:</p>
+        <pre><code class="language-php">return [
+    &#x27;allowed_origins&#x27; =&gt; explode(&#x27;,&#x27;, env(&#x27;CORS_ALLOWED_ORIGINS&#x27;, &#x27;*&#x27;)),
+    &#x27;allowed_methods&#x27; =&gt; [&#x27;GET&#x27;, &#x27;POST&#x27;, &#x27;PUT&#x27;, &#x27;PATCH&#x27;, &#x27;DELETE&#x27;, &#x27;OPTIONS&#x27;],
+    &#x27;allowed_headers&#x27; =&gt; [
+        &#x27;Content-Type&#x27;,
+        &#x27;Authorization&#x27;,
+        &#x27;X-Requested-With&#x27;,
+        &#x27;X-Workspace-Id&#x27;,
+        &#x27;Accept&#x27;,
+        &#x27;Origin&#x27;,
+    ],
+    &#x27;exposed_headers&#x27; =&gt; [
+        &#x27;X-RateLimit-Limit&#x27;,
+        &#x27;X-RateLimit-Remaining&#x27;,
+        &#x27;X-RateLimit-Reset&#x27;,
+        &#x27;X-Request-Id&#x27;,
+    ],
+    &#x27;max_age&#x27; =&gt; (int) env(&#x27;CORS_MAX_AGE&#x27;, 86400),
+    &#x27;supports_credentials&#x27; =&gt; (bool) env(&#x27;CORS_CREDENTIALS&#x27;, false),
+];</code></pre>
+        <p>Set specific origins in your <code>.env</code>:</p>
+        <pre><code>CORS_ALLOWED_ORIGINS=https://app.example.com,https://admin.example.com</code></pre>
+    </main>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

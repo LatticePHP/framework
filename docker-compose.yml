@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  lattice:
+    build: .
+    container_name: lattice-framework
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ["php", "-v"]
+
+  test:
+    build: .
+    container_name: lattice-tests
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ["vendor/bin/phpunit", "--testdox"]
+    depends_on:
+      - lattice

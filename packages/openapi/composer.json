@@ -1,0 +1,22 @@
+{
+    "name": "lattice/openapi",
+    "description": "OpenAPI 3.1 specification generator for LatticePHP",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lattice\\OpenApi\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lattice\\OpenApi\\Tests\\": "tests/"
+        }
+    }
+}

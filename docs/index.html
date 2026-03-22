@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LatticePHP — Documentation</title>
+    <meta name="description" content="LatticePHP: A modular PHP framework with NestJS-style architecture and native durable workflow orchestration.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f0f17;
+            --bg-tertiary: #14141f;
+            --bg-card: #161622;
+            --bg-code: #0d1117;
+            --border: #1e1e2e;
+            --border-subtle: #16161f;
+            --text-primary: #e4e4ef;
+            --text-secondary: #9494a8;
+            --text-muted: #5a5a72;
+            --accent: #4ade80;
+            --accent-dim: #22c55e;
+            --accent-glow: rgba(74, 222, 128, 0.1);
+            --accent-blue: #60a5fa;
+            --accent-purple: #a78bfa;
+            --accent-amber: #fbbf24;
+            --accent-rose: #fb7185;
+            --sidebar-width: 280px;
+            --header-height: 64px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        code, pre, .mono {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        /* ── Header ─────────────────────────────── */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .header-inner {
+            width: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-blue));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--bg-primary);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--accent);
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .header-nav a:hover {
+            color: var(--accent);
+        }
+
+        .github-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-tertiary);
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            color: var(--text-primary) !important;
+            font-size: 13px !important;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .github-link:hover {
+            border-color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        /* ── Layout ─────────────────────────────── */
+        .layout {
+            display: flex;
+            margin-top: var(--header-height);
+            min-height: calc(100vh - var(--header-height));
+        }
+
+        /* ── Sidebar ────────────────────────────── */
+        .sidebar {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height));
+            overflow-y: auto;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 20px 0;
+            z-index: 50;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-section-title {
+            padding: 8px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 7px 20px 7px 28px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 400;
+            transition: all 0.15s;
+            border-left: 2px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            color: var(--text-primary);
+            background: var(--accent-glow);
+        }
+
+        .sidebar-link.active {
+            color: var(--accent);
+            border-left-color: var(--accent);
+            background: var(--accent-glow);
+            font-weight: 500;
+        }
+
+        /* ── Main Content ───────────────────────── */
+        .main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* ── Hero ───────────────────────────────── */
+        .hero {
+            padding: 80px 48px 60px;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(74, 222, 128, 0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(96, 165, 250, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-inner {
+            max-width: 800px;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-glow);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 640px;
+            margin-bottom: 32px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dim);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        /* ── Content Sections ───────────────────── */
+        .section {
+            padding: 60px 48px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .section:target {
+            scroll-margin-top: 80px;
+        }
+
+        .section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .section h2 .icon {
+            margin-right: 8px;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 32px;
+        }
+
+        .section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 28px 0 12px;
+            color: var(--text-primary);
+        }
+
+        .section p {
+            color: var(--text-secondary);
+            max-width: 720px;
+            margin-bottom: 16px;
+        }
+
+        /* ── Feature Grid ───────────────────────── */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .feature-card-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 8px;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .feature-card code {
+            font-size: 12px;
+            background: var(--bg-code);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--accent);
+        }
+
+        /* ── Code Blocks ────────────────────────── */
+        .code-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 16px 0 24px;
+        }
+
+        .code-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-block-title {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .code-block-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-block-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .code-block-dots span:nth-child(1) { background: #ff5f57; }
+        .code-block-dots span:nth-child(2) { background: #febc2e; }
+        .code-block-dots span:nth-child(3) { background: #28c840; }
+
+        .code-block pre {
+            padding: 20px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .code-block pre code {
+            background: none !important;
+            padding: 0 !important;
+        }
+
+        .code-block pre::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .code-block pre::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        /* ── Package Table ──────────────────────── */
+        .package-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .package-table th {
+            text-align: left;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+        }
+
+        .package-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .package-table tr:hover td {
+            background: var(--accent-glow);
+        }
+
+        .package-table .cat-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .pkg-name {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            background: var(--bg-code);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: var(--accent);
+            margin: 2px 3px 2px 0;
+        }
+
+        /* ── Guide List ─────────────────────────── */
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .guide-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 20px;
+            text-decoration: none;
+            transition: border-color 0.2s, transform 0.15s;
+        }
+
+        .guide-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .guide-card-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .guide-card-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .guide-card-text p {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* ── Stats Row ──────────────────────────── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 32px 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* ── Install Banner ─────────────────────── */
+        .install-banner {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.05), rgba(96, 165, 250, 0.05));
+            border: 1px solid rgba(74, 222, 128, 0.15);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .install-banner p {
+            max-width: none;
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+
+        .install-cmd {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            color: var(--accent);
+        }
+
+        .install-cmd .dollar {
+            color: var(--text-muted);
+        }
+
+        /* ── Architecture Diagram ───────────────── */
+        .arch-diagram {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            overflow-x: auto;
+            white-space: pre;
+            margin: 24px 0;
+        }
+
+        .arch-diagram .layer-app { color: var(--accent-purple); }
+        .arch-diagram .layer-framework { color: var(--accent); }
+        .arch-diagram .layer-illuminate { color: var(--accent-blue); }
+        .arch-diagram .layer-php { color: var(--accent-amber); }
+        .arch-diagram .layer-border { color: var(--text-muted); }
+
+        /* ── Footer ─────────────────────────────── */
+        .site-footer {
+            padding: 40px 48px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .footer-text a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ── Migration Table ────────────────────── */
+        .migration-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 16px 0;
+        }
+
+        .migration-table th {
+            text-align: left;
+            padding: 10px 16px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .migration-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .migration-table td:first-child {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .migration-table td:nth-child(2) {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            color: var(--accent);
+        }
+
+        .migration-table tr:hover td {
+            background: var(--accent-glow);
+        }
+
+        /* ── Responsive ─────────────────────────── */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .header-nav {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 48px 24px 40px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .section {
+                padding: 40px 24px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .guide-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .site-footer {
+                padding: 32px 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────── -->
+<header class="site-header">
+    <div class="header-inner">
+        <a href="#" class="logo">
+            <div class="logo-icon">L</div>
+            <div class="logo-text">Lattice<span>PHP</span></div>
+        </a>
+        <nav class="header-nav">
+            <a href="#quick-start">Quick Start</a>
+            <a href="#features">Features</a>
+            <a href="#packages">Packages</a>
+            <a href="#guides">Docs</a>
+            <a href="https://github.com/latticephp/lattice" class="github-link" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                GitHub
+            </a>
+        </nav>
+        <button class="mobile-toggle" onclick="toggleSidebar()" aria-label="Toggle navigation">&#9776;</button>
+    </div>
+</header>
+
+<!-- ── Sidebar ─────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Getting Started</div>
+        <a href="#hero" class="sidebar-link active" data-section="hero">Overview</a>
+        <a href="#quick-start" class="sidebar-link" data-section="quick-start">Quick Start</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Core Concepts</div>
+        <a href="#architecture" class="sidebar-link" data-section="architecture">Architecture</a>
+        <a href="#features" class="sidebar-link" data-section="features">Features</a>
+        <a href="#packages" class="sidebar-link" data-section="packages">Package Map</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Guides</div>
+        <a href="guides/getting-started.html" class="sidebar-link">Getting Started</a>
+        <a href="guides/architecture.html" class="sidebar-link">Architecture</a>
+        <a href="guides/modules.html" class="sidebar-link">Modules</a>
+        <a href="guides/pipeline.html" class="sidebar-link">Pipeline</a>
+        <a href="guides/http-api.html" class="sidebar-link">HTTP &amp; API</a>
+        <a href="guides/database.html" class="sidebar-link">Database</a>
+        <a href="guides/auth.html" class="sidebar-link">Authentication</a>
+        <a href="guides/security.html" class="sidebar-link">Security</a>
+        <a href="guides/workflows.html" class="sidebar-link">Workflows</a>
+        <a href="guides/microservices.html" class="sidebar-link">Microservices</a>
+        <a href="guides/testing.html" class="sidebar-link">Testing</a>
+        <a href="guides/observability.html" class="sidebar-link">Observability</a>
+        <a href="guides/runtime.html" class="sidebar-link">Runtime</a>
+        <a href="guides/package-authoring.html" class="sidebar-link">Package Authoring</a>
+        <a href="guides/migration-from-laravel.html" class="sidebar-link">Migration from Laravel</a>
+        <a href="guides/why-latticephp.html" class="sidebar-link">Why LatticePHP</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Examples</div>
+        <a href="#crm" class="sidebar-link" data-section="crm">CRM Application</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">More</div>
+        <a href="#migration" class="sidebar-link" data-section="migration">Migration from Laravel</a>
+        <a href="https://github.com/latticephp/lattice" class="sidebar-link" target="_blank" rel="noopener">GitHub &rarr;</a>
+    </div>
+</aside>
+
+<!-- ── Main Content ────────────────────────────── -->
+<div class="layout">
+    <main class="main">
+
+        <!-- Hero -->
+        <section class="hero" id="hero">
+            <div class="hero-inner">
+                <div class="hero-badge">
+                    <span>&#9733;</span> 42 packages &middot; 2,534 tests &middot; 16 guides
+                </div>
+                <h1>Build backend APIs <br>with <span>LatticePHP</span></h1>
+                <p class="hero-subtitle">
+                    A modular PHP framework that combines Laravel's battle-tested Illuminate components
+                    with NestJS-style architecture and native durable workflow orchestration.
+                    Attribute-driven. Module-first. Transport-aware.
+                </p>
+                <div class="hero-actions">
+                    <a href="#quick-start" class="btn btn-primary">Get Started &rarr;</a>
+                    <a href="guides/why-latticephp.html" class="btn btn-secondary">Why LatticePHP?</a>
+                    <a href="https://github.com/latticephp/lattice" class="btn btn-secondary" target="_blank" rel="noopener">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="section" style="padding-top: 40px; padding-bottom: 40px;">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Packages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">2,534</div>
+                    <div class="stat-label">Tests Passing</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">16</div>
+                    <div class="stat-label">Documentation Guides</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Starter Kits</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Start -->
+        <section class="section" id="quick-start">
+            <h2><span class="icon">&#9889;</span> Quick Start</h2>
+            <p class="section-subtitle">From zero to running API in under a minute.</p>
+
+            <div class="install-banner">
+                <p>Create a new LatticePHP project:</p>
+                <div class="install-cmd">
+                    <span class="dollar">$</span> composer create-project lattice/starter-api myapp
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-block-header">
+                    <div class="code-block-dots"><span></span><span></span><span></span></div>
+                    <div class="code-block-title">Terminal</div>
+                </div>
+                <pre><code class="language-bash"># Create project
+composer create-project lattice/starter-api myapp
+cd myapp
+
+# Configure environment (SQLite by default)
+cp .env.example .env
+
+# Run migrations and seed data
+php lattice migrate
+php lattice db:seed
+
+# Start development server
+php lattice serve
+# Server running on http://localhost:8000
+
+# Verify it works
+curl http://localhost:8000/api/health
+# {"status":"ok"}
+
+# Run the test suite
+php lattice test</code></pre>
+            </div>
+
+            <h3>Scaffold a module</h3>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <div class="code-block-dots"><span></span><span></span><span></span></div>
+                    <div class="code-block-title">Terminal</div>
+                </div>
+                <pre><code class="language-bash">php lattice make:module Contacts --crud
+
+# Creates:
+#   app/Modules/Contacts/ContactModule.php
+#   app/Modules/Contacts/ContactController.php
+#   app/Modules/Contacts/ContactService.php
+#   app/Modules/Contacts/Dto/CreateContactDto.php
+#   app/Modules/Contacts/Dto/UpdateContactDto.php
+#   app/Modules/Contacts/ContactResource.php
+#   app/Modules/Contacts/Models/Contact.php
+#   app/Modules/Contacts/tests/ContactApiTest.php</code></pre>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="section" id="features">
+            <h2><span class="icon">&#128204;</span> Features</h2>
+            <p class="section-subtitle">Everything you need to build production-grade APIs and services.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#128230;</div>
+                    <h3>Module System</h3>
+                    <p>NestJS-style modules with explicit imports, exports, providers, and controllers. Every dependency is visible in code. No hidden globals.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#127919;</div>
+                    <h3>Attribute Routing</h3>
+                    <p><code>#[Controller]</code>, <code>#[Get]</code>, <code>#[Post]</code> &mdash; routes are declared on controllers and methods. Zero config files.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#128737;</div>
+                    <h3>Guards &amp; Pipeline</h3>
+                    <p>Guards, pipes, interceptors, and exception filters that compose cleanly and work across HTTP, gRPC, and message transports.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#9968;</div>
+                    <h3>Durable Workflows</h3>
+                    <p>Temporal-class workflow orchestration built on your existing database and queue. Deterministic replay, signals, queries, and sagas.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#128274;</div>
+                    <h3>Authentication</h3>
+                    <p>JWT (access + refresh), personal access tokens, API keys, OAuth2/OIDC server, and headless social auth. All pluggable.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#128203;</div>
+                    <h3>Validated DTOs</h3>
+                    <p><code>#[Body] CreateDto $dto</code> &mdash; auto-deserializes request body, validates with illuminate/validation, returns 422 on failure.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#128451;</div>
+                    <h3>Eloquent Built-In</h3>
+                    <p>Full Eloquent ORM, query builder, migrations, seeders, and factories. Same API you know from Laravel &mdash; no wrappers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#127970;</div>
+                    <h3>Workspaces</h3>
+                    <p><code>#[BelongsToWorkspace]</code> auto-scopes all queries. Built-in invitations, member roles, and workspace switching.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#128209;</div>
+                    <h3>OpenAPI Generation</h3>
+                    <p>First-class OpenAPI spec generation from your route metadata, DTOs, and response types. Always in sync with your code.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#128269;</div>
+                    <h3>Observability</h3>
+                    <p>Structured logging, OpenTelemetry distributed tracing, Prometheus metrics, and health checks. Production-ready from day one.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#128640;</div>
+                    <h3>Microservices</h3>
+                    <p>Transport-aware controllers with pluggable adapters: NATS, RabbitMQ, SQS, Kafka, and gRPC. Same code, different transport.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">&#128295;</div>
+                    <h3>CQRS</h3>
+                    <p><code>CommandBus</code> and <code>QueryBus</code> with <code>#[CommandHandler]</code> / <code>#[QueryHandler]</code>. Async command dispatch via queue.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture -->
+        <section class="section" id="architecture">
+            <h2><span class="icon">&#129521;</span> Architecture</h2>
+            <p class="section-subtitle">Four layers. Clear boundaries. Dependencies only flow downward.</p>
+
+            <div class="arch-diagram"><span class="layer-border">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="layer-app">│  Layer 4: Your Application                                  │</span>
+<span class="layer-app">│  ContactModule  ·  DealModule  ·  AuthModule  · ...         │</span>
+<span class="layer-border">├─────────────────────────────────────────────────────────────┤</span>
+<span class="layer-framework">│  Layer 3: LatticePHP Framework                              │</span>
+<span class="layer-framework">│  module · compiler · pipeline · routing · auth · workflow    │</span>
+<span class="layer-framework">│  http · openapi · observability · testing · devtools         │</span>
+<span class="layer-border">├─────────────────────────────────────────────────────────────┤</span>
+<span class="layer-illuminate">│  Layer 2: Illuminate Components                             │</span>
+<span class="layer-illuminate">│  container · database · queue · cache · events · validation  │</span>
+<span class="layer-illuminate">│  console · filesystem · mail · notifications                 │</span>
+<span class="layer-border">├─────────────────────────────────────────────────────────────┤</span>
+<span class="layer-php">│  Layer 1: PHP 8.4+ Runtime                                  │</span>
+<span class="layer-php">│  Attributes · Readonly Properties · Property Hooks · Enums   │</span>
+<span class="layer-border">└─────────────────────────────────────────────────────────────┘</span></div>
+
+            <h3>Request Lifecycle</h3>
+            <div class="arch-diagram"><span class="layer-illuminate">Request</span>  <span class="layer-border">&rarr;</span>  <span class="layer-framework">Router</span>  <span class="layer-border">&rarr;</span>  <span class="layer-framework">Guards</span>  <span class="layer-border">&rarr;</span>  <span class="layer-framework">Pipes</span>  <span class="layer-border">&rarr;</span>  <span class="layer-framework">Interceptors</span>  <span class="layer-border">&rarr;</span>  <span class="layer-app">Controller</span>  <span class="layer-border">&rarr;</span>  <span class="layer-illuminate">Response</span>
+   <span class="layer-border">│</span>           <span class="layer-border">│</span>            <span class="layer-border">│</span>          <span class="layer-border">│</span>             <span class="layer-border">│</span>                 <span class="layer-border">│</span>
+   <span class="layer-border">│</span>     <span class="layer-illuminate">attribute</span>     <span class="layer-illuminate">auth</span>     <span class="layer-illuminate">transform</span>   <span class="layer-illuminate">cross-cutting</span>     <span class="layer-app">your code</span>
+   <span class="layer-border">│</span>     <span class="layer-illuminate">matching</span>      <span class="layer-illuminate">checks</span>   <span class="layer-illuminate">validate</span>    <span class="layer-illuminate">(log, cache)</span>      <span class="layer-app">runs here</span></div>
+
+            <p><a href="guides/architecture.html" class="btn btn-secondary" style="margin-top: 8px;">Read full architecture guide &rarr;</a></p>
+        </section>
+
+        <!-- Package Map -->
+        <section class="section" id="packages">
+            <h2><span class="icon">&#128230;</span> Package Map</h2>
+            <p class="section-subtitle">42 independently installable packages. Use only what you need.</p>
+
+            <table class="package-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Packages</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="cat-label">&#128295; Core</td>
+                        <td>
+                            <span class="pkg-name">contracts</span>
+                            <span class="pkg-name">core</span>
+                            <span class="pkg-name">compiler</span>
+                            <span class="pkg-name">module</span>
+                            <span class="pkg-name">pipeline</span>
+                        </td>
+                        <td>DI container, modules, attribute compilation, execution pipeline</td>
+                    </tr>
+                    <tr>
+                        <td class="cat-label">&#127760; HTTP &amp; API</td>
+                        <td>
+                            <span class="pkg-name">http</span>
+                            <span class="pkg-name">routing</span>
+                            <span class="pkg-name">validation</span>
+                            <span class="pkg-name">openapi</span>
+                            <span class="pkg-name">problem-details</span>
+                            <span class="pkg-name">jsonapi</span>
+                            <span class="pkg-name">rate-limit</span>
+                        </td>
+                        <td>Request handling, attribute routing, validation, API spec generation</td>
+                    </tr>
+                    <tr>
+                        <td class="cat-label">&#128274; Auth</td>
+                        <td>
+                            <span class="pkg-name">auth</span>
+                            <span class="pkg-name">jwt</span>
+                            <span class="pkg-name">pat</span>
+                            <span class="pkg-name">api-key</span>
+                            <span class="pkg-name">social</span>
+                            <span class="pkg-name">oauth</span>
+                            <span class="pkg-name">authorization</span>
+                        </td>
+                        <td>JWT, personal access tokens, API keys, OAuth2/OIDC, RBAC</td>
+                    </tr>
+                    <tr>
+                        <td class="cat-label">&#128190; Data</td>
+                        <td>
+                            <span class="pkg-name">database</span>
+                            <span class="pkg-name">cache</span>
+                            <span class="pkg-name">filesystem</span>
+                            <span class="pkg-name">events</span>
+                            <span class="pkg-name">scheduler</span>
+                            <span class="pkg-name">serializer</span>
+                        </td>
+                        <td>Eloquent ORM, caching, file storage, events, task scheduling</td>
+                    </tr>
+                    <tr>
+                        <td class="cat-label">&#9889; Async</td>
+                        <td>
+                            <span class="pkg-name">queue</span>
+                            <span class="pkg-name">microservices</span>
+                            <span class="pkg-name">workflow</span>
+                            <span class="pkg-name">workflow-store</span>
+                        </td>
+                        <td>Job queues, message-driven microservices, durable workflows</td>
+                    </tr>
+                    <tr>
+                        <td class="cat-label">&#128268; Transports</td>
+                        <td>
+                            <span class="pkg-name">grpc</span>
+                            <span class="pkg-name">transport-nats</span>
+                            <span class="pkg-name">transport-rabbitmq</span>
+                            <span class="pkg-name">transport-sqs</span>
+                            <span class="pkg-name">transport-kafka</span>
+                        </td>
+                        <td>Pluggable transports for microservice communication</td>
+                    </tr>
+                    <tr>
+                        <td class="cat-label">&#128421; Runtime</td>
+                        <td>
+                            <span class="pkg-name">roadrunner</span>
+                            <span class="pkg-name">openswoole</span>
+                            <span class="pkg-name">observability</span>
+                        </td>
+                        <td>Long-running workers, distributed tracing, metrics, logging</td>
+                    </tr>
+                    <tr>
+                        <td class="cat-label">&#128736; DX</td>
+                        <td>
+                            <span class="pkg-name">devtools</span>
+                            <span class="pkg-name">testing</span>
+                            <span class="pkg-name">mail</span>
+                            <span class="pkg-name">notifications</span>
+                            <span class="pkg-name">http-client</span>
+                        </td>
+                        <td>Generators, test harness, fakes, developer tooling</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Code Example -->
+        <section class="section" id="crm">
+            <h2><span class="icon">&#127959;</span> The CRM Example</h2>
+            <p class="section-subtitle">A production-grade CRM built entirely with LatticePHP &mdash; 7 modules, 37 routes, JWT auth, workspaces, and audit logging.</p>
+
+            <div class="feature-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); margin-bottom: 24px;">
+                <div class="feature-card" style="padding: 16px 20px;">
+                    <h3 style="font-size: 14px; margin: 0;">&#128100; Auth</h3>
+                    <p style="font-size: 12px;">Login, register, refresh</p>
+                </div>
+                <div class="feature-card" style="padding: 16px 20px;">
+                    <h3 style="font-size: 14px; margin: 0;">&#128101; Contacts</h3>
+                    <p style="font-size: 12px;">CRUD + filter + search</p>
+                </div>
+                <div class="feature-card" style="padding: 16px 20px;">
+                    <h3 style="font-size: 14px; margin: 0;">&#127970; Companies</h3>
+                    <p style="font-size: 12px;">Management + relations</p>
+                </div>
+                <div class="feature-card" style="padding: 16px 20px;">
+                    <h3 style="font-size: 14px; margin: 0;">&#128176; Deals</h3>
+                    <p style="font-size: 12px;">Pipeline stages, values</p>
+                </div>
+                <div class="feature-card" style="padding: 16px 20px;">
+                    <h3 style="font-size: 14px; margin: 0;">&#128197; Activities</h3>
+                    <p style="font-size: 12px;">Calls, emails, meetings</p>
+                </div>
+                <div class="feature-card" style="padding: 16px 20px;">
+                    <h3 style="font-size: 14px; margin: 0;">&#128221; Notes</h3>
+                    <p style="font-size: 12px;">Rich-text on any entity</p>
+                </div>
+                <div class="feature-card" style="padding: 16px 20px;">
+                    <h3 style="font-size: 14px; margin: 0;">&#128202; Dashboard</h3>
+                    <p style="font-size: 12px;">Aggregations, metrics</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-block-header">
+                    <div class="code-block-dots"><span></span><span></span><span></span></div>
+                    <div class="code-block-title">app/Modules/Contacts/ContactController.php</div>
+                </div>
+                <pre><code class="language-php">#[Controller('/api/contacts')]
+#[UseGuards(guards: [JwtAuthenticationGuard::class, WorkspaceGuard::class])]
+final class ContactController
+{
+    public function __construct(
+        private readonly ContactService $service,
+    ) {}
+
+    #[Get('/')]
+    public function index(Request $request): Response
+    {
+        $filter = QueryFilter::fromRequest($request->query);
+        $contacts = Contact::filter($filter)
+            ->with(['company'])
+            ->paginate($filter->getPerPage());
+
+        return ResponseFactory::paginated($contacts, ContactResource::class);
+    }
+
+    #[Post('/')]
+    public function store(
+        #[Body] CreateContactDto $dto,
+        #[CurrentUser] Principal $user,
+    ): Response {
+        $contact = $this->service->create($dto, $user);
+        Log::info('Contact created', ['id' => $contact->id]);
+        return ResponseFactory::created(
+            ['data' => ContactResource::make($contact)->toArray()]
+        );
+    }
+
+    #[Get('/:id')]
+    public function show(#[Param] int $id): Response
+    {
+        $contact = Contact::with(['company', 'deals', 'activities'])->findOrFail($id);
+        return ResponseFactory::ok(['data' => ContactResource::make($contact)->toArray()]);
+    }
+}</code></pre>
+            </div>
+
+            <p><strong>Key patterns used:</strong> Module system, attribute routing, JWT + workspace guards, DTO validation, Eloquent with query filters, API resources, structured logging, and full test coverage.</p>
+        </section>
+
+        <!-- Guides -->
+        <section class="section" id="guides">
+            <h2><span class="icon">&#128218;</span> Documentation Guides</h2>
+            <p class="section-subtitle">16 comprehensive guides covering every aspect of the framework.</p>
+
+            <div class="guide-grid">
+                <a href="guides/getting-started.html" class="guide-card">
+                    <div class="guide-card-icon">&#128640;</div>
+                    <div class="guide-card-text">
+                        <h4>Getting Started</h4>
+                        <p>Installation, first project, first module</p>
+                    </div>
+                </a>
+                <a href="guides/why-latticephp.html" class="guide-card">
+                    <div class="guide-card-icon">&#128161;</div>
+                    <div class="guide-card-text">
+                        <h4>Why LatticePHP</h4>
+                        <p>Philosophy, positioning, who it is for</p>
+                    </div>
+                </a>
+                <a href="guides/architecture.html" class="guide-card">
+                    <div class="guide-card-icon">&#129521;</div>
+                    <div class="guide-card-text">
+                        <h4>Architecture</h4>
+                        <p>4-layer design, boot sequence, request lifecycle</p>
+                    </div>
+                </a>
+                <a href="guides/modules.html" class="guide-card">
+                    <div class="guide-card-icon">&#128230;</div>
+                    <div class="guide-card-text">
+                        <h4>Modules</h4>
+                        <p>Module system, imports/exports, dependency graph</p>
+                    </div>
+                </a>
+                <a href="guides/pipeline.html" class="guide-card">
+                    <div class="guide-card-icon">&#128737;</div>
+                    <div class="guide-card-text">
+                        <h4>Pipeline</h4>
+                        <p>Guards, pipes, interceptors, exception filters</p>
+                    </div>
+                </a>
+                <a href="guides/http-api.html" class="guide-card">
+                    <div class="guide-card-icon">&#127760;</div>
+                    <div class="guide-card-text">
+                        <h4>HTTP &amp; API</h4>
+                        <p>Controllers, routing, DTOs, responses, pagination</p>
+                    </div>
+                </a>
+                <a href="guides/database.html" class="guide-card">
+                    <div class="guide-card-icon">&#128190;</div>
+                    <div class="guide-card-text">
+                        <h4>Database</h4>
+                        <p>Eloquent integration, migrations, query filters</p>
+                    </div>
+                </a>
+                <a href="guides/auth.html" class="guide-card">
+                    <div class="guide-card-icon">&#128274;</div>
+                    <div class="guide-card-text">
+                        <h4>Authentication</h4>
+                        <p>JWT, PATs, API keys, OAuth2, social auth</p>
+                    </div>
+                </a>
+                <a href="guides/security.html" class="guide-card">
+                    <div class="guide-card-icon">&#128272;</div>
+                    <div class="guide-card-text">
+                        <h4>Security</h4>
+                        <p>RBAC, policies, workspace isolation, tenancy</p>
+                    </div>
+                </a>
+                <a href="guides/workflows.html" class="guide-card">
+                    <div class="guide-card-icon">&#9968;</div>
+                    <div class="guide-card-text">
+                        <h4>Workflows</h4>
+                        <p>Durable execution, activities, signals, queries</p>
+                    </div>
+                </a>
+                <a href="guides/microservices.html" class="guide-card">
+                    <div class="guide-card-icon">&#128268;</div>
+                    <div class="guide-card-text">
+                        <h4>Microservices</h4>
+                        <p>Transport-aware controllers, NATS, RabbitMQ, SQS, Kafka</p>
+                    </div>
+                </a>
+                <a href="guides/testing.html" class="guide-card">
+                    <div class="guide-card-icon">&#129514;</div>
+                    <div class="guide-card-text">
+                        <h4>Testing</h4>
+                        <p>TestCase, HTTP helpers, fakes, database assertions</p>
+                    </div>
+                </a>
+                <a href="guides/observability.html" class="guide-card">
+                    <div class="guide-card-icon">&#128269;</div>
+                    <div class="guide-card-text">
+                        <h4>Observability</h4>
+                        <p>Logging, tracing, metrics, health checks</p>
+                    </div>
+                </a>
+                <a href="guides/runtime.html" class="guide-card">
+                    <div class="guide-card-icon">&#128421;</div>
+                    <div class="guide-card-text">
+                        <h4>Runtime</h4>
+                        <p>PHP-FPM, RoadRunner, OpenSwoole</p>
+                    </div>
+                </a>
+                <a href="guides/package-authoring.html" class="guide-card">
+                    <div class="guide-card-icon">&#128736;</div>
+                    <div class="guide-card-text">
+                        <h4>Package Authoring</h4>
+                        <p>Creating reusable LatticePHP packages</p>
+                    </div>
+                </a>
+                <a href="guides/migration-from-laravel.html" class="guide-card">
+                    <div class="guide-card-icon">&#128260;</div>
+                    <div class="guide-card-text">
+                        <h4>Migration from Laravel</h4>
+                        <p>Step-by-step migration guide with concept mapping</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Migration -->
+        <section class="section" id="migration">
+            <h2><span class="icon">&#128260;</span> Migration from Laravel</h2>
+            <p class="section-subtitle">Already on Laravel? Here is how the concepts map.</p>
+
+            <table class="migration-table">
+                <thead>
+                    <tr>
+                        <th>Laravel</th>
+                        <th>LatticePHP</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Route::get()</td>
+                        <td>#[Get('/')]</td>
+                        <td>Attribute-based, zero config files</td>
+                    </tr>
+                    <tr>
+                        <td>Service Providers</td>
+                        <td>#[Module]</td>
+                        <td>Explicit imports/exports, dependency graph</td>
+                    </tr>
+                    <tr>
+                        <td>Middleware</td>
+                        <td>Guards + Pipes + Interceptors</td>
+                        <td>Separated by responsibility</td>
+                    </tr>
+                    <tr>
+                        <td>Form Requests</td>
+                        <td>#[Body] CreateDto $dto</td>
+                        <td>Auto-deserialization + validation</td>
+                    </tr>
+                    <tr>
+                        <td>Auth::user()</td>
+                        <td>#[CurrentUser] Principal $user</td>
+                        <td>Injected via parameter binding</td>
+                    </tr>
+                    <tr>
+                        <td>php artisan</td>
+                        <td>php lattice</td>
+                        <td>Same Symfony Console underneath</td>
+                    </tr>
+                    <tr>
+                        <td>Model::factory()</td>
+                        <td>Model::factory()</td>
+                        <td>Identical &mdash; same Eloquent</td>
+                    </tr>
+                    <tr>
+                        <td>$this->postJson()</td>
+                        <td>$this->postJson()</td>
+                        <td>Same testing API</td>
+                    </tr>
+                    <tr>
+                        <td>Event::dispatch()</td>
+                        <td>Event::dispatch()</td>
+                        <td>Same illuminate/events</td>
+                    </tr>
+                    <tr>
+                        <td>Queued Jobs</td>
+                        <td>#[Async] CommandBus</td>
+                        <td>Same queue drivers, better patterns</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 16px;"><a href="guides/migration-from-laravel.html" class="btn btn-secondary">Read full migration guide &rarr;</a></p>
+        </section>
+
+        <!-- Workflow Example -->
+        <section class="section" id="workflows">
+            <h2><span class="icon">&#9968;</span> Durable Workflows</h2>
+            <p class="section-subtitle">Temporal-class orchestration. No external services. Your database + queue.</p>
+
+            <div class="code-block">
+                <div class="code-block-header">
+                    <div class="code-block-dots"><span></span><span></span><span></span></div>
+                    <div class="code-block-title">OrderFulfillmentWorkflow.php</div>
+                </div>
+                <pre><code class="language-php">#[Workflow]
+final class OrderFulfillmentWorkflow
+{
+    private string $status = 'pending';
+
+    public function execute(WorkflowContext $ctx, array $input): array
+    {
+        // Each activity retries independently. State survives crashes.
+        $payment = $ctx->executeActivity(
+            PaymentActivity::class, 'charge',
+            [$input['amount']],
+            options: new ActivityOptions(
+                retryPolicy: new RetryPolicy(maxAttempts: 3),
+            ),
+        );
+
+        $shipping = $ctx->executeActivity(
+            ShippingActivity::class, 'ship',
+            [$input['address']],
+        );
+
+        $this->status = 'fulfilled';
+        return ['payment' => $payment, 'shipping' => $shipping];
+    }
+
+    #[SignalMethod]
+    public function cancel(): void
+    {
+        $this->status = 'cancelled';
+    }
+
+    #[QueryMethod]
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+}</code></pre>
+            </div>
+
+            <div class="feature-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+                <div class="feature-card" style="padding: 16px 20px;">
+                    <h3 style="font-size: 14px; margin: 0 0 4px;">Deterministic Replay</h3>
+                    <p style="font-size: 12px;">Replay events to rebuild state after crash</p>
+                </div>
+                <div class="feature-card" style="padding: 16px 20px;">
+                    <h3 style="font-size: 14px; margin: 0 0 4px;">Signals &amp; Queries</h3>
+                    <p style="font-size: 12px;">Send signals to running workflows, query state</p>
+                </div>
+                <div class="feature-card" style="padding: 16px 20px;">
+                    <h3 style="font-size: 14px; margin: 0 0 4px;">Compensation / Saga</h3>
+                    <p style="font-size: 12px;">Automatic rollback on failure</p>
+                </div>
+                <div class="feature-card" style="padding: 16px 20px;">
+                    <h3 style="font-size: 14px; margin: 0 0 4px;">Zero Infrastructure</h3>
+                    <p style="font-size: 12px;">Uses your existing DB + queue</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-links">
+                <a href="guides/getting-started.html">Documentation</a>
+                <a href="https://github.com/latticephp/lattice">GitHub</a>
+                <a href="https://github.com/latticephp/lattice/issues">Issues</a>
+                <a href="../CONTRIBUTING.md">Contributing</a>
+                <a href="../LICENSE">License</a>
+            </div>
+            <p class="footer-text">
+                MIT License &copy; 2026 <a href="https://github.com/latticephp">LatticePHP</a>.
+                Built with 42 packages, 2,534 tests, and 16 guides.
+            </p>
+        </footer>
+
+    </main>
+</div>
+
+<script>
+    // Syntax highlighting
+    hljs.highlightAll();
+
+    // Mobile sidebar toggle
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    // Active sidebar link tracking
+    const sections = document.querySelectorAll('.section[id], .hero[id]');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link[data-section]');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                sidebarLinks.forEach(link => link.classList.remove('active'));
+                const activeLink = document.querySelector(`.sidebar-link[data-section="${entry.target.id}"]`);
+                if (activeLink) activeLink.classList.add('active');
+            }
+        });
+    }, {
+        rootMargin: '-80px 0px -60% 0px',
+        threshold: 0
+    });
+
+    sections.forEach(section => observer.observe(section));
+
+    // Close sidebar on mobile when clicking a link
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 1024) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        });
+    });
+
+    // ── Markdown Guide Reader ────────────────────────────
+    // Intercept clicks on guide links, fetch .md, render inline
+    const mainContent = document.querySelector('main.main') || document.querySelector('main');
+    const originalContent = mainContent.innerHTML;
+
+    function renderMarkdown(md) {
+        // Simple markdown-to-HTML converter (no external dep)
+        let html = md
+            // Code blocks
+            .replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
+                const escaped = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return `<pre><code class="language-${lang || ''}">${escaped}</code></pre>`;
+            })
+            // Inline code
+            .replace(/`([^`]+)`/g, '<code>$1</code>')
+            // Headers
+            .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
+            .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+            .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+            .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+            // Bold + Italic
+            .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            // Links
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color:var(--accent)">$1</a>')
+            // Unordered lists
+            .replace(/^- (.+)$/gm, '<li>$1</li>')
+            // Ordered lists
+            .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+            // Blockquotes
+            .replace(/^> (.+)$/gm, '<blockquote style="border-left:3px solid var(--accent);padding:8px 16px;margin:12px 0;color:var(--text-secondary)">$1</blockquote>')
+            // Horizontal rule
+            .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid var(--border);margin:24px 0">')
+            // Tables
+            .replace(/^\|(.+)\|$/gm, (match) => {
+                const cells = match.split('|').filter(c => c.trim());
+                const tds = cells.map(c => `<td style="padding:8px 12px;border:1px solid var(--border)">${c.trim()}</td>`).join('');
+                return `<tr>${tds}</tr>`;
+            })
+            // Paragraphs (lines not already wrapped)
+            .replace(/^(?!<[hluobtp]|<li|<pre|<code|<hr|<tr|<block)(.+)$/gm, '<p>$1</p>');
+
+        // Wrap consecutive <li> in <ul>
+        html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => `<ul style="margin:8px 0 8px 24px">${match}</ul>`);
+        // Wrap consecutive <tr> in <table>
+        html = html.replace(/(<tr>.*<\/tr>\n?)+/g, (match) => `<table style="width:100%;border-collapse:collapse;margin:16px 0">${match}</table>`);
+
+        return html;
+    }
+
+    async function loadGuide(url, title) {
+        try {
+            const resp = await fetch(url);
+            if (!resp.ok) throw new Error('Failed to load');
+            const md = await resp.text();
+            const html = renderMarkdown(md);
+
+            mainContent.innerHTML = `
+                <div style="max-width:900px;margin:0 auto;padding:100px 40px 60px">
+                    <button onclick="goHome()" style="background:none;border:1px solid var(--border);color:var(--accent);padding:6px 16px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:13px;margin-bottom:24px">
+                        ← Back to Home
+                    </button>
+                    <article style="font-size:15px;line-height:1.8">
+                        ${html}
+                    </article>
+                </div>
+            `;
+
+            // Re-highlight code blocks
+            document.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
+            window.scrollTo(0, 0);
+        } catch (e) {
+            // Fallback: open raw file
+            window.location.href = url;
+        }
+    }
+
+    window.goHome = function() {
+        mainContent.innerHTML = originalContent;
+        // Re-attach guide link handlers
+        attachGuideLinks();
+        // Re-highlight
+        document.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
+        window.scrollTo(0, 0);
+    };
+
+    function attachGuideLinks() {
+        document.querySelectorAll('a[href$=".md"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = link.getAttribute('href');
+                const title = link.textContent.trim();
+                loadGuide(url, title);
+
+                // Update sidebar active state
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll(`.sidebar-link[href="${url}"]`).forEach(l => l.classList.add('active'));
+
+                // Close mobile sidebar
+                if (window.innerWidth <= 1024) {
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            });
+        });
+    }
+
+    attachGuideLinks();
+</script>
+
+</body>
+</html>
