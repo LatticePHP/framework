@@ -23,9 +23,9 @@ Wave 5 (next-gen):    13-graphql, 14-ai-module, 15-mcp-module
 | 04 | [CLI Tools](04-TASK-cli-tools/TASK.md) | `review` | 10 | 8/10 | Pending |
 | 05 | [Catalyst](05-TASK-catalyst/TASK.md) | `review` | 8 | 6/8 | Pending |
 | 06 | [Ripple](06-TASK-ripple/TASK.md) | `review` | 8 | 6/8 | Pending |
-| 07 | [Chronos](07-TASK-chronos/TASK.md) | `pending` | 9 | 0/9 | No |
-| 08 | [Loom](08-TASK-loom/TASK.md) | `pending` | 8 | 0/8 | No |
-| 09 | [Nightwatch](09-TASK-nightwatch/TASK.md) | `pending` | 9 | 0/9 | No |
+| 07 | [Chronos](07-TASK-chronos/TASK.md) | `review` | 9 | 3/9 | Pending |
+| 08 | [Loom](08-TASK-loom/TASK.md) | `review` | 8 | 4/8 | Pending |
+| 09 | [Nightwatch](09-TASK-nightwatch/TASK.md) | `review` | 9 | 4/9 | Pending |
 | 10 | [OAuth & Social](10-TASK-oauth-social/TASK.md) | `pending` | 7 | 0/7 | No |
 | 11 | [Prism](11-TASK-prism/TASK.md) | `pending` | 9 | 0/9 | No |
 | 12 | [Anvil](12-TASK-anvil/TASK.md) | `pending` | 8 | 0/8 | No |

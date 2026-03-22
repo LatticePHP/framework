@@ -67,7 +67,10 @@
             "Lattice\\HttpClient\\": "packages/http-client/src/",
             "Lattice\\Serializer\\": "packages/serializer/src/",
             "Lattice\\Catalyst\\": "packages/catalyst/src/",
-            "Lattice\\Ripple\\": "packages/ripple/src/"
+            "Lattice\\Ripple\\": "packages/ripple/src/",
+            "Lattice\\Chronos\\": "packages/chronos/src/",
+            "Lattice\\Loom\\": "packages/loom/src/",
+            "Lattice\\Nightwatch\\": "packages/nightwatch/src/"
         }
     },
     "autoload-dev": {
@@ -116,6 +119,9 @@
             "Lattice\\Serializer\\Tests\\": "packages/serializer/tests/",
             "Lattice\\Catalyst\\Tests\\": "packages/catalyst/tests/",
             "Lattice\\Ripple\\Tests\\": "packages/ripple/tests/",
+            "Lattice\\Chronos\\Tests\\": "packages/chronos/tests/",
+            "Lattice\\Loom\\Tests\\": "packages/loom/tests/",
+            "Lattice\\Nightwatch\\Tests\\": "packages/nightwatch/tests/",
             "Tests\\": "tests/"
         }
     },

@@ -85,6 +85,15 @@
         <testsuite name="Ripple">
             <directory>packages/ripple/tests</directory>
         </testsuite>
+        <testsuite name="Chronos">
+            <directory>packages/chronos/tests</directory>
+        </testsuite>
+        <testsuite name="Loom">
+            <directory>packages/loom/tests</directory>
+        </testsuite>
+        <testsuite name="Nightwatch">
+            <directory>packages/nightwatch/tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
