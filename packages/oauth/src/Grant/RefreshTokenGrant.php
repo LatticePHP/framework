@@ -32,6 +32,15 @@ final class RefreshTokenGrant implements GrantHandlerInterface
             throw new \InvalidArgumentException('Invalid refresh token');
         }
 
+        // Detect reuse of a revoked token: revoke entire family
+        if ($stored->revoked) {
+            if ($stored->familyId !== '') {
+                $this->refreshTokenStore->revokeFamily($stored->familyId);
+            }
+
+            throw new \InvalidArgumentException('Refresh token has been revoked (possible reuse detected)');
+        }
+
         if ($stored->expiresAt < new \DateTimeImmutable()) {
             throw new \InvalidArgumentException('Refresh token expired');
         }
@@ -43,7 +52,7 @@ final class RefreshTokenGrant implements GrantHandlerInterface
         // Revoke old refresh token (rotation)
         $this->refreshTokenStore->revoke($refreshToken);
 
-        // Issue new tokens
+        // Issue new tokens in the same family
         $scopes = $stored->scopes;
         $accessToken = $this->generateAccessToken($stored->userId, $scopes);
         $newRefreshToken = bin2hex(random_bytes(32));
@@ -54,6 +63,7 @@ final class RefreshTokenGrant implements GrantHandlerInterface
             userId: $stored->userId,
             scopes: $scopes,
             expiresAt: new \DateTimeImmutable("+{$this->refreshTokenTtl} seconds"),
+            familyId: $stored->familyId,
         );
 
         return new TokenResponse(

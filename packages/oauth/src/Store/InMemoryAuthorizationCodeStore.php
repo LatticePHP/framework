@@ -18,6 +18,9 @@ final class InMemoryAuthorizationCodeStore implements AuthorizationCodeStoreInte
         string|int $userId,
         array $scopes,
         \DateTimeImmutable $expiresAt,
+        ?string $redirectUri = null,
+        ?string $codeChallenge = null,
+        ?string $codeChallengeMethod = null,
     ): void {
         $this->codes[$code] = new AuthorizationCode(
             code: $code,
@@ -25,6 +28,9 @@ final class InMemoryAuthorizationCodeStore implements AuthorizationCodeStoreInte
             userId: $userId,
             scopes: $scopes,
             expiresAt: $expiresAt,
+            redirectUri: $redirectUri,
+            codeChallenge: $codeChallenge,
+            codeChallengeMethod: $codeChallengeMethod,
         );
     }
 

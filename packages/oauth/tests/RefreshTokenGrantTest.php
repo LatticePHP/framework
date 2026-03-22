@@ -138,8 +138,10 @@ final class RefreshTokenGrantTest extends TestCase
 
         $this->grant->handle(['refresh_token' => 'old-refresh'], $client);
 
-        // Old token should be revoked
-        $this->assertNull($this->refreshStore->find('old-refresh'));
+        // Old token should be revoked (marked as revoked, not deleted)
+        $oldToken = $this->refreshStore->find('old-refresh');
+        $this->assertNotNull($oldToken);
+        $this->assertTrue($oldToken->revoked);
     }
 
     private function createClient(string $id): Client

@@ -12,9 +12,12 @@ interface RefreshTokenStoreInterface
         string|int $userId,
         array $scopes,
         \DateTimeImmutable $expiresAt,
+        string $familyId = '',
     ): void;
 
     public function find(string $token): ?StoredRefreshToken;
 
     public function revoke(string $token): void;
+
+    public function revokeFamily(string $familyId): void;
 }

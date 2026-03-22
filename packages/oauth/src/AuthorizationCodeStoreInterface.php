@@ -12,6 +12,9 @@ interface AuthorizationCodeStoreInterface
         string|int $userId,
         array $scopes,
         \DateTimeImmutable $expiresAt,
+        ?string $redirectUri = null,
+        ?string $codeChallenge = null,
+        ?string $codeChallengeMethod = null,
     ): void;
 
     public function find(string $code): ?AuthorizationCode;

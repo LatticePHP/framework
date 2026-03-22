@@ -70,7 +70,9 @@
             "Lattice\\Ripple\\": "packages/ripple/src/",
             "Lattice\\Chronos\\": "packages/chronos/src/",
             "Lattice\\Loom\\": "packages/loom/src/",
-            "Lattice\\Nightwatch\\": "packages/nightwatch/src/"
+            "Lattice\\Nightwatch\\": "packages/nightwatch/src/",
+            "Lattice\\Prism\\": "packages/prism/src/",
+            "Lattice\\Anvil\\": "packages/anvil/src/"
         }
     },
     "autoload-dev": {
@@ -122,6 +124,8 @@
             "Lattice\\Chronos\\Tests\\": "packages/chronos/tests/",
             "Lattice\\Loom\\Tests\\": "packages/loom/tests/",
             "Lattice\\Nightwatch\\Tests\\": "packages/nightwatch/tests/",
+            "Lattice\\Prism\\Tests\\": "packages/prism/tests/",
+            "Lattice\\Anvil\\Tests\\": "packages/anvil/tests/",
             "Tests\\": "tests/"
         }
     },

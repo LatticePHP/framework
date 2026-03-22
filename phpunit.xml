@@ -94,6 +94,18 @@
         <testsuite name="Nightwatch">
             <directory>packages/nightwatch/tests</directory>
         </testsuite>
+        <testsuite name="OAuth">
+            <directory>packages/oauth/tests</directory>
+        </testsuite>
+        <testsuite name="Social">
+            <directory>packages/social/tests</directory>
+        </testsuite>
+        <testsuite name="Prism">
+            <directory>packages/prism/tests</directory>
+        </testsuite>
+        <testsuite name="Anvil">
+            <directory>packages/anvil/tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>

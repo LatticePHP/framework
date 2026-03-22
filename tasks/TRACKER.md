@@ -26,9 +26,9 @@ Wave 5 (next-gen):    13-graphql, 14-ai-module, 15-mcp-module
 | 07 | [Chronos](07-TASK-chronos/TASK.md) | `review` | 9 | 3/9 | Pending |
 | 08 | [Loom](08-TASK-loom/TASK.md) | `review` | 8 | 4/8 | Pending |
 | 09 | [Nightwatch](09-TASK-nightwatch/TASK.md) | `review` | 9 | 4/9 | Pending |
-| 10 | [OAuth & Social](10-TASK-oauth-social/TASK.md) | `pending` | 7 | 0/7 | No |
-| 11 | [Prism](11-TASK-prism/TASK.md) | `pending` | 9 | 0/9 | No |
-| 12 | [Anvil](12-TASK-anvil/TASK.md) | `pending` | 8 | 0/8 | No |
+| 10 | [OAuth & Social](10-TASK-oauth-social/TASK.md) | `review` | 7 | 6/7 | Pending |
+| 11 | [Prism](11-TASK-prism/TASK.md) | `review` | 9 | 3/9 | Pending |
+| 12 | [Anvil](12-TASK-anvil/TASK.md) | `review` | 8 | 3/8 | Pending |
 | 13 | [GraphQL](13-TASK-graphql/TASK.md) | `pending` | 7 | 0/7 | No |
 | 14 | [AI Module](14-TASK-ai-module/TASK.md) | `pending` | 8 | 0/8 | No |
 | 15 | [MCP Module](15-TASK-mcp-module/TASK.md) | `pending` | 7 | 0/7 | No |

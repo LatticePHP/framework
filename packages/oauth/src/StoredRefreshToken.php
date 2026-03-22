@@ -4,13 +4,20 @@ declare(strict_types=1);
 
 namespace Lattice\OAuth;
 
-final readonly class StoredRefreshToken
+final class StoredRefreshToken
 {
     public function __construct(
-        public string $token,
-        public string $clientId,
-        public string|int $userId,
-        public array $scopes,
-        public \DateTimeImmutable $expiresAt,
+        public readonly string $token,
+        public readonly string $clientId,
+        public readonly string|int $userId,
+        public readonly array $scopes,
+        public readonly \DateTimeImmutable $expiresAt,
+        public readonly string $familyId = '',
+        public bool $revoked = false,
     ) {}
+
+    public function isExpired(): bool
+    {
+        return $this->expiresAt < new \DateTimeImmutable();
+    }
 }
