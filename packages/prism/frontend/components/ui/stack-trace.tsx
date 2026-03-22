@@ -15,12 +15,12 @@ interface StackTraceProps {
 
 function isVendorFrame(frame: StackFrame): boolean {
   const file = frame.file ?? "";
-  return file.includes("/vendor/") || file.includes("\vendor\\") || file.includes("node_modules");
+  return file.includes("/vendor/") || file.includes("\\vendor\\") || file.includes("node_modules");
 }
 
 function shortPath(file: string): string {
   // Show last 3 path segments for readability
-  const parts = file.replace(/\/g, "/").split("/");
+  const parts = file.replace(/\\/g, "/").split("/");
   return parts.length > 3 ? ".../" + parts.slice(-3).join("/") : file;
 }
 

@@ -33,9 +33,14 @@ Desktop.ini
 phpstan-baseline.neon
 coverage/
 
+# Node.js / Frontend
+**/node_modules/
+**/package-lock.json
+**/.next/
+**/dist/
+
 # Build artifacts
 /build/
-/dist/
 
 # Logs
 *.log
