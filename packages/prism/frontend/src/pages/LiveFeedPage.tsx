@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import { useProjectStore } from "@/stores/project";
 import { IssueBadge } from "@/components/IssueBadge";
-import { LiveSignalSchema, type LiveSignal, type IssueLevel } from "@/schemas/issue";
+import { LiveSignalSchema, type LiveSignal } from "@/schemas/issue";
 
 const MAX_ENTRIES = 500;
 

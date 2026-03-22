@@ -197,7 +197,7 @@ export default function JobDetailPage() {
       <Card shadow="sm">
         <CardHeader className="flex items-center justify-between">
           <h3 className="text-sm font-semibold">Payload</h3>
-          {job.payload && (
+          {job.payload != null && (
             <Button
               size="sm"
               variant="flat"
