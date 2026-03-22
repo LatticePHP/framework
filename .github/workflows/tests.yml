@@ -29,7 +29,7 @@ jobs:
           coverage: none
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: vendor
           key: composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
@@ -55,14 +55,14 @@ jobs:
           coverage: none
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: vendor
           key: composer-8.4-${{ hashFiles('composer.json') }}
           restore-keys: composer-8.4-
 
       - name: Cache PHPStan
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .phpstan-cache
           key: phpstan-${{ hashFiles('phpstan.neon', 'composer.json') }}
@@ -88,7 +88,7 @@ jobs:
           coverage: none
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: vendor
           key: composer-8.4-${{ hashFiles('composer.json') }}
