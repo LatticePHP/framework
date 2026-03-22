@@ -72,7 +72,10 @@
             "Lattice\\Loom\\": "packages/loom/src/",
             "Lattice\\Nightwatch\\": "packages/nightwatch/src/",
             "Lattice\\Prism\\": "packages/prism/src/",
-            "Lattice\\Anvil\\": "packages/anvil/src/"
+            "Lattice\\Anvil\\": "packages/anvil/src/",
+            "Lattice\\GraphQL\\": "packages/graphql/src/",
+            "Lattice\\Ai\\": "packages/ai/src/",
+            "Lattice\\Mcp\\": "packages/mcp/src/"
         }
     },
     "autoload-dev": {
@@ -126,6 +129,9 @@
             "Lattice\\Nightwatch\\Tests\\": "packages/nightwatch/tests/",
             "Lattice\\Prism\\Tests\\": "packages/prism/tests/",
             "Lattice\\Anvil\\Tests\\": "packages/anvil/tests/",
+            "Lattice\\GraphQL\\Tests\\": "packages/graphql/tests/",
+            "Lattice\\Ai\\Tests\\": "packages/ai/tests/",
+            "Lattice\\Mcp\\Tests\\": "packages/mcp/tests/",
             "Tests\\": "tests/"
         }
     },

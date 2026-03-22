@@ -106,6 +106,15 @@
         <testsuite name="Anvil">
             <directory>packages/anvil/tests</directory>
         </testsuite>
+        <testsuite name="GraphQL">
+            <directory>packages/graphql/tests</directory>
+        </testsuite>
+        <testsuite name="Ai">
+            <directory>packages/ai/tests</directory>
+        </testsuite>
+        <testsuite name="Mcp">
+            <directory>packages/mcp/tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>

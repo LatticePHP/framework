@@ -29,9 +29,9 @@ Wave 5 (next-gen):    13-graphql, 14-ai-module, 15-mcp-module
 | 10 | [OAuth & Social](10-TASK-oauth-social/TASK.md) | `review` | 7 | 6/7 | Pending |
 | 11 | [Prism](11-TASK-prism/TASK.md) | `review` | 9 | 3/9 | Pending |
 | 12 | [Anvil](12-TASK-anvil/TASK.md) | `review` | 8 | 3/8 | Pending |
-| 13 | [GraphQL](13-TASK-graphql/TASK.md) | `pending` | 7 | 0/7 | No |
-| 14 | [AI Module](14-TASK-ai-module/TASK.md) | `pending` | 8 | 0/8 | No |
-| 15 | [MCP Module](15-TASK-mcp-module/TASK.md) | `pending` | 7 | 0/7 | No |
+| 13 | [GraphQL](13-TASK-graphql/TASK.md) | `review` | 7 | 3/7 | Pending |
+| 14 | [AI Module](14-TASK-ai-module/TASK.md) | `review` | 8 | 3/8 | Pending |
+| 15 | [MCP Module](15-TASK-mcp-module/TASK.md) | `review` | 7 | 5/7 | Pending |
 
 ## Status Key
 
