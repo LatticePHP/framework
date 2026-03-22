@@ -87,7 +87,7 @@ export default function OverviewPage() {
           color={
             data.p99_response_time.value > 1000 ? "danger" : "warning"
           }
-          onClick={() => router.push("/nightwatch/prod/slow-requests")}
+          onClick={() => router.push("/prod/slow-requests")}
         />
 
         <MetricCard
@@ -103,7 +103,7 @@ export default function OverviewPage() {
                 ? "warning"
                 : "success"
           }
-          onClick={() => router.push("/nightwatch/prod/exceptions")}
+          onClick={() => router.push("/prod/exceptions")}
         />
 
         <MetricCard
@@ -114,7 +114,7 @@ export default function OverviewPage() {
           color={
             data.slow_queries_count.value > 10 ? "danger" : "warning"
           }
-          onClick={() => router.push("/nightwatch/prod/slow-queries")}
+          onClick={() => router.push("/prod/slow-queries")}
         />
 
         <MetricCard

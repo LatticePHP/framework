@@ -53,16 +53,16 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
           <div
             key={t.id}
             className={cn(
-              'flex items-start gap-3 rounded-lg border bg-white p-4 shadow-lg animate-in slide-in-from-right-full',
+              'flex items-start gap-3 rounded-lg border border-border bg-card p-4 shadow-lg animate-in slide-in-from-right-full',
               'min-w-[320px] max-w-[420px]',
             )}
           >
             <div className="mt-0.5">{icons[t.type]}</div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-slate-900">{t.title}</p>
-              {t.description && <p className="mt-1 text-sm text-slate-500">{t.description}</p>}
+              <p className="text-sm font-medium text-foreground">{t.title}</p>
+              {t.description && <p className="mt-1 text-sm text-muted-foreground">{t.description}</p>}
             </div>
-            <button onClick={() => removeToast(t.id)} className="text-slate-400 hover:text-slate-600">
+            <button onClick={() => removeToast(t.id)} className="text-muted-foreground hover:text-accent-foreground">
               <X className="h-4 w-4" />
             </button>
           </div>

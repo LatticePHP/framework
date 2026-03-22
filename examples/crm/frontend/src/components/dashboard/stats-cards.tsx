@@ -70,14 +70,14 @@ export function StatsCards({ stats, loading }: StatsCardsProps) {
       {cards.map((card) => (
         <Card key={card.title} className="p-6">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-slate-500">{card.title}</p>
+            <p className="text-sm font-medium text-muted-foreground">{card.title}</p>
             <div className={`rounded-lg p-2 ${card.iconBg}`}>
               <card.icon className={`h-5 w-5 ${card.iconColor}`} />
             </div>
           </div>
-          <p className="mt-2 text-3xl font-bold text-slate-900">{card.value}</p>
+          <p className="mt-2 text-3xl font-bold text-foreground">{card.value}</p>
           <p className="mt-1 text-sm text-emerald-600">
-            {card.change} <span className="text-slate-400">vs last month</span>
+            {card.change} <span className="text-muted-foreground">vs last month</span>
           </p>
         </Card>
       ))}

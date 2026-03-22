@@ -11,9 +11,9 @@ export default function RootPage() {
 
   useEffect(() => {
     if (mode === "prod") {
-      router.replace("/nightwatch/prod/overview");
+      router.replace("/prod/overview");
     } else {
-      router.replace("/nightwatch/dev/requests");
+      router.replace("/dev/requests");
     }
   }, [mode, router]);
 

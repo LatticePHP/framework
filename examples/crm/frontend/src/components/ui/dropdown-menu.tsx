@@ -59,7 +59,7 @@ function DropdownMenuContent({ children, className, align = 'end' }: React.HTMLA
     <div
       ref={ref}
       className={cn(
-        'absolute z-50 mt-2 min-w-[180px] rounded-lg border border-slate-200 bg-white p-1 shadow-lg',
+        'absolute z-50 mt-2 min-w-[180px] rounded-lg border border-border bg-card p-1 shadow-lg',
         align === 'end' ? 'right-0' : 'left-0',
         className,
       )}
@@ -79,7 +79,7 @@ function DropdownMenuItem({
   return (
     <div
       className={cn(
-        'flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-100',
+        'flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-foreground hover:bg-accent',
         className,
       )}
       onClick={(e) => {
@@ -94,11 +94,11 @@ function DropdownMenuItem({
 }
 
 function DropdownMenuSeparator({ className }: { className?: string }) {
-  return <div className={cn('-mx-1 my-1 h-px bg-slate-200', className)} />;
+  return <div className={cn('-mx-1 my-1 h-px bg-border', className)} />;
 }
 
 function DropdownMenuLabel({ children, className }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('px-3 py-2 text-xs font-medium text-slate-500', className)}>{children}</div>;
+  return <div className={cn('px-3 py-2 text-xs font-medium text-muted-foreground', className)}>{children}</div>;
 }
 
 export {

@@ -20,8 +20,8 @@ export default function DashboardPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
-          <p className="text-sm text-slate-500">Welcome back, Sarah. Here is what is happening today.</p>
+          <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+          <p className="text-sm text-muted-foreground">Welcome back, Sarah. Here is what is happening today.</p>
         </div>
         <div className="flex gap-2">
           <Link href="/contacts/new">
@@ -57,27 +57,27 @@ export default function DashboardPage() {
         <div className="space-y-6">
           <Card>
             <CardContent className="p-6">
-              <h3 className="text-sm font-semibold text-slate-900 mb-4">Quick Actions</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-4">Quick Actions</h3>
               <div className="space-y-2">
                 <Link href="/contacts/new" className="block">
-                  <div className="flex items-center gap-3 rounded-lg border border-slate-200 p-3 hover:bg-slate-50 transition-colors">
-                    <div className="rounded-lg bg-blue-50 p-2">
-                      <Users className="h-4 w-4 text-blue-600" />
+                  <div className="flex items-center gap-3 rounded-lg border border-border p-3 hover:bg-accent transition-colors">
+                    <div className="rounded-lg bg-accent p-2">
+                      <Users className="h-4 w-4 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-slate-700">Add Contact</p>
-                      <p className="text-xs text-slate-400">Create a new contact record</p>
+                      <p className="text-sm font-medium text-foreground">Add Contact</p>
+                      <p className="text-xs text-muted-foreground">Create a new contact record</p>
                     </div>
                   </div>
                 </Link>
                 <Link href="/deals/new" className="block">
-                  <div className="flex items-center gap-3 rounded-lg border border-slate-200 p-3 hover:bg-slate-50 transition-colors">
-                    <div className="rounded-lg bg-indigo-50 p-2">
-                      <Handshake className="h-4 w-4 text-indigo-600" />
+                  <div className="flex items-center gap-3 rounded-lg border border-border p-3 hover:bg-accent transition-colors">
+                    <div className="rounded-lg bg-accent p-2">
+                      <Handshake className="h-4 w-4 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-slate-700">Create Deal</p>
-                      <p className="text-xs text-slate-400">Start tracking a new deal</p>
+                      <p className="text-sm font-medium text-foreground">Create Deal</p>
+                      <p className="text-xs text-muted-foreground">Start tracking a new deal</p>
                     </div>
                   </div>
                 </Link>

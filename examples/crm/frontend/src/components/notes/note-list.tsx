@@ -11,7 +11,7 @@ interface NoteListProps {
 export function NoteList({ notes }: NoteListProps) {
   if (notes.length === 0) {
     return (
-      <div className="py-8 text-center text-slate-400">
+      <div className="py-8 text-center text-muted-foreground">
         <p>No notes yet. Add the first one.</p>
       </div>
     );
@@ -22,16 +22,16 @@ export function NoteList({ notes }: NoteListProps) {
       {notes.map((note) => (
         <div key={note.id} className="flex gap-3">
           <Avatar fallback={note.author?.name || 'U'} size="sm" className="mt-0.5" />
-          <div className="flex-1 rounded-lg bg-slate-50 p-3">
+          <div className="flex-1 rounded-lg bg-muted p-3">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-sm font-medium text-slate-700">
+              <span className="text-sm font-medium text-foreground">
                 {note.author?.name || 'Unknown'}
               </span>
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-muted-foreground">
                 {formatRelativeDate(note.created_at)}
               </span>
             </div>
-            <p className="text-sm text-slate-600 whitespace-pre-wrap">{note.body}</p>
+            <p className="text-sm text-muted-foreground whitespace-pre-wrap">{note.body}</p>
           </div>
         </div>
       ))}

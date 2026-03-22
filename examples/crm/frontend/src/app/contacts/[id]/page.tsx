@@ -41,8 +41,8 @@ export default function ContactDetailPage({ params }: { params: Promise<{ id: st
   if (!contact) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <p className="text-lg text-slate-500">Contact not found</p>
-        <Link href="/contacts" className="mt-4 text-indigo-600 hover:text-indigo-800">
+        <p className="text-lg text-muted-foreground">Contact not found</p>
+        <Link href="/contacts" className="mt-4 text-primary hover:text-primary">
           Back to Contacts
         </Link>
       </div>
@@ -67,7 +67,7 @@ export default function ContactDetailPage({ params }: { params: Promise<{ id: st
               <Edit className="h-3.5 w-3.5" />
               Edit
             </Button>
-            <Button variant="outline" size="sm" className="gap-1.5 text-rose-600 hover:bg-rose-50">
+            <Button variant="outline" size="sm" className="gap-1.5 text-destructive hover:bg-destructive/10">
               <Trash2 className="h-3.5 w-3.5" />
               Delete
             </Button>
@@ -88,31 +88,31 @@ export default function ContactDetailPage({ params }: { params: Promise<{ id: st
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-sm font-semibold text-slate-900 mb-4">Contact Information</h3>
+                <h3 className="text-sm font-semibold text-foreground mb-4">Contact Information</h3>
                 <dl className="space-y-3">
                   <div className="flex justify-between">
-                    <dt className="text-sm text-slate-500">Email</dt>
-                    <dd className="text-sm font-medium text-slate-700">{contact.email}</dd>
+                    <dt className="text-sm text-muted-foreground">Email</dt>
+                    <dd className="text-sm font-medium text-foreground">{contact.email}</dd>
                   </div>
                   <div className="flex justify-between">
-                    <dt className="text-sm text-slate-500">Phone</dt>
-                    <dd className="text-sm font-medium text-slate-700">{contact.phone || '--'}</dd>
+                    <dt className="text-sm text-muted-foreground">Phone</dt>
+                    <dd className="text-sm font-medium text-foreground">{contact.phone || '--'}</dd>
                   </div>
                   <div className="flex justify-between">
-                    <dt className="text-sm text-slate-500">Title</dt>
-                    <dd className="text-sm font-medium text-slate-700">{contact.title || '--'}</dd>
+                    <dt className="text-sm text-muted-foreground">Title</dt>
+                    <dd className="text-sm font-medium text-foreground">{contact.title || '--'}</dd>
                   </div>
                   <div className="flex justify-between">
-                    <dt className="text-sm text-slate-500">Company</dt>
-                    <dd className="text-sm font-medium text-slate-700">{contact.company?.name || '--'}</dd>
+                    <dt className="text-sm text-muted-foreground">Company</dt>
+                    <dd className="text-sm font-medium text-foreground">{contact.company?.name || '--'}</dd>
                   </div>
                   <div className="flex justify-between">
-                    <dt className="text-sm text-slate-500">Source</dt>
-                    <dd className="text-sm font-medium text-slate-700 capitalize">{contact.source || '--'}</dd>
+                    <dt className="text-sm text-muted-foreground">Source</dt>
+                    <dd className="text-sm font-medium text-foreground capitalize">{contact.source || '--'}</dd>
                   </div>
                   <div className="flex justify-between">
-                    <dt className="text-sm text-slate-500">Created</dt>
-                    <dd className="text-sm font-medium text-slate-700">{formatDate(contact.created_at)}</dd>
+                    <dt className="text-sm text-muted-foreground">Created</dt>
+                    <dd className="text-sm font-medium text-foreground">{formatDate(contact.created_at)}</dd>
                   </div>
                 </dl>
               </CardContent>
@@ -120,28 +120,28 @@ export default function ContactDetailPage({ params }: { params: Promise<{ id: st
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-sm font-semibold text-slate-900 mb-4">Deal Summary</h3>
+                <h3 className="text-sm font-semibold text-foreground mb-4">Deal Summary</h3>
                 {contactDeals.length > 0 ? (
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="text-sm text-slate-500">Total Deals</span>
-                      <span className="text-sm font-medium text-slate-700">{contactDeals.length}</span>
+                      <span className="text-sm text-muted-foreground">Total Deals</span>
+                      <span className="text-sm font-medium text-foreground">{contactDeals.length}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-slate-500">Total Value</span>
-                      <span className="text-sm font-bold text-slate-900">
+                      <span className="text-sm text-muted-foreground">Total Value</span>
+                      <span className="text-sm font-bold text-foreground">
                         {formatCurrency(contactDeals.reduce((sum, d) => sum + d.value, 0))}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-slate-500">Won</span>
+                      <span className="text-sm text-muted-foreground">Won</span>
                       <span className="text-sm font-medium text-emerald-600">
                         {formatCurrency(contactDeals.filter((d) => d.stage === 'closed_won').reduce((sum, d) => sum + d.value, 0))}
                       </span>
                     </div>
                   </div>
                 ) : (
-                  <p className="text-sm text-slate-400">No deals yet</p>
+                  <p className="text-sm text-muted-foreground">No deals yet</p>
                 )}
               </CardContent>
             </Card>
@@ -155,11 +155,11 @@ export default function ContactDetailPage({ params }: { params: Promise<{ id: st
                 <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-medium text-slate-900">{deal.title}</h4>
-                      <p className="text-sm text-slate-500">Stage: {deal.stage.replace('_', ' ')}</p>
+                      <h4 className="font-medium text-foreground">{deal.title}</h4>
+                      <p className="text-sm text-muted-foreground">Stage: {deal.stage.replace('_', ' ')}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-slate-900">{formatCurrency(deal.value)}</p>
+                      <p className="font-bold text-foreground">{formatCurrency(deal.value)}</p>
                       <Badge variant={deal.stage === 'closed_won' ? 'success' : deal.stage === 'closed_lost' ? 'danger' : 'default'}>
                         {deal.probability}%
                       </Badge>
@@ -169,7 +169,7 @@ export default function ContactDetailPage({ params }: { params: Promise<{ id: st
               </Link>
             ))}
             {contactDeals.length === 0 && (
-              <div className="py-8 text-center text-slate-400">No deals for this contact</div>
+              <div className="py-8 text-center text-muted-foreground">No deals for this contact</div>
             )}
           </div>
         </TabsContent>

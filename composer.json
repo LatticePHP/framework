@@ -24,6 +24,8 @@
         ],
         "psr-4": {
             "App\\": "examples/crm/backend/app/",
+            "App\\Database\\Seeders\\": "examples/crm/backend/database/seeders/",
+            "App\\Database\\Factories\\": "examples/crm/backend/database/factories/",
             "Lattice\\Contracts\\": "packages/contracts/src/",
             "Lattice\\Core\\": "packages/core/src/",
             "Lattice\\Compiler\\": "packages/compiler/src/",

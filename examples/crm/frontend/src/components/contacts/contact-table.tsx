@@ -44,22 +44,22 @@ export function ContactTable({ contacts }: ContactTableProps) {
             <TableCell>
               <Link href={`/contacts/${contact.id}`} className="flex items-center gap-3">
                 <Avatar fallback={contactName(contact)} size="sm" />
-                <span className="font-medium text-slate-900">{contactName(contact)}</span>
+                <span className="font-medium text-foreground">{contactName(contact)}</span>
               </Link>
             </TableCell>
             <TableCell>
-              <span className="text-slate-500">{contact.email}</span>
+              <span className="text-muted-foreground">{contact.email}</span>
             </TableCell>
             <TableCell>
               {contact.company ? (
                 <Link
                   href={`/companies/${contact.company.id}`}
-                  className="text-indigo-600 hover:text-indigo-800"
+                  className="text-primary hover:text-primary"
                 >
                   {contact.company.name}
                 </Link>
               ) : (
-                <span className="text-slate-400">--</span>
+                <span className="text-muted-foreground">--</span>
               )}
             </TableCell>
             <TableCell>
@@ -68,16 +68,16 @@ export function ContactTable({ contacts }: ContactTableProps) {
               </Badge>
             </TableCell>
             <TableCell>
-              <span className="text-slate-500">{contact.title || '--'}</span>
+              <span className="text-muted-foreground">{contact.title || '--'}</span>
             </TableCell>
             <TableCell>
-              <span className="text-slate-400">{formatDate(contact.created_at)}</span>
+              <span className="text-muted-foreground">{formatDate(contact.created_at)}</span>
             </TableCell>
           </TableRow>
         ))}
         {contacts.length === 0 && (
           <TableRow>
-            <TableCell colSpan={6} className="text-center py-8 text-slate-400">
+            <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
               No contacts found
             </TableCell>
           </TableRow>

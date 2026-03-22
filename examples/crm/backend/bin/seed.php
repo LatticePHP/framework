@@ -8,7 +8,17 @@ declare(strict_types=1);
  * Usage: php bin/seed.php
  */
 
-require_once __DIR__ . '/../vendor/autoload.php';
+// Use monorepo root autoloader, fall back to local vendor
+$autoloadPaths = [
+    __DIR__ . '/../../../../vendor/autoload.php', // monorepo root
+    __DIR__ . '/../vendor/autoload.php',          // local vendor
+];
+foreach ($autoloadPaths as $autoload) {
+    if (file_exists($autoload)) {
+        require_once $autoload;
+        break;
+    }
+}
 
 use App\Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Capsule\Manager as Capsule;

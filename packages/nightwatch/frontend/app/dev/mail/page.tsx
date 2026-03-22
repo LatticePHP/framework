@@ -187,7 +187,7 @@ export default function MailPage() {
                 {showPreview && selected && (
                   <div className="border rounded-lg overflow-hidden">
                     <iframe
-                      src={`/nightwatch/api/mail/${selected.uuid}/html`}
+                      src={`/api/mail/${selected.uuid}/html`}
                       title="Mail preview"
                       className="w-full h-96 bg-white"
                       sandbox="allow-same-origin"

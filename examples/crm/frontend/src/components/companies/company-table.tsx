@@ -50,9 +50,9 @@ export function CompanyTable({ companies }: CompanyTableProps) {
               <Link href={`/companies/${company.id}`} className="flex items-center gap-3">
                 <Avatar fallback={company.name} size="sm" />
                 <div>
-                  <span className="font-medium text-slate-900">{company.name}</span>
+                  <span className="font-medium text-foreground">{company.name}</span>
                   {company.domain && (
-                    <p className="text-xs text-slate-400">{company.domain}</p>
+                    <p className="text-xs text-muted-foreground">{company.domain}</p>
                   )}
                 </div>
               </Link>
@@ -63,26 +63,26 @@ export function CompanyTable({ companies }: CompanyTableProps) {
                   {company.industry}
                 </Badge>
               ) : (
-                <span className="text-slate-400">--</span>
+                <span className="text-muted-foreground">--</span>
               )}
             </TableCell>
             <TableCell>
               {company.size ? (
                 <div>
-                  <span className="text-sm text-slate-700">{sizeLabels[company.size] || company.size}</span>
-                  <p className="text-xs text-slate-400">{company.size} employees</p>
+                  <span className="text-sm text-foreground">{sizeLabels[company.size] || company.size}</span>
+                  <p className="text-xs text-muted-foreground">{company.size} employees</p>
                 </div>
               ) : (
-                <span className="text-slate-400">--</span>
+                <span className="text-muted-foreground">--</span>
               )}
             </TableCell>
             <TableCell>
               {company.annual_revenue ? (
-                <span className="font-medium text-slate-700">
+                <span className="font-medium text-foreground">
                   {formatCurrency(company.annual_revenue)}
                 </span>
               ) : (
-                <span className="text-slate-400">--</span>
+                <span className="text-muted-foreground">--</span>
               )}
             </TableCell>
             <TableCell>
@@ -91,22 +91,22 @@ export function CompanyTable({ companies }: CompanyTableProps) {
                   href={company.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-indigo-600 hover:text-indigo-800 text-sm"
+                  className="text-primary hover:text-primary text-sm"
                 >
                   {company.domain}
                 </a>
               ) : (
-                <span className="text-slate-400">--</span>
+                <span className="text-muted-foreground">--</span>
               )}
             </TableCell>
             <TableCell>
-              <span className="text-slate-400">{formatDate(company.created_at)}</span>
+              <span className="text-muted-foreground">{formatDate(company.created_at)}</span>
             </TableCell>
           </TableRow>
         ))}
         {companies.length === 0 && (
           <TableRow>
-            <TableCell colSpan={6} className="text-center py-8 text-slate-400">
+            <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
               No companies found
             </TableCell>
           </TableRow>

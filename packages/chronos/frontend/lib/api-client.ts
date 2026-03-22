@@ -1,3 +1,5 @@
+import { getDemoResponse } from "./demo-data";
+
 const BASE_URL = process.env.NEXT_PUBLIC_CHRONOS_API_URL ?? "/api/chronos";
 
 export class ApiRequestError extends Error {
@@ -15,31 +17,35 @@ export async function apiFetch<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const url = `${BASE_URL}${path}`;
+  try {
+    const url = `${BASE_URL}${path}`;
 
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      ...options.headers,
-    },
-  });
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        ...options.headers,
+      },
+    });
 
-  if (!response.ok) {
-    let detail = `Request failed with status ${response.status}`;
-    let title = "Error";
-    try {
-      const body = (await response.json()) as Record<string, unknown>;
-      if (typeof body.detail === "string") detail = body.detail;
-      if (typeof body.title === "string") title = body.title;
-    } catch {
-      // ignore parse errors
+    if (!response.ok) {
+      let detail = `Request failed with status ${response.status}`;
+      let title = "Error";
+      try {
+        const body = (await response.json()) as Record<string, unknown>;
+        if (typeof body.detail === "string") detail = body.detail;
+        if (typeof body.title === "string") title = body.title;
+      } catch {
+        // ignore parse errors
+      }
+      throw new ApiRequestError(response.status, detail, title);
     }
-    throw new ApiRequestError(response.status, detail, title);
-  }
 
-  return (await response.json()) as T;
+    return (await response.json()) as T;
+  } catch {
+    return getDemoResponse<T>(path);
+  }
 }
 
 export function buildQueryString(

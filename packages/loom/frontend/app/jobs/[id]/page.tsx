@@ -28,7 +28,6 @@ export default function JobDetailPage({
   const router = useRouter();
   const [job, setJob] = useState<JobDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [retrying, setRetrying] = useState(false);
   const [retrySuccess, setRetrySuccess] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -37,9 +36,6 @@ export default function JobDetailPage({
     try {
       const raw = await apiGet<{ data: unknown }>(`/jobs/${id}`);
       setJob(JobDetailSchema.parse(raw.data));
-      setError(null);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to load job");
     } finally {
       setLoading(false);
     }
@@ -88,12 +84,10 @@ export default function JobDetailPage({
     );
   }
 
-  if (error || !job) {
+  if (!job) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-20">
-        <p className="text-sm text-destructive">
-          {error ?? "Job not found"}
-        </p>
+        <p className="text-sm text-muted-foreground">Job not found</p>
         <Button size="sm" variant="outline" onClick={() => router.back()}>
           Go Back
         </Button>

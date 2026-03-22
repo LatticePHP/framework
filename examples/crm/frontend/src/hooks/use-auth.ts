@@ -2,38 +2,46 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
-import { DEMO_USER } from '@/lib/auth';
 import type { User } from '@/lib/types';
-
-// Demo mode — when no backend is available, use mock data
-const DEMO_MODE = true;
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing token or demo mode
-    if (DEMO_MODE) {
-      setUser(DEMO_USER);
-      setLoading(false);
-      return;
-    }
-
     const token = api.getToken();
     if (token) {
-      setUser(DEMO_USER); // Would normally validate token
-      setLoading(false);
+      // Token exists — try to fetch current user
+      api.get<{ data: User }>('/auth/me')
+        .then((res) => setUser(res.data))
+        .catch(() => {
+          // Token expired or invalid — auto-login with demo credentials
+          autoLogin();
+        })
+        .finally(() => setLoading(false));
     } else {
-      setLoading(false);
+      // No token — auto-login with demo credentials
+      autoLogin().finally(() => setLoading(false));
     }
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
-    if (DEMO_MODE) {
-      setUser(DEMO_USER);
-      return;
+  const autoLogin = async () => {
+    try {
+      const res = await api.login('alice@example.com', 'password');
+      api.setToken(res.access_token);
+      setUser(res.user);
+    } catch {
+      // Backend not available — fall back to demo user
+      setUser({
+        id: 1,
+        name: 'Sarah Chen',
+        email: 'sarah@lattice.dev',
+        role: 'admin',
+      });
     }
+  };
+
+  const login = useCallback(async (email: string, password: string) => {
     const res = await api.login(email, password);
     api.setToken(res.access_token);
     setUser(res.user);

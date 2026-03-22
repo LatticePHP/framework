@@ -29,8 +29,8 @@ export default function ActivitiesPage() {
 
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Activities</h1>
-          <p className="text-sm text-slate-500">{data?.total ?? 0} total activities</p>
+          <h1 className="text-2xl font-bold text-foreground">Activities</h1>
+          <p className="text-sm text-muted-foreground">{data?.total ?? 0} total activities</p>
         </div>
         <Button className="gap-2" onClick={() => setShowForm(true)}>
           <Plus className="h-4 w-4" />

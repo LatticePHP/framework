@@ -21,7 +21,7 @@ function Avatar({ src, alt, fallback, size = 'md', className, ...props }: Avatar
   return (
     <div
       className={cn(
-        'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-indigo-100 font-medium text-indigo-700',
+        'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-accent font-medium text-primary',
         sizeClasses[size],
         className,
       )}

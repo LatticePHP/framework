@@ -28,7 +28,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTML
     <div
       ref={ref}
       className={cn(
-        'rounded-xl border border-slate-200 bg-white p-6 shadow-xl animate-in fade-in-0 zoom-in-95',
+        'rounded-xl border border-border bg-card p-6 shadow-xl animate-in fade-in-0 zoom-in-95',
         className,
       )}
       {...props}
@@ -37,7 +37,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTML
       {onClose && (
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-sm p-1 text-slate-400 hover:text-slate-600"
+          className="absolute right-4 top-4 rounded-sm p-1 text-muted-foreground hover:text-accent-foreground"
         >
           <X className="h-4 w-4" />
         </button>
@@ -52,11 +52,11 @@ function DialogHeader({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
 }
 
 function DialogTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  return <h2 className={cn('text-lg font-semibold text-slate-900', className)} {...props} />;
+  return <h2 className={cn('text-lg font-semibold text-foreground', className)} {...props} />;
 }
 
 function DialogDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={cn('text-sm text-slate-500', className)} {...props} />;
+  return <p className={cn('text-sm text-muted-foreground', className)} {...props} />;
 }
 
 function DialogFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {

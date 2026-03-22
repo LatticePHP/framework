@@ -33,22 +33,22 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background to-muted px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="mb-8 flex flex-col items-center">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-600/30">
-            <Hexagon className="h-8 w-8 text-white" />
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/20">
+            <Hexagon className="h-8 w-8 text-primary-foreground" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900">Sign in to CRM</h1>
-          <p className="mt-1 text-sm text-slate-500">Enter your credentials to access your account</p>
+          <h1 className="text-2xl font-bold text-foreground">Sign in to CRM</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Enter your credentials to access your account</p>
         </div>
 
-        <Card className="shadow-xl border-slate-200/60">
+        <Card className="shadow-xl border-border/60">
           <CardContent className="p-8">
             <form onSubmit={handleSubmit} className="space-y-5">
               {error && (
-                <div className="rounded-lg bg-rose-50 p-3 text-sm text-rose-600 ring-1 ring-inset ring-rose-200">
+                <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive ring-1 ring-inset ring-destructive/20">
                   {error}
                 </div>
               )}
@@ -69,7 +69,7 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <button type="button" className="text-xs text-indigo-600 hover:text-indigo-800">
+                  <button type="button" className="text-xs text-primary hover:text-primary">
                     Forgot password?
                   </button>
                 </div>
@@ -96,14 +96,14 @@ export default function LoginPage() {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted-foreground">
                 Demo credentials are pre-filled. Just click Sign in.
               </p>
             </div>
           </CardContent>
         </Card>
 
-        <p className="mt-6 text-center text-xs text-slate-400">
+        <p className="mt-6 text-center text-xs text-muted-foreground">
           Powered by LatticePHP Framework
         </p>
       </div>

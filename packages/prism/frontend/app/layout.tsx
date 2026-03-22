@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Inter } from "next/font/google";
 import Link from "next/link";
 import { Gem, AlertCircle, Radio, BarChart3 } from "lucide-react";
 import ProjectSelector from "@/components/project-selector";
 import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Prism - Error Reporting",
@@ -18,7 +21,7 @@ const NAV_ITEMS = [
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground antialiased">
         <div className="flex min-h-screen">
           {/* Sidebar */}

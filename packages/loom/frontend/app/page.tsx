@@ -36,15 +36,11 @@ export default function DashboardPage() {
   const [metrics, setMetrics] = useState<TimeSeriesMetrics | null>(null);
   const [statsLoading, setStatsLoading] = useState(true);
   const [metricsLoading, setMetricsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   const fetchStats = useCallback(async () => {
     try {
       const raw = await apiGet<unknown>("/stats", { period });
       setStats(StatsSchema.parse(raw));
-      setError(null);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to load stats");
     } finally {
       setStatsLoading(false);
     }
@@ -74,23 +70,6 @@ export default function DashboardPage() {
     }, refreshInterval);
     return () => clearInterval(id);
   }, [refreshInterval, fetchStats, fetchMetrics]);
-
-  if (error && !stats) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-4 py-20">
-        <p className="text-sm text-destructive">Failed to connect to Loom API</p>
-        <Button
-          size="sm"
-          onClick={() => {
-            setStatsLoading(true);
-            void fetchStats();
-          }}
-        >
-          Retry
-        </Button>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">

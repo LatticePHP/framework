@@ -37,22 +37,22 @@ export default function DealsPage() {
 
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Deals Pipeline</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="text-2xl font-bold text-foreground">Deals Pipeline</h1>
+          <p className="text-sm text-muted-foreground">
             {activeDeals.length} active deals worth {formatCurrency(activeDeals.reduce((s, d) => s + d.value, 0))}
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex rounded-lg border border-slate-200 bg-white">
+          <div className="flex rounded-lg border border-border bg-card">
             <button
               onClick={() => setView('kanban')}
-              className={`rounded-l-lg p-2 ${view === 'kanban' ? 'bg-slate-100 text-slate-900' : 'text-slate-400 hover:text-slate-600'}`}
+              className={`rounded-l-lg p-2 ${view === 'kanban' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-accent-foreground'}`}
             >
               <LayoutGrid className="h-4 w-4" />
             </button>
             <button
               onClick={() => setView('list')}
-              className={`rounded-r-lg p-2 ${view === 'list' ? 'bg-slate-100 text-slate-900' : 'text-slate-400 hover:text-slate-600'}`}
+              className={`rounded-r-lg p-2 ${view === 'list' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-accent-foreground'}`}
             >
               <List className="h-4 w-4" />
             </button>
@@ -94,13 +94,13 @@ export default function DealsPage() {
               {deals.map((deal) => (
                 <TableRow key={deal.id} className="cursor-pointer">
                   <TableCell>
-                    <Link href={`/deals/${deal.id}`} className="font-medium text-slate-900 hover:text-indigo-600">
+                    <Link href={`/deals/${deal.id}`} className="font-medium text-foreground hover:text-primary">
                       {deal.title}
                     </Link>
                   </TableCell>
                   <TableCell>
                     {deal.contact ? (
-                      <span className="text-slate-500">{contactName(deal.contact)}</span>
+                      <span className="text-muted-foreground">{contactName(deal.contact)}</span>
                     ) : '--'}
                   </TableCell>
                   <TableCell>
@@ -109,13 +109,13 @@ export default function DealsPage() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <span className="font-semibold text-slate-900">{formatCurrency(deal.value)}</span>
+                    <span className="font-semibold text-foreground">{formatCurrency(deal.value)}</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-slate-500">{deal.probability}%</span>
+                    <span className="text-muted-foreground">{deal.probability}%</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-slate-400">
+                    <span className="text-muted-foreground">
                       {deal.expected_close_date ? formatDate(deal.expected_close_date) : '--'}
                     </span>
                   </TableCell>

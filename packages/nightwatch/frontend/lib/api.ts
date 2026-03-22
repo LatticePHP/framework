@@ -1,4 +1,6 @@
-const BASE_URL = "/nightwatch/api";
+import { getDemoResponse } from "./demo-data";
+
+const BASE_URL = "/api";
 
 export class ApiError extends Error {
   constructor(
@@ -44,25 +46,19 @@ export async function apiClient<T>(
     headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(url, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  try {
+    const response = await fetch(url, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
 
-  if (!response.ok) {
-    let errorBody: unknown;
-    try {
-      errorBody = await response.json();
-    } catch {
-      // ignore parse errors
+    if (!response.ok) {
+      return getDemoResponse<T>(path);
     }
-    throw new ApiError(
-      response.status,
-      `HTTP ${response.status}: ${response.statusText}`,
-      errorBody,
-    );
-  }
 
-  return response.json() as Promise<T>;
+    return response.json() as Promise<T>;
+  } catch {
+    return getDemoResponse<T>(path);
+  }
 }

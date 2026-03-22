@@ -61,9 +61,9 @@ final class DatabaseSeeder
                 'workspace_id' => $workspace->id,
                 'user_id' => $user->id,
                 'role' => $index === 0 ? 'owner' : ($index === 1 ? 'admin' : 'member'),
-                'joined_at' => now()->toDateTimeString(),
-                'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString(),
+                'joined_at' => now()->format('Y-m-d H:i:s'),
+                'created_at' => now()->format('Y-m-d H:i:s'),
+                'updated_at' => now()->format('Y-m-d H:i:s'),
             ]);
         }
 

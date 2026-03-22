@@ -17,7 +17,7 @@ interface StageConfig {
 }
 
 const stages: StageConfig[] = [
-  { key: 'lead', label: 'Lead', color: 'text-slate-700', bgColor: 'bg-slate-50', borderColor: 'border-slate-200' },
+  { key: 'lead', label: 'Lead', color: 'text-foreground', bgColor: 'bg-muted', borderColor: 'border-border' },
   { key: 'qualified', label: 'Qualified', color: 'text-blue-700', bgColor: 'bg-blue-50', borderColor: 'border-blue-200' },
   { key: 'proposal', label: 'Proposal', color: 'text-indigo-700', bgColor: 'bg-indigo-50', borderColor: 'border-indigo-200' },
   { key: 'negotiation', label: 'Negotiation', color: 'text-amber-700', bgColor: 'bg-amber-50', borderColor: 'border-amber-200' },
@@ -52,13 +52,13 @@ export function PipelineBoard({ deals }: PipelineBoardProps) {
           </div>
 
           {/* Column Body */}
-          <div className={`flex-1 space-y-2 rounded-b-xl border border-t-0 ${stage.borderColor} bg-slate-50/50 p-2 min-h-[200px]`}>
+          <div className={`flex-1 space-y-2 rounded-b-xl border border-t-0 ${stage.borderColor} bg-muted/50 p-2 min-h-[200px]`}>
             {stage.deals.map((deal) => (
               <DealCard key={deal.id} deal={deal} stageColor={stage.color} />
             ))}
             {stage.deals.length === 0 && (
-              <div className="flex h-24 items-center justify-center rounded-lg border-2 border-dashed border-slate-200">
-                <p className="text-xs text-slate-400">No deals</p>
+              <div className="flex h-24 items-center justify-center rounded-lg border-2 border-dashed border-border">
+                <p className="text-xs text-muted-foreground">No deals</p>
               </div>
             )}
           </div>

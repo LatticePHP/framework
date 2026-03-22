@@ -53,7 +53,7 @@ export function ActivityList({ activities, onComplete }: ActivityListProps) {
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h4 className={`text-sm font-medium ${isCompleted ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                <h4 className={`text-sm font-medium ${isCompleted ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
                   {activity.title}
                 </h4>
                 {isOverdue && (
@@ -64,9 +64,9 @@ export function ActivityList({ activities, onComplete }: ActivityListProps) {
                 )}
               </div>
               {activity.description && (
-                <p className="mt-0.5 text-sm text-slate-500 truncate">{activity.description}</p>
+                <p className="mt-0.5 text-sm text-muted-foreground truncate">{activity.description}</p>
               )}
-              <div className="mt-1.5 flex items-center gap-3 text-xs text-slate-400">
+              <div className="mt-1.5 flex items-center gap-3 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <Clock className="h-3 w-3" />
                   {formatDate(activity.due_date)}
@@ -97,8 +97,8 @@ export function ActivityList({ activities, onComplete }: ActivityListProps) {
         );
       })}
       {activities.length === 0 && (
-        <div className="py-12 text-center text-slate-400">
-          <CalendarCheck className="mx-auto h-12 w-12 mb-3 text-slate-300" />
+        <div className="py-12 text-center text-muted-foreground">
+          <CalendarCheck className="mx-auto h-12 w-12 mb-3 text-muted-foreground/50" />
           <p>No activities found</p>
         </div>
       )}

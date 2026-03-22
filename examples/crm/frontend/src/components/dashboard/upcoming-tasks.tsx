@@ -41,21 +41,21 @@ export function UpcomingTasks({ activities }: UpcomingTasksProps) {
             return (
               <div
                 key={activity.id}
-                className="flex items-center gap-3 rounded-lg border border-slate-100 p-3"
+                className="flex items-center gap-3 rounded-lg border border-border p-3"
               >
-                <div className="rounded-md bg-slate-50 p-2">
-                  <Icon className="h-4 w-4 text-slate-500" />
+                <div className="rounded-md bg-muted p-2">
+                  <Icon className="h-4 w-4 text-muted-foreground" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-700 truncate">{activity.title}</p>
-                  <p className="text-xs text-slate-400">{formatDate(activity.due_date)}</p>
+                  <p className="text-sm font-medium text-foreground truncate">{activity.title}</p>
+                  <p className="text-xs text-muted-foreground">{formatDate(activity.due_date)}</p>
                 </div>
                 <Badge variant={priorityVariants[activity.priority]}>{activity.priority}</Badge>
               </div>
             );
           })}
           {upcoming.length === 0 && (
-            <p className="text-sm text-slate-400 text-center py-4">No upcoming tasks</p>
+            <p className="text-sm text-muted-foreground text-center py-4">No upcoming tasks</p>
           )}
         </div>
       </CardContent>

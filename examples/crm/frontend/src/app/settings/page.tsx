@@ -35,8 +35,8 @@ export default function SettingsPage() {
       <Breadcrumbs items={[{ label: 'Settings' }]} />
 
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
-        <p className="text-sm text-slate-500">Manage your account settings and preferences</p>
+        <h1 className="text-2xl font-bold text-foreground">Settings</h1>
+        <p className="text-sm text-muted-foreground">Manage your account settings and preferences</p>
       </div>
 
       <div className="max-w-2xl space-y-6">
@@ -52,7 +52,7 @@ export default function SettingsPage() {
                 <Avatar fallback={profile.name} size="lg" />
                 <div>
                   <Button type="button" variant="outline" size="sm">Change Avatar</Button>
-                  <p className="mt-1 text-xs text-slate-400">JPG, PNG up to 2MB</p>
+                  <p className="mt-1 text-xs text-muted-foreground">JPG, PNG up to 2MB</p>
                 </div>
               </div>
 
@@ -124,12 +124,12 @@ export default function SettingsPage() {
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label>API Base URL</Label>
-                <Input value={process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api'} readOnly className="bg-slate-50" />
-                <p className="text-xs text-slate-400">Configured via NEXT_PUBLIC_API_URL environment variable</p>
+                <Input value={process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api'} readOnly className="bg-muted" />
+                <p className="text-xs text-muted-foreground">Configured via NEXT_PUBLIC_API_URL environment variable</p>
               </div>
-              <div className="rounded-lg bg-slate-50 p-3">
-                <p className="text-sm font-medium text-slate-700">Demo Mode Active</p>
-                <p className="text-xs text-slate-400 mt-1">The CRM is running with mock data. Connect a LatticePHP backend to use real data.</p>
+              <div className="rounded-lg bg-muted p-3">
+                <p className="text-sm font-medium text-foreground">Demo Mode Active</p>
+                <p className="text-xs text-muted-foreground mt-1">The CRM is running with mock data. Connect a LatticePHP backend to use real data.</p>
               </div>
             </div>
           </CardContent>

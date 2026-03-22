@@ -58,8 +58,8 @@ export default function DealDetailPage({ params }: { params: Promise<{ id: strin
   if (!deal) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <p className="text-lg text-slate-500">Deal not found</p>
-        <Link href="/deals" className="mt-4 text-indigo-600 hover:text-indigo-800">Back to Deals</Link>
+        <p className="text-lg text-muted-foreground">Deal not found</p>
+        <Link href="/deals" className="mt-4 text-primary hover:text-primary">Back to Deals</Link>
       </div>
     );
   }
@@ -79,10 +79,10 @@ export default function DealDetailPage({ params }: { params: Promise<{ id: strin
       <Card className="p-6">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">{deal.title}</h1>
-            <div className="mt-2 flex items-center gap-4 text-sm text-slate-500">
+            <h1 className="text-2xl font-bold text-foreground">{deal.title}</h1>
+            <div className="mt-2 flex items-center gap-4 text-sm text-muted-foreground">
               {deal.contact && (
-                <Link href={`/contacts/${deal.contact.id}`} className="flex items-center gap-1.5 hover:text-indigo-600">
+                <Link href={`/contacts/${deal.contact.id}`} className="flex items-center gap-1.5 hover:text-primary">
                   <Avatar fallback={contactName(deal.contact)} size="sm" className="h-5 w-5 text-[10px]" />
                   {contactName(deal.contact)}
                 </Link>
@@ -102,11 +102,11 @@ export default function DealDetailPage({ params }: { params: Promise<{ id: strin
             const isCurrent = stage === deal.stage;
             return (
               <div key={stage} className="flex flex-1 items-center gap-1">
-                <div className={`flex h-8 flex-1 items-center justify-center rounded-md text-xs font-medium transition-colors ${isActive ? `${stageColors[stage]} text-white` : 'bg-slate-100 text-slate-400'} ${isCurrent ? 'ring-2 ring-offset-1 ring-indigo-400' : ''}`}>
+                <div className={`flex h-8 flex-1 items-center justify-center rounded-md text-xs font-medium transition-colors ${isActive ? `${stageColors[stage]} text-primary-foreground` : 'bg-muted text-muted-foreground'} ${isCurrent ? 'ring-2 ring-offset-1 ring-ring' : ''}`}>
                   {stageLabels[stage]}
                 </div>
                 {i < stageOrder.length - 2 && (
-                  <ArrowRight className="h-3 w-3 shrink-0 text-slate-300" />
+                  <ArrowRight className="h-3 w-3 shrink-0 text-muted-foreground/50" />
                 )}
               </div>
             );
@@ -114,7 +114,7 @@ export default function DealDetailPage({ params }: { params: Promise<{ id: strin
         </div>
 
         {deal.stage === 'closed_lost' && (
-          <div className="mt-2 rounded-lg bg-rose-50 p-2 text-center text-sm font-medium text-rose-700">
+          <div className="mt-2 rounded-lg bg-destructive/10 p-2 text-center text-sm font-medium text-destructive">
             This deal was lost
           </div>
         )}
@@ -128,19 +128,19 @@ export default function DealDetailPage({ params }: { params: Promise<{ id: strin
               <DollarSign className="h-5 w-5 text-emerald-600" />
             </div>
             <div>
-              <p className="text-sm text-slate-500">Value</p>
-              <p className="text-xl font-bold text-slate-900">{formatCurrency(deal.value)}</p>
+              <p className="text-sm text-muted-foreground">Value</p>
+              <p className="text-xl font-bold text-foreground">{formatCurrency(deal.value)}</p>
             </div>
           </div>
         </Card>
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-indigo-50 p-2">
-              <Percent className="h-5 w-5 text-indigo-600" />
+            <div className="rounded-lg bg-accent p-2">
+              <Percent className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <p className="text-sm text-slate-500">Probability</p>
-              <p className="text-xl font-bold text-slate-900">{deal.probability}%</p>
+              <p className="text-sm text-muted-foreground">Probability</p>
+              <p className="text-xl font-bold text-foreground">{deal.probability}%</p>
             </div>
           </div>
         </Card>
@@ -150,8 +150,8 @@ export default function DealDetailPage({ params }: { params: Promise<{ id: strin
               <Calendar className="h-5 w-5 text-amber-600" />
             </div>
             <div>
-              <p className="text-sm text-slate-500">Expected Close</p>
-              <p className="text-xl font-bold text-slate-900">
+              <p className="text-sm text-muted-foreground">Expected Close</p>
+              <p className="text-xl font-bold text-foreground">
                 {deal.expected_close_date ? formatDate(deal.expected_close_date) : 'Not set'}
               </p>
             </div>
@@ -163,14 +163,14 @@ export default function DealDetailPage({ params }: { params: Promise<{ id: strin
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardContent className="p-6">
-            <h3 className="text-sm font-semibold text-slate-900 mb-4">Activities ({dealActivities.length})</h3>
+            <h3 className="text-sm font-semibold text-foreground mb-4">Activities ({dealActivities.length})</h3>
             <ActivityList activities={dealActivities} />
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-6">
-            <h3 className="text-sm font-semibold text-slate-900 mb-4">Notes</h3>
+            <h3 className="text-sm font-semibold text-foreground mb-4">Notes</h3>
             <NoteForm onSubmit={addNote} />
             <Separator className="my-4" />
             <NoteList notes={notes} />

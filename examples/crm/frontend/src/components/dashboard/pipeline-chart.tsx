@@ -29,12 +29,12 @@ export function PipelineChart({ pipeline }: PipelineChartProps) {
             <div key={stage.stage}>
               <div className="mb-1.5 flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
-                  <span className="font-medium text-slate-700">{stage.label}</span>
-                  <span className="text-slate-400">({stage.count} deals)</span>
+                  <span className="font-medium text-foreground">{stage.label}</span>
+                  <span className="text-muted-foreground">({stage.count} deals)</span>
                 </div>
-                <span className="font-semibold text-slate-900">{formatCurrency(stage.value)}</span>
+                <span className="font-semibold text-foreground">{formatCurrency(stage.value)}</span>
               </div>
-              <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
+              <div className="h-3 w-full overflow-hidden rounded-full bg-muted">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${stage.color}`}
                   style={{ width: `${(stage.value / maxValue) * 100}%` }}

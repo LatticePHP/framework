@@ -9,7 +9,7 @@ import type {
   PaginatedResponse,
 } from './types';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 export class ApiError extends Error {
   constructor(
@@ -43,7 +43,10 @@ class ApiClient {
   }
 
   private getHeaders(): HeadersInit {
-    const headers: HeadersInit = { 'Content-Type': 'application/json' };
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'X-Workspace-Id': '1',
+    };
     const token = this.getToken();
     if (token) headers['Authorization'] = `Bearer ${token}`;
     return headers;

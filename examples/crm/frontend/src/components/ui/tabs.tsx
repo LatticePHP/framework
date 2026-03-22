@@ -35,7 +35,7 @@ function Tabs({ defaultValue = '', value: controlledValue, onValueChange, childr
 
 function TabsList({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn('inline-flex items-center gap-1 rounded-lg bg-slate-100 p-1', className)}>
+    <div className={cn('inline-flex items-center gap-1 rounded-lg bg-muted p-1', className)}>
       {children}
     </div>
   );
@@ -58,8 +58,8 @@ function TabsTrigger({
       className={cn(
         'inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-all',
         isActive
-          ? 'bg-white text-slate-900 shadow-sm'
-          : 'text-slate-600 hover:text-slate-900',
+          ? 'bg-background text-foreground shadow-sm'
+          : 'text-muted-foreground hover:text-accent-foreground',
         className,
       )}
       onClick={() => setValue(value)}
