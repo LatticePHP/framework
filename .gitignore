@@ -51,3 +51,4 @@ database.sqlite
 # Runtime
 .php_cs.cache
 HANDOFF.md
+.claude/
