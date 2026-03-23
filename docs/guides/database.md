@@ -222,6 +222,8 @@ public function index(Request $request): Response
 
 `QueryFilter::fromRequest()` parses the query string. `Contact::filter()` applies the filter to the model's query builder, respecting `$allowedFilters` and `$allowedSorts`. Disallowed filters are silently ignored.
 
+> **Security:** `QueryFilter` caps `per_page` at 100 by default to prevent DoS via unbounded queries. Configure with `QueryFilter::setMaxPerPage(200)`.
+
 ## BelongsToWorkspace
 
 `Lattice\Database\Traits\BelongsToWorkspace` auto-scopes all queries to the current workspace and sets `workspace_id` on create:
@@ -296,6 +298,8 @@ Each audit entry captures:
 - `auditable_type` / `auditable_id` -- polymorphic reference
 - `old_values` / `new_values` -- what changed (sensitive fields excluded)
 - `ip_address`, `user_agent`, `url`, `method` -- request metadata
+
+> **Note:** As of v1.1, the `Auditable` trait uses an internal backing store. Models no longer need to declare `$auditLog`, `$auditUserId`, or `$auditRequestMeta` static properties — just `use Auditable;`.
 
 Query audit logs via the polymorphic relation:
 
@@ -441,3 +445,25 @@ return Response::json([
 ```
 
 Default `per_page` is 15. Override via query string: `?per_page=25&page=2`.
+
+## CRUD Service Base Class
+
+For mechanical CRUD operations, extend `Lattice\Database\Crud\CrudService`:
+
+```php
+use Lattice\Database\Crud\CrudService;
+
+final class ContactService extends CrudService
+{
+    protected function model(): string { return Contact::class; }
+}
+```
+
+This provides transaction-wrapped `create()`, `update()`, `delete()` with:
+- Auto `owner_id` assignment from the authenticated user
+- Null-filtering for partial updates
+- Database constraint errors converted to 422 responses
+- Lifecycle hooks: `beforeCreate()`, `afterCreate()`, `beforeUpdate()`, `afterUpdate()`, `beforeDelete()`, `afterDelete()`
+
+Override `ownerField()` for models that use `author_id` instead of `owner_id`.
+Override `responseRelations()` to eager-load relations after create/update.

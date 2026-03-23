@@ -10,7 +10,7 @@
 
 [![PHP 8.4+](https://img.shields.io/badge/PHP-8.4%2B-8892BF?style=flat-square&logo=php&logoColor=white)](https://www.php.net/releases/8.4/en.php)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-2%2C534_passing-22c55e?style=flat-square)](phpunit.xml)
+[![Tests](https://img.shields.io/badge/Tests-3%2C248%2B_passing-22c55e?style=flat-square)](phpunit.xml)
 [![PHPStan](https://img.shields.io/badge/PHPStan-Level_Max-4338ca?style=flat-square)](phpstan.neon)
 [![42 Packages](https://img.shields.io/badge/Packages-42-f59e0b?style=flat-square)](#-package-map-42-packages)
 
@@ -58,6 +58,7 @@ final class ContactModule {}
 | **CQRS** | `CommandBus::dispatch(new CreateContact(...))` — clean separation |
 | **Audit** | `#[Auditable]` — automatic change tracking |
 | **Feature Flags** | `#[RequiresFeature('beta')]` — per-user/workspace rollout |
+| **CRUD** | `CrudService` + `CrudController` — transaction-wrapped CRUD with lifecycle hooks |
 | **Testing** | `$this->postJson('/api/contacts', $data)->assertCreated()` |
 
 ---
@@ -279,7 +280,7 @@ final class OrderFulfillmentWorkflow
 
 ## 🧪 Testing
 
-LatticePHP is tested with **2,534 tests** across unit, integration, and end-to-end layers.
+LatticePHP is tested with **3,248+ tests** across unit, integration, and end-to-end layers.
 
 ```
 Package Tests          ~2,100 tests    Unit + integration per package
@@ -432,7 +433,7 @@ Copyright (c) 2026 LatticePHP
 
 **Built with 🧱 by the LatticePHP team**
 
-*42 packages · 2,534 tests · 16 guides · 1 vision*
+*42 packages · 3,248+ tests · 16 guides · 1 vision*
 
 [Documentation](docs/guides/getting-started.md) · [CRM Example](examples/crm/) · [Starter Kit](starters/api/) · [Report Issue](https://github.com/latticephp/lattice/issues)
 

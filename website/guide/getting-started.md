@@ -343,6 +343,10 @@ php bin/lattice test
 ./vendor/bin/phpunit
 ```
 
+::: tip
+For simple CRUD modules, extend `Lattice\Http\Crud\CrudController` and `Lattice\Database\Crud\CrudService` to get a full REST API (index, show, store, update, destroy) with pagination, filtering, and error handling out of the box. See [CrudController](http-api.md#crudcontroller) and [CrudService](database.md#crudservice).
+:::
+
 ## Next Steps
 
 - [Architecture](architecture.md) -- understand the 4-layer design and request lifecycle

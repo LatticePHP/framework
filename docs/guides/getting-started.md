@@ -264,6 +264,8 @@ final class ContactController
 }
 ```
 
+> **Tip:** For standard CRUD resources, extend `CrudController` and `CrudService` to get index/show/destroy/create/update with zero boilerplate. See the [HTTP API guide](./http-api.md) and [Database guide](./database.md) for details.
+
 ## Create a Model
 
 Models extend `Lattice\Database\Model` (which extends Eloquent's base Model):

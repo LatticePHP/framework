@@ -504,6 +504,59 @@ final class TestAuthGuard implements GuardInterface
 }
 ```
 
+## CrudController
+
+`Lattice\Http\Crud\CrudController` provides generic `index`, `show`, and `destroy` endpoints. Subclasses only need to define `store()` and `update()` with concrete DTO types so the parameter resolver can hydrate the correct body.
+
+```php
+use Lattice\Http\Crud\CrudController;
+use Lattice\Routing\Attributes\Body;
+use Lattice\Routing\Attributes\Controller;
+use Lattice\Routing\Attributes\Param;
+use Lattice\Routing\Attributes\Post;
+use Lattice\Routing\Attributes\Put;
+use Lattice\Routing\Attributes\CurrentUser;
+use Lattice\Auth\Principal;
+
+#[Controller('/api/contacts')]
+final class ContactController extends CrudController
+{
+    public function __construct(
+        private readonly ContactService $service,
+    ) {}
+
+    protected function service(): CrudService { return $this->service; }
+    protected function resourceClass(): string { return ContactResource::class; }
+    protected function modelClass(): string { return Contact::class; }
+
+    // Optional: eager-load on listings
+    protected function indexRelations(): array { return ['company']; }
+
+    #[Post('/')]
+    public function store(#[Body] CreateContactDto $dto, #[CurrentUser] Principal $user): Response
+    {
+        return $this->storeResponse($this->service->create($dto, $user));
+    }
+
+    #[Put('/:id')]
+    public function update(#[Param] int $id, #[Body] UpdateContactDto $dto): Response
+    {
+        return $this->updateResponse($this->service->update($id, $dto));
+    }
+}
+```
+
+The base class provides:
+- `index()` -- paginated listing with `QueryFilter`, eager-loading, and `ResponseFactory::paginated()`
+- `show()` -- single resource by ID with eager-loading
+- `destroy()` -- delegates to `CrudService::delete()` and returns 204
+- `storeResponse()` -- wraps a model in a 201 Created response through the resource class
+- `updateResponse()` -- wraps a model in a 200 JSON response through the resource class
+
+::: tip
+Pair `CrudController` with `CrudService` (see [Database](database.md#crudservice)) for a complete REST API with zero boilerplate. You only write the DTO classes and the module definition.
+:::
+
 ## CORS
 
 CORS is configured in `config/cors.php`:

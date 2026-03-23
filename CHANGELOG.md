@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `CrudService` base class for transaction-wrapped CRUD with lifecycle hooks
+- `CrudController` base class with generic index/show/destroy endpoints
+- `TestCase::bootTestDatabase()` helper for in-memory SQLite test setup
+- `TestCase::generateTestToken()` helper for JWT test authentication
+- `QueryFilter::setMaxPerPage()` to prevent pagination DoS (default: 100)
+- Model enum constants pattern (Contact::STATUSES, Deal::STAGES, etc.)
+- 73 new CRM E2E tests (Activities, Companies, Notes, extended Workspaces)
+
+### Changed
+- `Auditable` trait uses internal backing store — models no longer need to declare static properties
+- `RefreshDatabase` auto-clears all booted Eloquent models and resets WorkspaceContext
+- CRM controllers/services refactored to use CrudService/CrudController (-335 lines)
+
+### Fixed
+- JwtAuthenticationGuard returns 401 (not 403) for missing/invalid tokens
+- DtoMapper collects ALL missing required fields before throwing
+- QueryFilter caps per_page at 100 to prevent unbounded queries
+
 ## [1.0.0] - 2026-03-22
 
 ### Added

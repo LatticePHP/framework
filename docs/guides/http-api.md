@@ -54,6 +54,47 @@ final class ContactController
 
 Controllers must be listed in a module's `controllers` array to be discovered.
 
+## CRUD Controller Base Class
+
+For standard REST resources, extend `Lattice\Http\Crud\CrudController`:
+
+```php
+use Lattice\Http\Crud\CrudController;
+
+#[Controller('/api/contacts')]
+#[UseGuards(guards: [JwtAuthenticationGuard::class, WorkspaceGuard::class])]
+final class ContactController extends CrudController
+{
+    public function __construct(private readonly ContactService $service) {}
+
+    protected function service(): CrudService { return $this->service; }
+    protected function resourceClass(): string { return ContactResource::class; }
+    protected function modelClass(): string { return Contact::class; }
+    protected function indexRelations(): array { return ['company']; }
+    protected function showRelations(): array { return ['company', 'deals', 'owner']; }
+
+    #[Post('/')]
+    public function store(#[Body] CreateContactDto $dto, #[CurrentUser] Principal $user): Response
+    {
+        return $this->storeResponse($this->service->create($dto, $user));
+    }
+
+    #[Put('/:id')]
+    public function update(#[Param] int $id, #[Body] UpdateContactDto $dto): Response
+    {
+        return $this->updateResponse($this->service->update($id, $dto));
+    }
+
+    // Custom endpoints only — index, show, destroy are inherited
+}
+```
+
+The base class provides:
+- `GET /` — paginated, filtered listing via QueryFilter
+- `GET /:id` — single resource with eager-loaded relations
+- `DELETE /:id` — soft-delete, returns 204
+- `storeResponse()` / `updateResponse()` — auto-wrap in `{data: ...}` with eager-loaded relations
+
 ## Route Attributes
 
 Five HTTP method attributes are available:

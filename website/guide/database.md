@@ -226,6 +226,8 @@ public function index(Request $request): Response
 
 `QueryFilter::fromRequest()` parses the query string. `Contact::filter()` applies the filter to the model's query builder, respecting `$allowedFilters` and `$allowedSorts`. Disallowed filters are silently ignored.
 
+> **Note:** `QueryFilter` enforces a `max_per_page` cap (default 100) to prevent unbounded queries. Override it globally with `QueryFilter::setMaxPerPage(200)` in your bootstrap if needed.
+
 ## BelongsToWorkspace
 
 `Lattice\Database\Traits\BelongsToWorkspace` auto-scopes all queries to the current workspace and sets `workspace_id` on create:
@@ -300,6 +302,8 @@ Each audit entry captures:
 - `auditable_type` / `auditable_id` -- polymorphic reference
 - `old_values` / `new_values` -- what changed (sensitive fields excluded)
 - `ip_address`, `user_agent`, `url`, `method` -- request metadata
+
+> **Note:** As of v1.1, the `Auditable` trait uses an internal backing store. Models no longer need to declare `$auditLog`, `$auditUserId`, or `$auditRequestMeta` static properties — just `use Auditable;`.
 
 Query audit logs via the polymorphic relation:
 
@@ -445,3 +449,53 @@ return Response::json([
 ```
 
 Default `per_page` is 15. Override via query string: `?per_page=25&page=2`.
+
+## CrudService
+
+`Lattice\Database\Crud\CrudService` provides a base class for mechanical CRUD operations. Services with no custom business logic inherit `find()`, `create()`, `update()`, and `delete()` unchanged. Override lifecycle hooks for custom behaviour.
+
+```php
+use Lattice\Database\Crud\CrudService;
+
+final class ContactService extends CrudService
+{
+    protected function model(): string
+    {
+        return Contact::class;
+    }
+
+    // Optional: eager-load relations on create/update responses
+    protected function responseRelations(): array
+    {
+        return ['company', 'owner'];
+    }
+
+    // Optional: lifecycle hooks
+    protected function afterCreate(Model $model, Principal $user): void
+    {
+        // e.g., dispatch an event or send a notification
+    }
+}
+```
+
+Features:
+- **Transaction-wrapped** -- create, update, and delete run inside a database transaction (atomic with hooks)
+- **Auto owner assignment** -- sets `owner_id` from the authenticated `Principal` on create
+- **Null-filtering** -- partial updates ignore null fields from the DTO
+- **Constraint error handling** -- unique constraint violations return 422 instead of 500
+- **Lifecycle hooks** -- `beforeCreate`, `afterCreate`, `beforeUpdate`, `afterUpdate`, `beforeDelete`, `afterDelete`
+
+Available hooks:
+
+| Hook | Signature |
+|------|-----------|
+| `beforeCreate` | `(array &$data, Principal $user): void` |
+| `afterCreate` | `(Model $model, Principal $user): void` |
+| `beforeUpdate` | `(Model $model, array &$data): void` |
+| `afterUpdate` | `(Model $model): void` |
+| `beforeDelete` | `(Model $model): void` |
+| `afterDelete` | `(int $id): void` |
+
+::: tip
+For simple CRUD modules, pair `CrudService` with `CrudController` (see [HTTP API](http-api.md#crudcontroller)) to get a full REST API with zero boilerplate.
+:::

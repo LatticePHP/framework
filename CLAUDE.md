@@ -13,7 +13,7 @@ LatticePHP is a **backend-only PHP 8.4+ framework** — Laravel's Illuminate com
 
 ```bash
 make install          # Install Composer deps
-make test             # Run full test suite (2,534+ tests)
+make test             # Run full test suite (3,248+ tests)
 make test-suite S=Workflow   # Run one test suite
 make test-filter F=ClassName # Filter by class/method
 make lint             # CS Fixer (dry-run) + PHPStan
@@ -49,6 +49,15 @@ contracts → core → module → compiler → pipeline → http → routing
 This is the core dependency chain (simplified). Other packages (`events`, `cache`, `queue`, `mail`, `notifications`, `observability`, `microservices`, transports, etc.) follow the same direction — always depending downward toward `contracts`.
 
 **Rule:** Packages depend on `contracts` for interfaces. Never create circular dependencies between packages. Use `contracts` to break cycles.
+
+### CRUD Base Classes
+
+The framework provides `CrudService` and `CrudController` for mechanical CRUD:
+- `Lattice\Database\Crud\CrudService` — transaction-wrapped create/update/delete with lifecycle hooks
+- `Lattice\Http\Crud\CrudController` — generic index/show/destroy endpoints
+
+Services with no custom business logic extend CrudService and define only `model()`.
+Controllers extend CrudController and keep only custom endpoints (search, stage transitions, etc.).
 
 ## Coding Standards
 

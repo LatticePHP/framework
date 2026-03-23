@@ -184,6 +184,30 @@ final class ContactTest extends TestCase
 }
 ```
 
+### Database Helpers
+
+The base `TestCase` provides helpers for common test setup:
+
+```php
+// Boot an in-memory SQLite database
+$this->db = $this->bootTestDatabase();
+
+// Generate a JWT token for authentication
+$token = $this->generateTestToken($user, 'my-secret');
+$this->withToken($token);
+
+// Clear authentication (guest mode)
+$this->withoutAuth();
+```
+
+### RefreshDatabase Auto-Cleanup
+
+The `RefreshDatabase` trait automatically:
+- Clears all booted Eloquent models between tests (prevents stale event listeners)
+- Resets `WorkspaceContext` (prevents workspace state leaking between tests)
+
+No manual `clearBootedModels()` calls needed.
+
 ### DatabaseTransactions
 
 Wraps each test in a transaction that rolls back after the test. Faster than `RefreshDatabase` when you do not need schema changes between tests:

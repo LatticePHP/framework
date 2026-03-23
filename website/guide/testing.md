@@ -380,6 +380,57 @@ public function test_create_contact_requires_name(): void
 }
 ```
 
+## Testing Helpers
+
+The `TestCase` base class includes convenience methods for common test setup tasks:
+
+### bootTestDatabase
+
+Boot an in-memory SQLite database for tests that need direct database access without a full application:
+
+```php
+public function test_query_filter_applies(): void
+{
+    $db = $this->bootTestDatabase();
+    $db->schema()->create('contacts', function ($table) {
+        $table->id();
+        $table->string('name');
+    });
+
+    // Use the database directly...
+}
+```
+
+### generateTestToken
+
+Generate a JWT token for a user model without needing a running auth service:
+
+```php
+public function test_authenticated_endpoint(): void
+{
+    $user = (object) ['id' => 1, 'email' => 'test@example.com', 'role' => 'admin'];
+    $token = $this->generateTestToken($user, 'test-secret');
+
+    $response = $this->withToken($token)->getJson('/api/protected');
+    $response->assertOk();
+}
+```
+
+### seed
+
+Seed the database with test data using a seeder class:
+
+```php
+public function test_list_with_seeded_data(): void
+{
+    $this->seed(ContactSeeder::class);
+
+    $response = $this->getJson('/api/contacts');
+    $response->assertOk();
+    $response->assertJsonCount(10, 'data');
+}
+```
+
 ## Running Tests
 
 ```bash
