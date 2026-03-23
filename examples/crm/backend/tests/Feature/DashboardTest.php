@@ -122,7 +122,7 @@ final class DashboardTest extends TestCase
         Activity::create([
             'type' => 'call',
             'subject' => 'Follow up call',
-            'due_date' => now()->addDays(3),
+            'due_date' => new \DateTimeImmutable('+3 days'),
             'contact_id' => $contact->id,
             'workspace_id' => $this->workspace->id,
             'owner_id' => $this->user->id,
@@ -132,7 +132,7 @@ final class DashboardTest extends TestCase
         Activity::create([
             'type' => 'meeting',
             'subject' => 'Overdue meeting',
-            'due_date' => now()->subDays(2),
+            'due_date' => new \DateTimeImmutable('-2 days'),
             'contact_id' => $contact->id,
             'workspace_id' => $this->workspace->id,
             'owner_id' => $this->user->id,
@@ -142,8 +142,8 @@ final class DashboardTest extends TestCase
         Activity::create([
             'type' => 'email',
             'subject' => 'Sent proposal',
-            'due_date' => now()->subDay(),
-            'completed_at' => now(),
+            'due_date' => new \DateTimeImmutable('-1 day'),
+            'completed_at' => new \DateTimeImmutable(),
             'contact_id' => $contact->id,
             'workspace_id' => $this->workspace->id,
             'owner_id' => $this->user->id,

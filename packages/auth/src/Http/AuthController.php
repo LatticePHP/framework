@@ -48,15 +48,17 @@ final class AuthController
         $tokenPair = $this->issuer->issueAccessToken($principal);
 
         return Response::json([
-            'access_token' => $tokenPair->getAccessToken(),
-            'refresh_token' => $tokenPair->getRefreshToken(),
-            'token_type' => $tokenPair->getTokenType(),
-            'expires_in' => $tokenPair->getExpiresIn(),
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
+            'data' => [
+                'access_token' => $tokenPair->getAccessToken(),
+                'refresh_token' => $tokenPair->getRefreshToken(),
+                'token_type' => $tokenPair->getTokenType(),
+                'expires_in' => $tokenPair->getExpiresIn(),
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->role,
+                ],
             ],
         ]);
     }
@@ -64,6 +66,20 @@ final class AuthController
     #[Post('/register')]
     public function register(#[Body] RegisterDto $dto): Response
     {
+        // Check if email is already taken
+        $existing = ($this->userModel)::where('email', $dto->email)->first();
+        if ($existing !== null) {
+            return Response::json([
+                'type' => 'https://httpstatuses.io/422',
+                'title' => 'Validation Failed',
+                'status' => 422,
+                'detail' => 'The given data was invalid.',
+                'errors' => [
+                    'email' => ['The email has already been taken.'],
+                ],
+            ], 422);
+        }
+
         /** @var User $user */
         $user = ($this->userModel)::create([
             'name' => $dto->name,
@@ -81,14 +97,16 @@ final class AuthController
         $tokenPair = $this->issuer->issueAccessToken($principal);
 
         return Response::json([
-            'access_token' => $tokenPair->getAccessToken(),
-            'refresh_token' => $tokenPair->getRefreshToken(),
-            'token_type' => $tokenPair->getTokenType(),
-            'expires_in' => $tokenPair->getExpiresIn(),
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
+            'data' => [
+                'access_token' => $tokenPair->getAccessToken(),
+                'refresh_token' => $tokenPair->getRefreshToken(),
+                'token_type' => $tokenPair->getTokenType(),
+                'expires_in' => $tokenPair->getExpiresIn(),
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ],
             ],
         ], 201);
     }
@@ -103,10 +121,12 @@ final class AuthController
         }
 
         return Response::json([
-            'access_token' => $tokenPair->getAccessToken(),
-            'refresh_token' => $tokenPair->getRefreshToken(),
-            'token_type' => $tokenPair->getTokenType(),
-            'expires_in' => $tokenPair->getExpiresIn(),
+            'data' => [
+                'access_token' => $tokenPair->getAccessToken(),
+                'refresh_token' => $tokenPair->getRefreshToken(),
+                'token_type' => $tokenPair->getTokenType(),
+                'expires_in' => $tokenPair->getExpiresIn(),
+            ],
         ]);
     }
 

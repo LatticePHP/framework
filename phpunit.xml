@@ -115,6 +115,9 @@
         <testsuite name="Mcp">
             <directory>packages/mcp/tests</directory>
         </testsuite>
+        <testsuite name="CRM">
+            <directory>examples/crm/backend/tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>

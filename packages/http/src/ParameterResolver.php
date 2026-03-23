@@ -151,17 +151,20 @@ final class ParameterResolver
             try {
                 $dto = $this->dtoMapper->map($body, $type);
             } catch (MappingException $e) {
-                // Convert "Missing required field" errors to 422 validation errors
-                if (preg_match("/Missing required field '(\w+)'/", $e->getMessage(), $matches)) {
-                    $fieldName = $matches[1];
-                    $result = new ValidationResult([
-                        new FieldError(
+                // Convert "Missing required fields: a, b, c" errors to 422 validation errors
+                if (preg_match("/Missing required fields?: (.+) for /", $e->getMessage(), $matches)) {
+                    $fieldNames = array_map('trim', explode(',', $matches[1]));
+                    // Strip surrounding quotes from field names
+                    $fieldNames = array_map(fn (string $f): string => trim($f, "'"), $fieldNames);
+                    $errors = [];
+                    foreach ($fieldNames as $fieldName) {
+                        $errors[] = new FieldError(
                             field: $fieldName,
                             message: "The {$fieldName} field is required.",
                             rule: 'required',
-                        ),
-                    ]);
-                    throw new ValidationException($result);
+                        );
+                    }
+                    throw new ValidationException(new ValidationResult($errors));
                 }
                 throw new BadRequestException('Failed to map request body: ' . $e->getMessage(), $e);
             }

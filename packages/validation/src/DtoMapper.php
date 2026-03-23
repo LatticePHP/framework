@@ -44,6 +44,7 @@ final class DtoMapper
         }
 
         $args = [];
+        $missingFields = [];
 
         foreach ($constructor->getParameters() as $param) {
             $name = $param->getName();
@@ -53,10 +54,16 @@ final class DtoMapper
             } elseif ($param->isDefaultValueAvailable()) {
                 $args[] = $param->getDefaultValue();
             } else {
-                throw new MappingException(
-                    "Missing required field '{$name}' for {$dtoClass}",
-                );
+                $missingFields[] = $name;
+                // Use null as placeholder to continue collecting missing fields
+                $args[] = null;
             }
+        }
+
+        if (!empty($missingFields)) {
+            throw new MappingException(
+                "Missing required fields: " . implode(', ', $missingFields) . " for {$dtoClass}",
+            );
         }
 
         try {

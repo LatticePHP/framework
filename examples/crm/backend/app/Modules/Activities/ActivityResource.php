@@ -22,14 +22,14 @@ final class ActivityResource extends Resource
             'contact_id' => $this->resource->contact_id,
             'deal_id' => $this->resource->deal_id,
             'owner_id' => $this->resource->owner_id,
-            'contact' => $this->whenLoaded('contact', fn ($c) => [
+            'contact' => $this->whenLoaded('contact', fn ($c) => $c ? [
                 'id' => $c->id,
                 'full_name' => $c->full_name,
-            ]),
-            'deal' => $this->whenLoaded('deal', fn ($d) => [
+            ] : null),
+            'deal' => $this->whenLoaded('deal', fn ($d) => $d ? [
                 'id' => $d->id,
                 'title' => $d->title,
-            ]),
+            ] : null),
             'created_at' => $this->resource->created_at?->toIso8601String(),
             'updated_at' => $this->resource->updated_at?->toIso8601String(),
         ];

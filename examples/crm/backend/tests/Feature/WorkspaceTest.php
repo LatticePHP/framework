@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\Deal;
 use App\Models\User;
 use Lattice\Auth\Models\Workspace;
+use Lattice\Auth\Models\WorkspaceInvitation;
 use Tests\TestCase;
 
 /**
@@ -288,5 +289,201 @@ final class WorkspaceTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['slug']);
+    }
+
+    // -------------------------------------------------------
+    // Workspace show
+    // -------------------------------------------------------
+
+    public function test_show_workspace_returns_details(): void
+    {
+        $response = $this->getJson('/api/workspaces/' . $this->workspace->id);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.name', $this->workspace->name);
+        $response->assertJsonPath('data.slug', $this->workspace->slug);
+        $response->assertJsonPath('data.id', $this->workspace->id);
+        $response->assertJsonPath('data.owner_id', $this->user->id);
+    }
+
+    // -------------------------------------------------------
+    // Invitation acceptance
+    // -------------------------------------------------------
+
+    public function test_accept_invitation_adds_member(): void
+    {
+        $invitee = $this->createUser(['email' => 'accept-invitee@test.com', 'name' => 'Accept Invitee']);
+
+        // Create a pending invitation in the database
+        $invitation = WorkspaceInvitation::create([
+            'workspace_id' => $this->workspace->id,
+            'email' => $invitee->email,
+            'role' => 'member',
+            'token' => bin2hex(random_bytes(32)),
+            'invited_by' => $this->user->id,
+            'expires_at' => new \DateTimeImmutable('+7 days'),
+        ]);
+
+        // Act as the invitee
+        $this->actingAsUser($invitee, $this->workspace);
+
+        $response = $this->postJson('/api/workspaces/invitations/' . $invitation->token . '/accept');
+
+        $response->assertOk();
+        $response->assertJsonPath('data.workspace_id', $this->workspace->id);
+        $response->assertJsonPath('data.role', 'member');
+
+        // Verify the invitee is now a member
+        $this->assertDatabaseHas('workspace_members', [
+            'workspace_id' => $this->workspace->id,
+            'user_id' => $invitee->id,
+            'role' => 'member',
+        ]);
+    }
+
+    public function test_accept_expired_invitation_fails(): void
+    {
+        $invitee = $this->createUser(['email' => 'expired-invitee@test.com', 'name' => 'Expired Invitee']);
+
+        // Create an expired invitation
+        $invitation = WorkspaceInvitation::create([
+            'workspace_id' => $this->workspace->id,
+            'email' => $invitee->email,
+            'role' => 'member',
+            'token' => bin2hex(random_bytes(32)),
+            'invited_by' => $this->user->id,
+            'expires_at' => new \DateTimeImmutable('-1 day'),
+        ]);
+
+        // Act as the invitee
+        $this->actingAsUser($invitee, $this->workspace);
+
+        $response = $this->postJson('/api/workspaces/invitations/' . $invitation->token . '/accept');
+
+        $response->assertStatus(410);
+    }
+
+    // -------------------------------------------------------
+    // Members list
+    // -------------------------------------------------------
+
+    public function test_list_workspace_members(): void
+    {
+        // Add a second member to the workspace
+        $member = $this->createUser(['email' => 'list-member@test.com', 'name' => 'List Member']);
+        $this->workspace->members()->attach($member->id, [
+            'role' => 'member',
+            'joined_at' => now(),
+            'invited_by' => $this->user->id,
+        ]);
+
+        $response = $this->getJson('/api/workspaces/' . $this->workspace->id . '/members');
+
+        $response->assertOk();
+
+        $data = $response->getBody()['data'] ?? [];
+        $members = is_array($data) ? $data : (method_exists($data, 'toArray') ? $data->toArray() : (array) $data);
+        $this->assertCount(2, $members);
+
+        // Verify members have expected structure
+        $roles = array_column($members, 'role');
+        $this->assertContains('owner', $roles);
+        $this->assertContains('member', $roles);
+    }
+
+    // -------------------------------------------------------
+    // Member role update
+    // -------------------------------------------------------
+
+    public function test_update_member_role(): void
+    {
+        // Add a member to the workspace
+        $member = $this->createUser(['email' => 'role-update@test.com', 'name' => 'Role Update']);
+        $this->workspace->members()->attach($member->id, [
+            'role' => 'member',
+            'joined_at' => now(),
+            'invited_by' => $this->user->id,
+        ]);
+
+        $response = $this->putJson(
+            '/api/workspaces/' . $this->workspace->id . '/members/' . $member->id,
+            ['role' => 'admin'],
+        );
+
+        $response->assertOk();
+        $response->assertJsonPath('data.user_id', $member->id);
+        $response->assertJsonPath('data.role', 'admin');
+
+        // Verify the role was updated in the database
+        $this->assertDatabaseHas('workspace_members', [
+            'workspace_id' => $this->workspace->id,
+            'user_id' => $member->id,
+            'role' => 'admin',
+        ]);
+    }
+
+    public function test_non_owner_cannot_update_roles(): void
+    {
+        // Add a regular member to the workspace
+        $member = $this->createUser(['email' => 'non-owner@test.com', 'name' => 'Non Owner']);
+        $this->workspace->members()->attach($member->id, [
+            'role' => 'member',
+            'joined_at' => now(),
+            'invited_by' => $this->user->id,
+        ]);
+
+        // Add a second member whose role we'll try to change
+        $target = $this->createUser(['email' => 'target@test.com', 'name' => 'Target']);
+        $this->workspace->members()->attach($target->id, [
+            'role' => 'member',
+            'joined_at' => now(),
+            'invited_by' => $this->user->id,
+        ]);
+
+        // Act as the non-owner member
+        $this->actingAsUser($member, $this->workspace);
+
+        $response = $this->putJson(
+            '/api/workspaces/' . $this->workspace->id . '/members/' . $target->id,
+            ['role' => 'admin'],
+        );
+
+        $response->assertForbidden();
+    }
+
+    // -------------------------------------------------------
+    // Member removal
+    // -------------------------------------------------------
+
+    public function test_remove_member_from_workspace(): void
+    {
+        // Add a member to the workspace
+        $member = $this->createUser(['email' => 'removable@test.com', 'name' => 'Removable']);
+        $this->workspace->members()->attach($member->id, [
+            'role' => 'member',
+            'joined_at' => now(),
+            'invited_by' => $this->user->id,
+        ]);
+
+        $response = $this->deleteJson(
+            '/api/workspaces/' . $this->workspace->id . '/members/' . $member->id,
+        );
+
+        $response->assertNoContent();
+
+        // Verify the member was removed
+        $this->assertDatabaseMissing('workspace_members', [
+            'workspace_id' => $this->workspace->id,
+            'user_id' => $member->id,
+        ]);
+    }
+
+    public function test_cannot_remove_workspace_owner(): void
+    {
+        $response = $this->deleteJson(
+            '/api/workspaces/' . $this->workspace->id . '/members/' . $this->user->id,
+        );
+
+        $response->assertStatus(400);
     }
 }

@@ -58,9 +58,23 @@ final class WorkspaceController
     ): Response {
         $user = User::findOrFail($principal->getId());
 
+        // Validate slug uniqueness
+        $slug = $dto->slug ?? $this->generateSlug($dto->name);
+        if (Workspace::where('slug', $slug)->exists()) {
+            return Response::json([
+                'type' => 'https://httpstatuses.io/422',
+                'title' => 'Validation Failed',
+                'status' => 422,
+                'detail' => 'The given data was invalid.',
+                'errors' => [
+                    'slug' => ['The slug has already been taken.'],
+                ],
+            ], 422);
+        }
+
         $workspace = Workspace::create([
             'name' => $dto->name,
-            'slug' => $dto->slug ?? $this->generateSlug($dto->name),
+            'slug' => $slug,
             'owner_id' => $user->id,
             'settings' => $dto->settings,
             'logo_url' => $dto->logo_url,
@@ -112,6 +126,10 @@ final class WorkspaceController
 
     /**
      * Send a workspace invitation.
+     *
+     * If the invitee already exists as a registered user, they are
+     * automatically added as a workspace member. Otherwise, a formal
+     * invitation token is created for later acceptance.
      */
     #[Post('/:id/invitations')]
     public function invite(
@@ -128,13 +146,30 @@ final class WorkspaceController
             return Response::error('Insufficient permissions to invite members', 403);
         }
 
+        // If the invitee is already a registered user, add them directly
+        $invitee = User::where('email', $dto->email)->first();
+
+        if ($invitee !== null && !$workspace->hasMember($invitee)) {
+            $workspace->addMember($invitee, $dto->role, $user->id);
+
+            return Response::json([
+                'data' => [
+                    'email' => $dto->email,
+                    'role' => $dto->role,
+                    'status' => 'added',
+                    'user_id' => $invitee->id,
+                ],
+            ], 201);
+        }
+
+        // Otherwise, create a formal invitation
         $invitation = WorkspaceInvitation::create([
             'workspace_id' => $workspace->id,
             'email' => $dto->email,
             'role' => $dto->role,
             'token' => bin2hex(random_bytes(32)),
             'invited_by' => $user->id,
-            'expires_at' => now()->addDays(7),
+            'expires_at' => new \DateTimeImmutable('+7 days'),
         ]);
 
         return Response::json([
@@ -143,7 +178,7 @@ final class WorkspaceController
                 'email' => $invitation->email,
                 'role' => $invitation->role,
                 'token' => $invitation->token,
-                'expires_at' => $invitation->expires_at->toIso8601String(),
+                'expires_at' => $invitation->expires_at?->toIso8601String(),
             ],
         ], 201);
     }

@@ -25,7 +25,13 @@ final class ExceptionHandler
             return Response::error('Not Found', 404);
         }
 
-        return Response::error('Internal Server Error', 500);
+        // Include exception details for debugging when APP_DEBUG is enabled
+        $debug = filter_var($_ENV['APP_DEBUG'] ?? 'false', FILTER_VALIDATE_BOOLEAN);
+        $message = $debug
+            ? get_class($e) . ': ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine()
+            : 'Internal Server Error';
+
+        return Response::error($message, 500);
     }
 
     /**

@@ -93,6 +93,16 @@ abstract class TestCase extends PHPUnitTestCase
     }
 
     /**
+     * Clear the Bearer token so subsequent requests have no Authorization header.
+     */
+    public function withoutAuth(): static
+    {
+        $this->authToken = null;
+        unset($this->defaultHeaders['authorization']);
+        return $this;
+    }
+
+    /**
      * Merge headers into the default set for all subsequent requests.
      *
      * @param array<string, string> $headers

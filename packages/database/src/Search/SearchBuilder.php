@@ -18,6 +18,9 @@ final class SearchBuilder
     /** @var array<string, mixed> */
     private array $wheres = [];
 
+    /** @var array<int, string> */
+    private array $eagerLoads = [];
+
     private ?string $orderByColumn = null;
 
     private string $orderByDirection = 'asc';
@@ -39,6 +42,18 @@ final class SearchBuilder
     public function where(string $column, mixed $value): self
     {
         $this->wheres[$column] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Eager-load relationships on the search results.
+     *
+     * @param array<int, string> $relations
+     */
+    public function with(array $relations): self
+    {
+        $this->eagerLoads = array_merge($this->eagerLoads, $relations);
 
         return $this;
     }
@@ -118,6 +133,11 @@ final class SearchBuilder
         // Apply ordering
         if ($this->orderByColumn !== null) {
             $builder->orderBy($this->orderByColumn, $this->orderByDirection);
+        }
+
+        // Apply eager loading
+        if (!empty($this->eagerLoads)) {
+            $builder->with($this->eagerLoads);
         }
 
         // Apply limit

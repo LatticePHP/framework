@@ -24,7 +24,7 @@ final class ContactResource extends Resource
             'tags' => $this->resource->tags,
             'company_id' => $this->resource->company_id,
             'owner_id' => $this->resource->owner_id,
-            'company' => $this->whenLoaded('company', fn ($company) => CompanyResource::make($company)->toArray()),
+            'company' => $this->whenLoaded('company', fn ($company) => $company !== null ? CompanyResource::make($company)->toArray() : null),
             'deals_count' => $this->when(
                 $this->resource->relationLoaded('deals'),
                 fn () => $this->resource->deals->count(),

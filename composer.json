@@ -134,7 +134,7 @@
             "Lattice\\GraphQL\\Tests\\": "packages/graphql/tests/",
             "Lattice\\Ai\\Tests\\": "packages/ai/tests/",
             "Lattice\\Mcp\\Tests\\": "packages/mcp/tests/",
-            "Tests\\": "tests/"
+            "Tests\\": "examples/crm/backend/tests/"
         }
     },
     "repositories": [

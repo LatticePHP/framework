@@ -54,7 +54,7 @@ final class ActivityService
 
         // Handle completion toggle
         if ($dto->completed === true && $activity->completed_at === null) {
-            $data['completed_at'] = now()->toDateTimeString();
+            $data['completed_at'] = now()->format('Y-m-d H:i:s');
             Log::info('Activity completed', ['id' => $activity->id]);
         } elseif ($dto->completed === false && $activity->completed_at !== null) {
             $data['completed_at'] = null;
@@ -85,7 +85,7 @@ final class ActivityService
     public function complete(int $id): Activity
     {
         $activity = Activity::findOrFail($id);
-        $activity->update(['completed_at' => now()->toDateTimeString()]);
+        $activity->update(['completed_at' => now()->format('Y-m-d H:i:s')]);
 
         Log::info('Activity completed', ['id' => $id]);
 

@@ -181,10 +181,8 @@ final class AuthFlowTest extends TestCase
             methodName: 'me',
         );
 
-        $result = $this->guard->canActivate($context);
-
-        $this->assertFalse($result);
-        $this->assertNull($context->getPrincipal());
+        $this->expectException(\Lattice\Http\Exception\UnauthorizedException::class);
+        $this->guard->canActivate($context);
     }
 
     #[Test]
@@ -203,10 +201,8 @@ final class AuthFlowTest extends TestCase
             methodName: 'me',
         );
 
-        $result = $this->guard->canActivate($context);
-
-        $this->assertFalse($result);
-        $this->assertNull($context->getPrincipal());
+        $this->expectException(\Lattice\Http\Exception\UnauthorizedException::class);
+        $this->guard->canActivate($context);
     }
 
     #[Test]
@@ -244,9 +240,8 @@ final class AuthFlowTest extends TestCase
             methodName: 'me',
         );
 
-        $result = $this->guard->canActivate($context);
-
-        $this->assertFalse($result);
+        $this->expectException(\Lattice\Http\Exception\UnauthorizedException::class);
+        $this->guard->canActivate($context);
     }
 
     #[Test]
@@ -320,9 +315,8 @@ final class AuthFlowTest extends TestCase
             methodName: 'me',
         );
 
-        $result = $this->guard->canActivate($context);
-
-        $this->assertFalse($result);
+        $this->expectException(\Lattice\Http\Exception\UnauthorizedException::class);
+        $this->guard->canActivate($context);
     }
 
     #[Test]

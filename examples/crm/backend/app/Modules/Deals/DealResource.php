@@ -27,8 +27,8 @@ final class DealResource extends Resource
             'contact_id' => $this->resource->contact_id,
             'company_id' => $this->resource->company_id,
             'owner_id' => $this->resource->owner_id,
-            'contact' => $this->whenLoaded('contact', fn ($c) => ContactResource::make($c)->toArray()),
-            'company' => $this->whenLoaded('company', fn ($c) => CompanyResource::make($c)->toArray()),
+            'contact' => $this->whenLoaded('contact', fn ($c) => $c !== null ? ContactResource::make($c)->toArray() : null),
+            'company' => $this->whenLoaded('company', fn ($c) => $c !== null ? CompanyResource::make($c)->toArray() : null),
             'activities_count' => $this->when(
                 $this->resource->relationLoaded('activities'),
                 fn () => $this->resource->getRelation('activities')?->count() ?? 0,

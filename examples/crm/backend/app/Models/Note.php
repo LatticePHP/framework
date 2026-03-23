@@ -23,6 +23,12 @@ final class Note extends Model
     use BelongsToWorkspace;
     use Auditable;
 
+    /** @var list<array<string, mixed>> */
+    protected static array $auditLog = [];
+    protected static int|string|null $auditUserId = null;
+    /** @var array{ip_address: ?string, user_agent: ?string, url: ?string, method: ?string}|null */
+    protected static ?array $auditRequestMeta = null;
+
     protected $table = 'notes';
 
     /** @var list<string> */

@@ -30,9 +30,24 @@ final class Validator
         $reflection = new ReflectionClass($dto);
 
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            $value = $property->getValue($dto);
             $fieldName = $property->getName();
             $attributes = $property->getAttributes();
+
+            // Handle uninitialized typed properties (e.g., missing required fields)
+            try {
+                $value = $property->getValue($dto);
+            } catch (\Error) {
+                // Property was never set — treat as null for validation purposes
+                $value = null;
+            }
+
+            // If property is not initialized, check if it's required and report error
+            if ($value === null && !$property->isInitialized($dto)) {
+                if ($this->hasAttribute($attributes, Required::class)) {
+                    $errors[] = new FieldError($fieldName, "The {$fieldName} field is required", 'Required', null);
+                }
+                continue;
+            }
 
             $isNullable = $this->hasAttribute($attributes, Nullable::class)
                 || $property->getType()?->allowsNull();

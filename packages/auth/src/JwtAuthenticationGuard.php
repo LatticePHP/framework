@@ -6,6 +6,7 @@ namespace Lattice\Auth;
 
 use Lattice\Contracts\Context\ExecutionContextInterface;
 use Lattice\Contracts\Pipeline\GuardInterface;
+use Lattice\Http\Exception\UnauthorizedException;
 use Lattice\Jwt\JwtConfig;
 use Lattice\Jwt\JwtEncoder;
 
@@ -22,8 +23,8 @@ final class JwtAuthenticationGuard implements GuardInterface
         $request = $context->getRequest();
         $token = $request->bearerToken();
 
-        if ($token === null) {
-            return false;
+        if ($token === null || $token === '') {
+            throw new UnauthorizedException('Authentication required');
         }
 
         try {
@@ -44,8 +45,10 @@ final class JwtAuthenticationGuard implements GuardInterface
             }
 
             return true;
+        } catch (UnauthorizedException $e) {
+            throw $e;
         } catch (\Throwable) {
-            return false;
+            throw new UnauthorizedException('Invalid or expired token');
         }
     }
 }
