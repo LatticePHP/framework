@@ -10,8 +10,8 @@ use App\Modules\Notes\Dto\UpdateNoteDto;
 use Lattice\Auth\JwtAuthenticationGuard;
 use Lattice\Auth\Principal;
 use Lattice\Auth\Workspace\WorkspaceGuard;
-use Lattice\Database\Filter\QueryFilter;
-use Lattice\Http\Request;
+use Lattice\Database\Crud\CrudService;
+use Lattice\Http\Crud\CrudController;
 use Lattice\Http\Response;
 use Lattice\Http\ResponseFactory;
 use Lattice\Observability\Log;
@@ -19,7 +19,6 @@ use Lattice\Pipeline\Attributes\UseGuards;
 use Lattice\Routing\Attributes\Body;
 use Lattice\Routing\Attributes\Controller;
 use Lattice\Routing\Attributes\CurrentUser;
-use Lattice\Routing\Attributes\Delete;
 use Lattice\Routing\Attributes\Get;
 use Lattice\Routing\Attributes\Param;
 use Lattice\Routing\Attributes\Post;
@@ -27,23 +26,35 @@ use Lattice\Routing\Attributes\Put;
 
 #[Controller('/api/notes')]
 #[UseGuards(guards: [JwtAuthenticationGuard::class, WorkspaceGuard::class])]
-final class NoteController
+final class NoteController extends CrudController
 {
     public function __construct(
         private readonly NoteService $service,
     ) {}
 
-    #[Get('/')]
-    public function index(Request $request): Response
+    protected function service(): CrudService
     {
-        $filter = QueryFilter::fromRequest($request->query);
-        $notes = Note::filter($filter)
-            ->with(['author'])
-            ->orderBy('is_pinned', 'desc')
-            ->orderBy('created_at', 'desc')
-            ->paginate($filter->getPerPage(), ['*'], 'page', $filter->getPage());
+        return $this->service;
+    }
 
-        return ResponseFactory::paginated($notes, NoteResource::class);
+    protected function resourceClass(): string
+    {
+        return NoteResource::class;
+    }
+
+    protected function modelClass(): string
+    {
+        return Note::class;
+    }
+
+    protected function indexRelations(): array
+    {
+        return ['author'];
+    }
+
+    protected function showRelations(): array
+    {
+        return ['author', 'notable'];
     }
 
     #[Post('/')]
@@ -53,37 +64,13 @@ final class NoteController
 
         Log::info('Note created', ['id' => $note->id]);
 
-        return ResponseFactory::created(
-            ['data' => NoteResource::make($note)->toArray()],
-        );
-    }
-
-    #[Get('/:id')]
-    public function show(#[Param] int $id): Response
-    {
-        $note = Note::with(['author', 'notable'])->findOrFail($id);
-
-        return ResponseFactory::json([
-            'data' => NoteResource::make($note)->toArray(),
-        ]);
+        return $this->storeResponse($note);
     }
 
     #[Put('/:id')]
     public function update(#[Param] int $id, #[Body] UpdateNoteDto $dto): Response
     {
-        $note = $this->service->update($id, $dto);
-
-        return ResponseFactory::json([
-            'data' => NoteResource::make($note)->toArray(),
-        ]);
-    }
-
-    #[Delete('/:id')]
-    public function destroy(#[Param] int $id): Response
-    {
-        $this->service->delete($id);
-
-        return ResponseFactory::noContent();
+        return $this->updateResponse($this->service->update($id, $dto));
     }
 
     /**
@@ -92,12 +79,7 @@ final class NoteController
     #[Get('/for/:type/:entityId')]
     public function forEntity(#[Param] string $type, #[Param] int $entityId): Response
     {
-        $notableType = match ($type) {
-            'contacts' => \App\Models\Contact::class,
-            'companies' => \App\Models\Company::class,
-            'deals' => \App\Models\Deal::class,
-            default => abort(422, "Invalid entity type: {$type}"),
-        };
+        $notableType = Note::resolveNotableClass($type);
 
         $notes = Note::where('notable_type', $notableType)
             ->where('notable_id', $entityId)

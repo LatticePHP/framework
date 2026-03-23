@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Contacts\Dto;
 
+use App\Models\Contact;
 use Lattice\Validation\Attributes\Email;
 use Lattice\Validation\Attributes\InArray;
 use Lattice\Validation\Attributes\Nullable;
@@ -36,11 +37,11 @@ final readonly class UpdateContactDto
         public ?string $title = null,
 
         #[Nullable]
-        #[InArray(values: ['lead', 'prospect', 'customer', 'churned', 'inactive'])]
+        #[InArray(values: Contact::STATUSES)]
         public ?string $status = null,
 
         #[Nullable]
-        #[InArray(values: ['web', 'referral', 'campaign', 'social', 'cold_call', 'trade_show', 'other'])]
+        #[InArray(values: Contact::SOURCES)]
         public ?string $source = null,
 
         #[Nullable]

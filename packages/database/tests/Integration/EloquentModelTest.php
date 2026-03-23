@@ -84,9 +84,6 @@ class AuditedUser extends Model
 
     /** @var array<string> Fields excluded from audit log */
     public array $auditExclude = ['password'];
-
-    /** @var list<array<string, mixed>> */
-    public static array $auditLog = [];
 }
 
 // ── Test Resource ────────────────────────────────────────────────────────

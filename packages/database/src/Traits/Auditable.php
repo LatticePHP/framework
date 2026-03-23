@@ -26,6 +26,15 @@ use Lattice\Observability\Audit\AuditLog;
  */
 trait Auditable
 {
+    /** @var array<class-string, list<array<string, mixed>>> Audit log entries keyed by model class */
+    private static array $auditLogs = [];
+
+    /** @var array<class-string, int|string|null> User ID overrides keyed by model class */
+    private static array $auditUserIds = [];
+
+    /** @var array<class-string, array{ip_address: ?string, user_agent: ?string, url: ?string, method: ?string}> Request meta keyed by model class */
+    private static array $auditRequestMetas = [];
+
     /**
      * Boot the Auditable trait.
      */
@@ -78,10 +87,8 @@ trait Auditable
         // Resolve request metadata
         $requestMeta = $this->resolveRequestMetadata();
 
-        // Also store in the static audit log for testing/retrieval
-        if (!isset(static::$auditLog)) {
-            static::$auditLog = [];
-        }
+        // Store in the static audit log keyed by class
+        self::$auditLogs[static::class] ??= [];
 
         $entry = [
             'user_id' => $userId,
@@ -97,7 +104,7 @@ trait Auditable
             'created_at' => now(),
         ];
 
-        static::$auditLog[] = $entry;
+        self::$auditLogs[static::class][] = $entry;
 
         // Write to the audit_logs table
         try {
@@ -126,9 +133,9 @@ trait Auditable
      */
     protected function resolveAuditUserId(): int|string|null
     {
-        // Check for a static test override
-        if (isset(static::$auditUserId)) {
-            return static::$auditUserId;
+        // Check for a class-keyed test override
+        if (isset(self::$auditUserIds[static::class])) {
+            return self::$auditUserIds[static::class];
         }
 
         return null;
@@ -141,9 +148,9 @@ trait Auditable
      */
     protected function resolveRequestMetadata(): array
     {
-        // Check for a static test override
-        if (isset(static::$auditRequestMeta)) {
-            return static::$auditRequestMeta;
+        // Check for a class-keyed test override
+        if (isset(self::$auditRequestMetas[static::class])) {
+            return self::$auditRequestMetas[static::class];
         }
 
         return [
@@ -161,7 +168,7 @@ trait Auditable
      */
     public static function getAuditLog(): array
     {
-        return static::$auditLog ?? [];
+        return self::$auditLogs[static::class] ?? [];
     }
 
     /**
@@ -169,7 +176,7 @@ trait Auditable
      */
     public static function clearAuditLog(): void
     {
-        static::$auditLog = [];
+        self::$auditLogs[static::class] = [];
     }
 
     /**
@@ -177,7 +184,7 @@ trait Auditable
      */
     public static function setAuditUserId(int|string|null $userId): void
     {
-        static::$auditUserId = $userId;
+        self::$auditUserIds[static::class] = $userId;
     }
 
     /**
@@ -187,6 +194,6 @@ trait Auditable
      */
     public static function setAuditRequestMeta(array $meta): void
     {
-        static::$auditRequestMeta = $meta;
+        self::$auditRequestMetas[static::class] = $meta;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Notes\Dto;
 
+use App\Models\Note;
 use Lattice\Validation\Attributes\InArray;
 use Lattice\Validation\Attributes\Nullable;
 use Lattice\Validation\Attributes\Required;
@@ -17,7 +18,7 @@ final readonly class CreateNoteDto
         public string $body,
 
         #[Required]
-        #[InArray(values: ['contacts', 'companies', 'deals'])]
+        #[InArray(values: Note::NOTABLE_TYPES)]
         public string $notable_type,
 
         #[Required]

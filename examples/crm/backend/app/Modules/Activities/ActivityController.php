@@ -10,7 +10,8 @@ use App\Modules\Activities\Dto\UpdateActivityDto;
 use Lattice\Auth\JwtAuthenticationGuard;
 use Lattice\Auth\Principal;
 use Lattice\Auth\Workspace\WorkspaceGuard;
-use Lattice\Database\Filter\QueryFilter;
+use Lattice\Database\Crud\CrudService;
+use Lattice\Http\Crud\CrudController;
 use Lattice\Http\Request;
 use Lattice\Http\Response;
 use Lattice\Http\ResponseFactory;
@@ -19,7 +20,6 @@ use Lattice\Pipeline\Attributes\UseGuards;
 use Lattice\Routing\Attributes\Body;
 use Lattice\Routing\Attributes\Controller;
 use Lattice\Routing\Attributes\CurrentUser;
-use Lattice\Routing\Attributes\Delete;
 use Lattice\Routing\Attributes\Get;
 use Lattice\Routing\Attributes\Param;
 use Lattice\Routing\Attributes\Post;
@@ -27,21 +27,35 @@ use Lattice\Routing\Attributes\Put;
 
 #[Controller('/api/activities')]
 #[UseGuards(guards: [JwtAuthenticationGuard::class, WorkspaceGuard::class])]
-final class ActivityController
+final class ActivityController extends CrudController
 {
     public function __construct(
         private readonly ActivityService $service,
     ) {}
 
-    #[Get('/')]
-    public function index(Request $request): Response
+    protected function service(): CrudService
     {
-        $filter = QueryFilter::fromRequest($request->query);
-        $activities = Activity::filter($filter)
-            ->with(['contact', 'deal'])
-            ->paginate($filter->getPerPage(), ['*'], 'page', $filter->getPage());
+        return $this->service;
+    }
 
-        return ResponseFactory::paginated($activities, ActivityResource::class);
+    protected function resourceClass(): string
+    {
+        return ActivityResource::class;
+    }
+
+    protected function modelClass(): string
+    {
+        return Activity::class;
+    }
+
+    protected function indexRelations(): array
+    {
+        return ['contact', 'deal'];
+    }
+
+    protected function showRelations(): array
+    {
+        return ['contact', 'deal', 'owner'];
     }
 
     #[Post('/')]
@@ -51,38 +65,13 @@ final class ActivityController
 
         Log::info('Activity created', ['id' => $activity->id]);
 
-        return ResponseFactory::created(
-            ['data' => ActivityResource::make($activity)->toArray()],
-        );
-    }
-
-    #[Get('/:id')]
-    public function show(#[Param] int $id): Response
-    {
-        $activity = Activity::with(['contact', 'deal', 'owner'])
-            ->findOrFail($id);
-
-        return ResponseFactory::json([
-            'data' => ActivityResource::make($activity)->toArray(),
-        ]);
+        return $this->storeResponse($activity);
     }
 
     #[Put('/:id')]
     public function update(#[Param] int $id, #[Body] UpdateActivityDto $dto): Response
     {
-        $activity = $this->service->update($id, $dto);
-
-        return ResponseFactory::json([
-            'data' => ActivityResource::make($activity)->toArray(),
-        ]);
-    }
-
-    #[Delete('/:id')]
-    public function destroy(#[Param] int $id): Response
-    {
-        $this->service->delete($id);
-
-        return ResponseFactory::noContent();
+        return $this->updateResponse($this->service->update($id, $dto));
     }
 
     /**

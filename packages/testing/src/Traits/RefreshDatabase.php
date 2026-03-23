@@ -18,6 +18,16 @@ trait RefreshDatabase
 
     protected function setUpRefreshDatabase(): void
     {
+        // Clear all booted Eloquent models so traits re-register events with fresh DB
+        if (class_exists(\Illuminate\Database\Eloquent\Model::class)) {
+            \Illuminate\Database\Eloquent\Model::clearBootedModels();
+        }
+
+        // Reset workspace context from previous test
+        if (class_exists(\Lattice\Auth\Workspace\WorkspaceContext::class)) {
+            \Lattice\Auth\Workspace\WorkspaceContext::reset();
+        }
+
         $this->runMigrations();
     }
 

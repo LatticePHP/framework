@@ -24,12 +24,6 @@ final class Company extends Model
     use BelongsToWorkspace;
     use Auditable;
 
-    /** @var list<array<string, mixed>> */
-    protected static array $auditLog = [];
-    protected static int|string|null $auditUserId = null;
-    /** @var array{ip_address: ?string, user_agent: ?string, url: ?string, method: ?string}|null */
-    protected static ?array $auditRequestMeta = null;
-
     protected $table = 'companies';
 
     /** @var list<string> */
@@ -62,6 +56,9 @@ final class Company extends Model
 
     /** @var array<int, string> */
     protected array $allowedSorts = ['created_at', 'name', 'industry'];
+
+    public const array INDUSTRIES = ['technology', 'finance', 'healthcare', 'manufacturing', 'retail', 'education', 'consulting', 'other'];
+    public const array SIZES = ['1-10', '11-50', '51-200', '201-500', '501-1000', '1001+'];
 
     public function contacts(): HasMany
     {

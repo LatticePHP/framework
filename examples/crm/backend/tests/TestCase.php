@@ -5,17 +5,9 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\AppModule;
-use App\Models\Activity;
-use App\Models\Company;
-use App\Models\Contact;
-use App\Models\Deal;
-use App\Models\Note;
 use App\Models\User;
 use Lattice\Auth\Models\Workspace;
-use Lattice\Auth\Models\WorkspaceInvitation;
-use Lattice\Auth\Workspace\WorkspaceContext;
 use Lattice\Database\Illuminate\IlluminateDatabaseManager;
-use Lattice\Jwt\JwtEncoder;
 use Lattice\Testing\TestCase as LatticeTestCase;
 use Lattice\Testing\Traits\RefreshDatabase;
 
@@ -42,25 +34,11 @@ abstract class TestCase extends LatticeTestCase
         $_ENV['JWT_SECRET'] = self::TEST_JWT_SECRET;
         $_ENV['APP_DEBUG'] = 'true';
 
-        // Clear Eloquent's booted state so traits re-register events with the new DB
-        User::clearBootedModels();
-        Contact::clearBootedModels();
-        Company::clearBootedModels();
-        Deal::clearBootedModels();
-        Activity::clearBootedModels();
-        Note::clearBootedModels();
-        Workspace::clearBootedModels();
-        WorkspaceInvitation::clearBootedModels();
-
-        // Reset workspace context from previous test
-        WorkspaceContext::reset();
-
         // Boot Capsule before parent::setUp() so migrations can use Capsule::schema()
-        $this->db = new IlluminateDatabaseManager([
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ]);
+        // (clearBootedModels + WorkspaceContext::reset are handled by RefreshDatabase trait)
+        /** @var IlluminateDatabaseManager $db */
+        $db = $this->bootTestDatabase();
+        $this->db = $db;
 
         parent::setUp();
 
@@ -154,15 +132,7 @@ abstract class TestCase extends LatticeTestCase
         parent::actingAs($user, $workspace);
 
         // Generate a real JWT so the JwtAuthenticationGuard passes
-        $encoder = new JwtEncoder();
-        $token = $encoder->encode([
-            'sub' => (string) $user->id,
-            'email' => $user->email ?? '',
-            'roles' => [$user->role ?? 'user'],
-            'iat' => time(),
-            'exp' => time() + 3600,
-        ], self::TEST_JWT_SECRET);
-
+        $token = $this->generateTestToken($user, self::TEST_JWT_SECRET);
         $this->withToken($token);
 
         return $this;

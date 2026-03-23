@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Companies\Dto;
 
+use App\Models\Company;
 use Lattice\Validation\Attributes\Email;
 use Lattice\Validation\Attributes\InArray;
 use Lattice\Validation\Attributes\Nullable;
@@ -21,11 +22,11 @@ final readonly class UpdateCompanyDto
         public ?string $domain = null,
 
         #[Nullable]
-        #[InArray(values: ['technology', 'finance', 'healthcare', 'manufacturing', 'retail', 'education', 'consulting', 'other'])]
+        #[InArray(values: Company::INDUSTRIES)]
         public ?string $industry = null,
 
         #[Nullable]
-        #[InArray(values: ['1-10', '11-50', '51-200', '201-500', '501-1000', '1001+'])]
+        #[InArray(values: Company::SIZES)]
         public ?string $size = null,
 
         #[Nullable]

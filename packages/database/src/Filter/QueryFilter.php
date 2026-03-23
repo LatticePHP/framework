@@ -36,6 +36,17 @@ final class QueryFilter
 
     private int $page = 1;
 
+    /** Maximum allowed per_page to prevent DoS via unbounded queries */
+    private static int $maxPerPage = 100;
+
+    /**
+     * Set the global maximum per_page value.
+     */
+    public static function setMaxPerPage(int $max): void
+    {
+        self::$maxPerPage = $max;
+    }
+
     /**
      * Create a QueryFilter from a request query-string array.
      *
@@ -49,8 +60,8 @@ final class QueryFilter
         $instance->includes = isset($query['include'])
             ? explode(',', (string) $query['include'])
             : [];
-        $instance->perPage = (int) ($query['per_page'] ?? 15);
-        $instance->page = (int) ($query['page'] ?? 1);
+        $instance->perPage = min((int) ($query['per_page'] ?? 15), self::$maxPerPage);
+        $instance->page = max(1, (int) ($query['page'] ?? 1));
 
         // Parse sort: -created_at means DESC, created_at means ASC
         if (isset($query['sort'])) {

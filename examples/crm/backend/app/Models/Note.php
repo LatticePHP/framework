@@ -23,12 +23,6 @@ final class Note extends Model
     use BelongsToWorkspace;
     use Auditable;
 
-    /** @var list<array<string, mixed>> */
-    protected static array $auditLog = [];
-    protected static int|string|null $auditUserId = null;
-    /** @var array{ip_address: ?string, user_agent: ?string, url: ?string, method: ?string}|null */
-    protected static ?array $auditRequestMeta = null;
-
     protected $table = 'notes';
 
     /** @var list<string> */
@@ -55,6 +49,21 @@ final class Note extends Model
 
     /** @var array<int, string> */
     protected array $allowedSorts = ['created_at', 'updated_at'];
+
+    public const array NOTABLE_TYPES = ['contacts', 'companies', 'deals'];
+
+    /** @var array<string, class-string> */
+    public const array NOTABLE_TYPE_MAP = [
+        'contacts' => \App\Models\Contact::class,
+        'companies' => \App\Models\Company::class,
+        'deals' => \App\Models\Deal::class,
+    ];
+
+    public static function resolveNotableClass(string $type): string
+    {
+        return self::NOTABLE_TYPE_MAP[$type]
+            ?? throw new \InvalidArgumentException("Invalid notable type: {$type}");
+    }
 
     /**
      * Get the owning notable model (Contact, Company, or Deal).

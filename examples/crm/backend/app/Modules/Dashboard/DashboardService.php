@@ -21,12 +21,13 @@ final class DashboardService
         return [
             'contacts' => [
                 'total' => Contact::count(),
-                'by_status' => [
-                    'lead' => Contact::where('status', 'lead')->count(),
-                    'prospect' => Contact::where('status', 'prospect')->count(),
-                    'customer' => Contact::where('status', 'customer')->count(),
-                    'churned' => Contact::where('status', 'churned')->count(),
-                ],
+                'by_status' => array_combine(
+                    Contact::STATUSES,
+                    array_map(
+                        fn (string $status): int => Contact::where('status', $status)->count(),
+                        Contact::STATUSES,
+                    ),
+                ),
             ],
             'companies' => [
                 'total' => Company::count(),
@@ -34,7 +35,7 @@ final class DashboardService
             'deals' => [
                 'total' => Deal::count(),
                 'total_value' => (float) Deal::sum('value'),
-                'open_value' => (float) Deal::whereNotIn('stage', ['closed_won', 'closed_lost'])->sum('value'),
+                'open_value' => (float) Deal::whereNotIn('stage', Deal::CLOSED_STAGES)->sum('value'),
                 'won_value' => (float) Deal::where('stage', 'closed_won')->sum('value'),
                 'by_stage' => $this->getDealsByStage(),
             ],

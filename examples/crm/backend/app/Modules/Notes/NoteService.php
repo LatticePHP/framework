@@ -5,72 +5,52 @@ declare(strict_types=1);
 namespace App\Modules\Notes;
 
 use App\Models\Note;
-use App\Modules\Notes\Dto\CreateNoteDto;
-use App\Modules\Notes\Dto\UpdateNoteDto;
+use Illuminate\Database\Eloquent\Model;
 use Lattice\Auth\Principal;
-use Lattice\Observability\Log;
+use Lattice\Database\Crud\CrudService;
 
-final class NoteService
+/**
+ * @extends CrudService<Note>
+ */
+final class NoteService extends CrudService
 {
-    /** @var array<string, class-string> Maps API-friendly names to model classes */
-    private const array NOTABLE_TYPE_MAP = [
-        'contacts' => \App\Models\Contact::class,
-        'companies' => \App\Models\Company::class,
-        'deals' => \App\Models\Deal::class,
-    ];
-
-    /**
-     * Create a new note.
-     */
-    public function create(CreateNoteDto $dto, Principal $user): Note
+    protected function model(): string
     {
-        $notableType = self::NOTABLE_TYPE_MAP[$dto->notable_type] ?? $dto->notable_type;
+        return Note::class;
+    }
 
-        $note = Note::create([
-            'content' => $dto->body,
-            'notable_type' => $notableType,
-            'notable_id' => $dto->notable_id,
-            'author_id' => (int) $user->getId(),
-            'is_pinned' => $dto->is_pinned ?? false,
-        ]);
-
-        Log::info('Note created', [
-            'id' => $note->id,
-            'notable_type' => $dto->notable_type,
-            'notable_id' => $dto->notable_id,
-            'user_id' => $user->getId(),
-        ]);
-
-        return $note;
+    protected function ownerField(): string
+    {
+        return 'author_id';
     }
 
     /**
-     * Update an existing note.
+     * Map 'body' -> 'content' and resolve polymorphic notable_type.
+     *
+     * @param array<string, mixed> &$data
      */
-    public function update(int $id, UpdateNoteDto $dto): Note
+    protected function beforeCreate(array &$data, Principal $user): void
     {
-        $note = Note::findOrFail($id);
+        if (array_key_exists('body', $data)) {
+            $data['content'] = $data['body'];
+            unset($data['body']);
+        }
 
-        $data = array_filter([
-            'content' => $dto->body,
-            'is_pinned' => $dto->is_pinned,
-        ], fn (mixed $value): bool => $value !== null);
-
-        $note->update($data);
-
-        Log::info('Note updated', ['id' => $note->id]);
-
-        return $note->fresh();
+        if (isset($data['notable_type'])) {
+            $data['notable_type'] = Note::resolveNotableClass($data['notable_type']);
+        }
     }
 
     /**
-     * Delete a note (soft delete).
+     * Map 'body' -> 'content' on update.
+     *
+     * @param array<string, mixed> &$data
      */
-    public function delete(int $id): void
+    protected function beforeUpdate(Model $model, array &$data): void
     {
-        $note = Note::findOrFail($id);
-        $note->delete();
-
-        Log::info('Note deleted', ['id' => $id]);
+        if (array_key_exists('body', $data)) {
+            $data['content'] = $data['body'];
+            unset($data['body']);
+        }
     }
 }

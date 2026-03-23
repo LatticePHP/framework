@@ -10,7 +10,8 @@ use App\Modules\Companies\Dto\UpdateCompanyDto;
 use Lattice\Auth\JwtAuthenticationGuard;
 use Lattice\Auth\Principal;
 use Lattice\Auth\Workspace\WorkspaceGuard;
-use Lattice\Database\Filter\QueryFilter;
+use Lattice\Database\Crud\CrudService;
+use Lattice\Http\Crud\CrudController;
 use Lattice\Http\Request;
 use Lattice\Http\Response;
 use Lattice\Http\ResponseFactory;
@@ -19,7 +20,6 @@ use Lattice\Pipeline\Attributes\UseGuards;
 use Lattice\Routing\Attributes\Body;
 use Lattice\Routing\Attributes\Controller;
 use Lattice\Routing\Attributes\CurrentUser;
-use Lattice\Routing\Attributes\Delete;
 use Lattice\Routing\Attributes\Get;
 use Lattice\Routing\Attributes\Param;
 use Lattice\Routing\Attributes\Post;
@@ -27,21 +27,30 @@ use Lattice\Routing\Attributes\Put;
 
 #[Controller('/api/companies')]
 #[UseGuards(guards: [JwtAuthenticationGuard::class, WorkspaceGuard::class])]
-final class CompanyController
+final class CompanyController extends CrudController
 {
     public function __construct(
         private readonly CompanyService $service,
     ) {}
 
-    #[Get('/')]
-    public function index(Request $request): Response
+    protected function service(): CrudService
     {
-        $filter = QueryFilter::fromRequest($request->query);
-        $companies = Company::filter($filter)
-            ->withCount(['contacts', 'deals'])
-            ->paginate($filter->getPerPage(), ['*'], 'page', $filter->getPage());
+        return $this->service;
+    }
 
-        return ResponseFactory::paginated($companies, CompanyResource::class);
+    protected function resourceClass(): string
+    {
+        return CompanyResource::class;
+    }
+
+    protected function modelClass(): string
+    {
+        return Company::class;
+    }
+
+    protected function showRelations(): array
+    {
+        return ['contacts', 'deals', 'notes', 'owner'];
     }
 
     #[Post('/')]
@@ -51,38 +60,13 @@ final class CompanyController
 
         Log::info('Company created', ['id' => $company->id]);
 
-        return ResponseFactory::created(
-            ['data' => CompanyResource::make($company)->toArray()],
-        );
-    }
-
-    #[Get('/:id')]
-    public function show(#[Param] int $id): Response
-    {
-        $company = Company::with(['contacts', 'deals', 'notes', 'owner'])
-            ->findOrFail($id);
-
-        return ResponseFactory::json([
-            'data' => CompanyResource::make($company)->toArray(),
-        ]);
+        return $this->storeResponse($company);
     }
 
     #[Put('/:id')]
     public function update(#[Param] int $id, #[Body] UpdateCompanyDto $dto): Response
     {
-        $company = $this->service->update($id, $dto);
-
-        return ResponseFactory::json([
-            'data' => CompanyResource::make($company)->toArray(),
-        ]);
-    }
-
-    #[Delete('/:id')]
-    public function destroy(#[Param] int $id): Response
-    {
-        $this->service->delete($id);
-
-        return ResponseFactory::noContent();
+        return $this->updateResponse($this->service->update($id, $dto));
     }
 
     /**

@@ -220,6 +220,51 @@ abstract class TestCase extends PHPUnitTestCase
         return $this->authToken;
     }
 
+    // --- Test Helpers ---
+
+    /**
+     * Boot an in-memory SQLite database for testing.
+     * Returns the IlluminateDatabaseManager instance.
+     *
+     * @param array<string, mixed> $config
+     */
+    protected function bootTestDatabase(array $config = []): object
+    {
+        $defaults = [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ];
+
+        $dbConfig = array_merge($defaults, $config);
+
+        if (!class_exists(\Lattice\Database\Illuminate\IlluminateDatabaseManager::class)) {
+            throw new \RuntimeException('lattice/database is required for test database support');
+        }
+
+        return new \Lattice\Database\Illuminate\IlluminateDatabaseManager($dbConfig);
+    }
+
+    /**
+     * Generate a test JWT token for the given user model.
+     */
+    protected function generateTestToken(object $user, string $secret = 'test-secret'): string
+    {
+        if (!class_exists(\Lattice\Jwt\JwtEncoder::class)) {
+            throw new \RuntimeException('lattice/jwt is required for test token generation');
+        }
+
+        $encoder = new \Lattice\Jwt\JwtEncoder();
+
+        return $encoder->encode([
+            'sub' => (string) ($user->id ?? $user->getId()),
+            'email' => $user->email ?? '',
+            'roles' => [$user->role ?? 'user'],
+            'iat' => time(),
+            'exp' => time() + 3600,
+        ], $secret);
+    }
+
     // --- Database Assertions ---
 
     /**

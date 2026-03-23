@@ -24,12 +24,6 @@ final class Deal extends Model
     use BelongsToWorkspace;
     use Auditable;
 
-    /** @var list<array<string, mixed>> */
-    protected static array $auditLog = [];
-    protected static int|string|null $auditUserId = null;
-    /** @var array{ip_address: ?string, user_agent: ?string, url: ?string, method: ?string}|null */
-    protected static ?array $auditRequestMeta = null;
-
     protected $table = 'deals';
 
     /** @var list<string> */
@@ -78,6 +72,22 @@ final class Deal extends Model
         'closed_lost',
     ];
 
+    public const array CLOSED_STAGES = ['closed_won', 'closed_lost'];
+
+    public const array STAGE_PROBABILITIES = [
+        'lead' => 10,
+        'qualified' => 25,
+        'proposal' => 50,
+        'negotiation' => 75,
+        'closed_won' => 100,
+        'closed_lost' => 0,
+    ];
+
+    public static function probabilityForStage(string $stage): int
+    {
+        return self::STAGE_PROBABILITIES[$stage] ?? 0;
+    }
+
     public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
@@ -108,7 +118,7 @@ final class Deal extends Model
      */
     public function isClosed(): bool
     {
-        return in_array($this->stage, ['closed_won', 'closed_lost'], true);
+        return in_array($this->stage, self::CLOSED_STAGES, true);
     }
 
     /**

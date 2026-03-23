@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Deals\Dto;
 
+use App\Models\Deal;
 use Lattice\Validation\Attributes\InArray;
 use Lattice\Validation\Attributes\Nullable;
 use Lattice\Validation\Attributes\StringType;
@@ -23,7 +24,7 @@ final readonly class UpdateDealDto
         public ?string $currency = null,
 
         #[Nullable]
-        #[InArray(values: ['lead', 'qualified', 'proposal', 'negotiation', 'closed_won', 'closed_lost'])]
+        #[InArray(values: Deal::STAGES)]
         public ?string $stage = null,
 
         #[Nullable]

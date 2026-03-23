@@ -5,78 +5,58 @@ declare(strict_types=1);
 namespace App\Modules\Activities;
 
 use App\Models\Activity;
-use App\Modules\Activities\Dto\CreateActivityDto;
-use App\Modules\Activities\Dto\UpdateActivityDto;
+use Illuminate\Database\Eloquent\Model;
 use Lattice\Auth\Principal;
+use Lattice\Database\Crud\CrudService;
 use Lattice\Observability\Log;
 
-final class ActivityService
+/**
+ * @extends CrudService<Activity>
+ */
+final class ActivityService extends CrudService
 {
-    /**
-     * Create a new activity.
-     */
-    public function create(CreateActivityDto $dto, Principal $user): Activity
+    protected function model(): string
     {
-        $activity = Activity::create([
-            'type' => $dto->type,
-            'subject' => $dto->title,
-            'description' => $dto->description,
-            'due_date' => $dto->due_date,
-            'contact_id' => $dto->contact_id,
-            'deal_id' => $dto->deal_id,
-            'owner_id' => (int) $user->getId(),
-        ]);
-
-        Log::info('Activity created', [
-            'id' => $activity->id,
-            'type' => $activity->type,
-            'user_id' => $user->getId(),
-        ]);
-
-        return $activity;
+        return Activity::class;
     }
 
     /**
-     * Update an existing activity.
+     * Map DTO field 'title' to model field 'subject'.
+     *
+     * @param array<string, mixed> &$data
      */
-    public function update(int $id, UpdateActivityDto $dto): Activity
+    protected function beforeCreate(array &$data, Principal $user): void
     {
-        $activity = Activity::findOrFail($id);
+        if (array_key_exists('title', $data)) {
+            $data['subject'] = $data['title'];
+            unset($data['title']);
+        }
+    }
 
-        $data = array_filter([
-            'type' => $dto->type,
-            'subject' => $dto->title,
-            'description' => $dto->description,
-            'due_date' => $dto->due_date,
-            'contact_id' => $dto->contact_id,
-            'deal_id' => $dto->deal_id,
-        ], fn (mixed $value): bool => $value !== null);
-
-        // Handle completion toggle
-        if ($dto->completed === true && $activity->completed_at === null) {
-            $data['completed_at'] = now()->format('Y-m-d H:i:s');
-            Log::info('Activity completed', ['id' => $activity->id]);
-        } elseif ($dto->completed === false && $activity->completed_at !== null) {
-            $data['completed_at'] = null;
-            Log::info('Activity uncompleted', ['id' => $activity->id]);
+    /**
+     * Map 'title' -> 'subject' and handle completion toggle.
+     *
+     * @param array<string, mixed> &$data
+     */
+    protected function beforeUpdate(Model $model, array &$data): void
+    {
+        /** @var Activity $model */
+        if (array_key_exists('title', $data)) {
+            $data['subject'] = $data['title'];
+            unset($data['title']);
         }
 
-        $activity->update($data);
-
-        Log::info('Activity updated', ['id' => $activity->id]);
-
-        return $activity->fresh();
-    }
-
-    /**
-     * Delete an activity (soft delete).
-     */
-    public function delete(int $id): void
-    {
-        $activity = Activity::findOrFail($id);
-        $activity->delete();
-
-        Log::info('Activity deleted', ['id' => $id]);
+        // Handle completion toggle
+        if (array_key_exists('completed', $data)) {
+            if ($data['completed'] === true && $model->completed_at === null) {
+                $data['completed_at'] = now()->format('Y-m-d H:i:s');
+                Log::info('Activity completed', ['id' => $model->id]);
+            } elseif ($data['completed'] === false && $model->completed_at !== null) {
+                $data['completed_at'] = null;
+                Log::info('Activity uncompleted', ['id' => $model->id]);
+            }
+            unset($data['completed']);
+        }
     }
 
     /**

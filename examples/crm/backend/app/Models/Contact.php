@@ -24,11 +24,8 @@ final class Contact extends Model
     use BelongsToWorkspace;
     use Auditable;
 
-    /** @var list<array<string, mixed>> */
-    protected static array $auditLog = [];
-    protected static int|string|null $auditUserId = null;
-    /** @var array{ip_address: ?string, user_agent: ?string, url: ?string, method: ?string}|null */
-    protected static ?array $auditRequestMeta = null;
+    public const array STATUSES = ['lead', 'prospect', 'customer', 'churned', 'inactive'];
+    public const array SOURCES = ['web', 'referral', 'campaign', 'social', 'cold_call', 'trade_show', 'other'];
 
     protected $table = 'contacts';
 

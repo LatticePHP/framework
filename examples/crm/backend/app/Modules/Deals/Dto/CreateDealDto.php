@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Deals\Dto;
 
+use App\Models\Deal;
 use Lattice\Validation\Attributes\InArray;
 use Lattice\Validation\Attributes\Nullable;
 use Lattice\Validation\Attributes\Required;
@@ -22,7 +23,7 @@ final readonly class CreateDealDto
         #[StringType(maxLength: 3)]
         public string $currency = 'USD',
 
-        #[InArray(values: ['lead', 'qualified', 'proposal', 'negotiation', 'closed_won', 'closed_lost'])]
+        #[InArray(values: Deal::STAGES)]
         public string $stage = 'lead',
 
         public int $probability = 0,
